@@ -17,5 +17,14 @@ public class AuthController : GafelController
         return Created(string.Empty, result);
     }
 
+    [HttpPost("login")]
+    [ProducesResponseType(typeof(RegisteredUserResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> Login([FromBody] DoLoginCommand request, [FromServices] IDoLoginUseCase useCase)
+    {
+        var result = await useCase.Execute(request);
 
+        return Ok(result);
+    }
 }
