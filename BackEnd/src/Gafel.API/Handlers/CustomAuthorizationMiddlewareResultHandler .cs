@@ -20,6 +20,7 @@ public class CustomAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewa
         if (authorizeResult.Challenged)
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            context.Response.ContentType = "application/problem+json";
 
             var problem = new ProblemDetails
             {
@@ -45,7 +46,7 @@ public class CustomAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewa
             return ResourceMessagesException.NO_AUTH_TOKEN;
 
         // Token expirado
-        if (context.Items["JwtException"] is SecurityTokenExpiredException)
+        if (context.Items.TryGetValue("JwtException", out var exception) && exception is SecurityTokenExpiredException)
             return ResourceMessagesException.AUTH_TOKEN_EXPIRED;
 
         // Token inválido

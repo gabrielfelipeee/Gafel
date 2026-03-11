@@ -16,6 +16,9 @@ public class GlobalExceptionHandler : IExceptionHandler
         httpContext.Response.StatusCode = problem.Status ?? StatusCodes.Status500InternalServerError;
 
 
+        // Garante o Content-Type correto para ProblemDetails
+        httpContext.Response.ContentType = "application/problem+json";
+
         // (object) Força a serialização do tipo real (ex: ValidationProblemDetails) 
         // em vez do tipo base (ProblemDetails), garantindo que a propriedade 'Errors' seja incluída.
         await httpContext.Response.WriteAsJsonAsync((object)problem, cancellationToken);

@@ -105,7 +105,10 @@ void AddAuthentication()
 
             RequireExpirationTime = true,
             ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero
+            ClockSkew = TimeSpan.Zero,
+
+            // Garante que o algoritmo seja exatamente o esperado
+            ValidAlgorithms = [SecurityAlgorithms.HmacSha256Signature]
         };
         options.Events = new JwtBearerEvents
         {
