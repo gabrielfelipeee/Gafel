@@ -159,4 +159,13 @@
   <data name="PERSON_NOT_FOUND" xml:space="preserve">
     <value>Perfil do usuário não foi encontrado</value>
   </data>
+  <data name="NO_AUTH_TOKEN" xml:space="preserve">
+    <value>A requisição não possui token de autenticação.</value>
+  </data>
+  <data name="AUTH_TOKEN_INVALID" xml:space="preserve">
+    <value>Token de autenticação inválido.</value>
+  </data>
+  <data name="AUTH_TOKEN_EXPIRED" xml:space="preserve">
+    <value>O token de autenticação está expirado</value>
+  </data>
 </root>

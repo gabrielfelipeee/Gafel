@@ -61,6 +61,24 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O token de autenticação está expirado.
+        /// </summary>
+        public static string AUTH_TOKEN_EXPIRED {
+            get {
+                return ResourceManager.GetString("AUTH_TOKEN_EXPIRED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Token de autenticação inválido..
+        /// </summary>
+        public static string AUTH_TOKEN_INVALID {
+            get {
+                return ResourceManager.GetString("AUTH_TOKEN_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Email já registrado.
         /// </summary>
         public static string EMAIL_ALREADY_REGISTERED {
@@ -120,6 +138,15 @@ namespace Gafel.Domain.Resources {
         public static string NAME_EMPTY {
             get {
                 return ResourceManager.GetString("NAME_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A requisição não possui token de autenticação..
+        /// </summary>
+        public static string NO_AUTH_TOKEN {
+            get {
+                return ResourceManager.GetString("NO_AUTH_TOKEN", resourceCulture);
             }
         }
         

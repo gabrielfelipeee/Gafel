@@ -2,12 +2,14 @@
 using Gafel.Domain.Identity.Interfaces;
 using Gafel.Domain.Repositories;
 using Gafel.Domain.Repositories.Person;
+using Gafel.Domain.Security.Tokens;
 using Gafel.Infrastructure.DataAccess;
 using Gafel.Infrastructure.DataAccess.Repositories;
 using Gafel.Infrastructure.Extensions;
 using Gafel.Infrastructure.Identity;
 using Gafel.Infrastructure.Identity.Entities;
 using Gafel.Infrastructure.Identity.Services;
+using Gafel.Infrastructure.Security.Tokens.Access;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -23,16 +25,25 @@ public static class DependencyInjectionExtension
         AddDbContextMySql(services, configuration);
         AddFluentMigratorMySql(services, configuration);
 
+        AddTokens(services, configuration);
         AddIdentity(services);
         AddIdentityService(services);
         AddRepositories(services);
+    }
+
+    private static void AddTokens(IServiceCollection services, IConfiguration configuration)
+    {
+        var expirationTimeMinutes = configuration.GetValue<uint>("Settings:Jwt:ExpirationTimeMinutes");
+        var signinKey = configuration.GetValue<string>("Settings:Jwt:SigninKey");
+
+        services.AddScoped<IAccessTokenGenerator>(option => new JwtTokenGenerator(expirationTimeMinutes, signinKey!));
     }
 
     private static void AddIdentity(IServiceCollection services)
     {
         // Identity 
         services
-            .AddIdentity<ApplicationUser, IdentityRole<long>>(options =>
+            .AddIdentityCore<ApplicationUser>(options =>
             {
                 // Comprexidade da senha
                 options.Password.RequiredLength = 8; // Comprimento mínimo da senha
@@ -40,12 +51,15 @@ public static class DependencyInjectionExtension
                 options.Password.RequireNonAlphanumeric = true; // Pelo menos um caractere não alfanumérico (especial)
                 options.Password.RequireLowercase = false; // Pelo menos uma letra minúscula
                 options.Password.RequireUppercase = false; // Pelo menos uma letra maiúscula
+                options.User.RequireUniqueEmail = true;
             })
-            .AddErrorDescriber<CustomIdentityErrorDescriber>()
+            .AddRoles<IdentityRole<long>>()
+            .AddRoleManager<RoleManager<IdentityRole<long>>>()
+            .AddSignInManager()
             .AddEntityFrameworkStores<GafelDbContext>()
+            .AddErrorDescriber<CustomIdentityErrorDescriber>()
             .AddDefaultTokenProviders();
     }
-
     private static void AddIdentityService(IServiceCollection services)
     {
         services.AddScoped<IAuthService, AuthService>();

@@ -4,6 +4,7 @@ using Gafel.Application.Utils;
 using Gafel.Domain.Identity.Dtos;
 using Gafel.Domain.Identity.Interfaces;
 using Gafel.Domain.Repositories.Person;
+using Gafel.Domain.Security.Tokens;
 
 namespace Gafel.Application.UseCases.Auth.Login.DoLogin;
 
@@ -11,11 +12,13 @@ public class DoLoginUseCase : IDoLoginUseCase
 {
     private readonly IAuthService _authService;
     private readonly IPersonReadOnlyRepository _personReadOnlyRepository;
+    private readonly IAccessTokenGenerator _accessTokenGenerator;
 
-    public DoLoginUseCase(IAuthService authService, IPersonReadOnlyRepository personReadOnlyRepository)
+    public DoLoginUseCase(IAuthService authService, IPersonReadOnlyRepository personReadOnlyRepository, IAccessTokenGenerator accessTokenGenerator)
     {
         _authService = authService;
         _personReadOnlyRepository = personReadOnlyRepository;
+        _accessTokenGenerator = accessTokenGenerator;
     }
 
     public async Task<RegisteredUserResponse> Execute(DoLoginCommand request)
@@ -32,7 +35,9 @@ public class DoLoginUseCase : IDoLoginUseCase
         if (!result.Success)
             throw new InvalidLoginException(result.ErrorMessage!);
 
-        var person = await _personReadOnlyRepository.GetByUserId(result.UserId!.Value)
+        var userId = result.UserId!.Value;
+
+        var person = await _personReadOnlyRepository.GetByUserId(userId)
             ?? throw new UserPersonNotFoundException();
 
         return new RegisteredUserResponse
@@ -40,7 +45,7 @@ public class DoLoginUseCase : IDoLoginUseCase
             FullName = person.FullName,
             Tokens = new()
             {
-                AccessToken = "AccessToken"
+                AccessToken = _accessTokenGenerator.Generate(userId)
             }
         };
     }

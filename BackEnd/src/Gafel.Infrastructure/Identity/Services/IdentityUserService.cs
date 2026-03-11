@@ -52,6 +52,6 @@ public class IdentityUserService(UserManager<ApplicationUser> userManager) : IUs
             .GroupBy(e => e.Code)
             .ToDictionary(
                 g => g.Key,
-                g => g.Select(e => e.Description).ToArray());
+                g => g.DistinctBy(x => x.Description).Select(e => e.Description).ToArray());
     }
 }

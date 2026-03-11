@@ -17,7 +17,7 @@ public class AuthService(SignInManager<ApplicationUser> signInManager, UserManag
         if (user is null)
             return new LoginResult(Success: false, ErrorMessage: ResourceMessagesException.INVALID_CREDENTIALS);
 
-        var result = await _signInManager.PasswordSignInAsync(user, request.Password, false, false);
+        var result = await _signInManager.CheckPasswordSignInAsync(user: user, password: request.Password, lockoutOnFailure: true);
         if (!result.Succeeded)
         {
             var message = result switch
