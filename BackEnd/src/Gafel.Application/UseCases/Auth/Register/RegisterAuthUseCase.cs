@@ -5,6 +5,7 @@ using Gafel.Domain.Identity.Dtos;
 using Gafel.Domain.Identity.Interfaces;
 using Gafel.Domain.Repositories;
 using Gafel.Domain.Repositories.Person;
+using Gafel.Domain.Security.Tokens;
 
 namespace Gafel.Application.UseCases.Auth.Register;
 
@@ -12,16 +13,19 @@ public class RegisterAuthUseCase : IRegisterAuthUseCase
 {
     private readonly IPersonWriteOnlyRepository _personWriteOnlyRepository;
     private readonly IUserWriteOnlyService _identityWriteOnly;
+    private readonly IAccessTokenGenerator _accessTokenGenerator;
     private readonly IUnitOfWork _unitOfWork;
 
     public RegisterAuthUseCase(
         IPersonWriteOnlyRepository personWriteOnlyRepository,
         IUserWriteOnlyService identityUserWriteOnlyService,
+        IAccessTokenGenerator accessTokenGenerator,
         IUnitOfWork unitOfWork
         )
     {
         _personWriteOnlyRepository = personWriteOnlyRepository;
         _identityWriteOnly = identityUserWriteOnlyService;
+        _accessTokenGenerator = accessTokenGenerator;
         _unitOfWork = unitOfWork;
     }
 
@@ -29,25 +33,24 @@ public class RegisterAuthUseCase : IRegisterAuthUseCase
     {
         await Validate(request);
 
-        var transaction = await _unitOfWork.BeginTransactionAsync();
+        await using var transaction = await _unitOfWork.BeginTransactionAsync();
         try
         {
             var result = await _identityWriteOnly.Register(new RegisterUserRequest() { Email = request.Email, Password = request.Password });
             if (!result.Success)
                 throw new ErrorOnValidationException(result.Errors!);
 
+            var userId = result.UserId!.Value;
+
             var person = new Domain.Entities.Person()
             {
                 FullName = request.FullName,
-                UserId = result.UserId!.Value,
+                UserId = userId,
                 CreatedAt = DateTime.UtcNow,
             };
             await _personWriteOnlyRepository.Add(person);
 
             await _unitOfWork.SaveChangesAsync();
-
-            // Aqui gera o token -> Ainda será implementado
-
             await transaction.CommitAsync();
 
             return new RegisteredUserResponse
@@ -55,7 +58,7 @@ public class RegisterAuthUseCase : IRegisterAuthUseCase
                 FullName = person.FullName,
                 Tokens = new()
                 {
-                     AccessToken = "AccessToken"
+                    AccessToken = _accessTokenGenerator.Generate(userId)
                 }
             };
         }

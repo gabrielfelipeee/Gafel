@@ -10,6 +10,5 @@ public class TransactionWrapper(IDbContextTransaction transaction) : ITransactio
     public async Task CommitAsync() => await _transaction.CommitAsync();
     public async Task RollbackAsync() => await _transaction.RollbackAsync();
 
-    public void Dispose() => _transaction.Dispose();
     public async ValueTask DisposeAsync() => await _transaction.DisposeAsync();
 }

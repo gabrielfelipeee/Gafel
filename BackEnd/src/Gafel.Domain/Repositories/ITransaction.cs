@@ -1,6 +1,6 @@
 ﻿namespace Gafel.Domain.Repositories;
 
-public interface ITransaction
+public interface ITransaction : IAsyncDisposable
 {
     Task CommitAsync();
     Task RollbackAsync();
