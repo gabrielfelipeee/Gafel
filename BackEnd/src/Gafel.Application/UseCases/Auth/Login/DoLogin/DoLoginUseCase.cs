@@ -5,6 +5,7 @@ using Gafel.Domain.Identity.Dtos;
 using Gafel.Domain.Identity.Interfaces;
 using Gafel.Domain.Repositories.Person;
 using Gafel.Domain.Security.Tokens;
+using Mapster;
 
 namespace Gafel.Application.UseCases.Auth.Login.DoLogin;
 
@@ -25,11 +26,7 @@ public class DoLoginUseCase : IDoLoginUseCase
     {
         await Validate(request);
 
-        var loginRequest = new LoginRequest()
-        {
-            Email = request.Email,
-            Password = request.Password,
-        };
+        var loginRequest = request.Adapt<LoginRequest>();
 
         var result = await _authService.Login(loginRequest);
         if (!result.Success)

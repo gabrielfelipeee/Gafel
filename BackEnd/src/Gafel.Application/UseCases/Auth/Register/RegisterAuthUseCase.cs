@@ -6,6 +6,7 @@ using Gafel.Domain.Identity.Interfaces;
 using Gafel.Domain.Repositories;
 using Gafel.Domain.Repositories.Person;
 using Gafel.Domain.Security.Tokens;
+using Mapster;
 
 namespace Gafel.Application.UseCases.Auth.Register;
 
@@ -36,7 +37,9 @@ public class RegisterAuthUseCase : IRegisterAuthUseCase
         await using var transaction = await _unitOfWork.BeginTransactionAsync();
         try
         {
-            var result = await _identityWriteOnly.Register(new RegisterUserRequest() { Email = request.Email, Password = request.Password });
+            var userRequest = request.Adapt<RegisterUserRequest>();
+
+            var result = await _identityWriteOnly.Register(userRequest);
             if (!result.Success)
                 throw new ErrorOnValidationException(result.Errors!);
 
