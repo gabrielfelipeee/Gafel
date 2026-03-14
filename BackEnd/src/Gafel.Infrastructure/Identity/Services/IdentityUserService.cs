@@ -10,21 +10,17 @@ public class IdentityUserService(UserManager<ApplicationUser> userManager) : IUs
 {
     private readonly UserManager<ApplicationUser> _userManager = userManager;
 
-    public async Task<RegisterUserResult> Register(RegisterUserRequest request)
+    public async Task<RegisterUserResponseDto> Register(UserCredentialsDto request)
     {
-        var user = new ApplicationUser
-        {
-            UserName = request.Email,
-            Email = request.Email,
-        };
+        var user = new ApplicationUser(request.Email);
 
         var result = await _userManager.CreateAsync(user, request.Password);
         if (!result.Succeeded)
-            return new RegisterUserResult(Success: false, Errors: MapErrors(result.Errors));
+            return new RegisterUserResponseDto(Success: false, Errors: MapErrors(result.Errors));
 
         await _userManager.AddToRoleAsync(user, Roles.User);
 
-        return new RegisterUserResult(Success: true, UserId: user.Id);
+        return new RegisterUserResponseDto(Success: true, UserId: user.Id);
     }
 
     /*

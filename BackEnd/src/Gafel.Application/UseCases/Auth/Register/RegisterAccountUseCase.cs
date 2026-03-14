@@ -10,14 +10,14 @@ using Mapster;
 
 namespace Gafel.Application.UseCases.Auth.Register;
 
-public class RegisterAuthUseCase : IRegisterAuthUseCase
+public class RegisterAccountUseCase : IRegisterAccountUseCase
 {
     private readonly IPersonWriteOnlyRepository _personWriteOnlyRepository;
     private readonly IUserWriteOnlyService _identityWriteOnly;
     private readonly IAccessTokenGenerator _accessTokenGenerator;
     private readonly IUnitOfWork _unitOfWork;
 
-    public RegisterAuthUseCase(
+    public RegisterAccountUseCase(
         IPersonWriteOnlyRepository personWriteOnlyRepository,
         IUserWriteOnlyService identityUserWriteOnlyService,
         IAccessTokenGenerator accessTokenGenerator,
@@ -30,16 +30,16 @@ public class RegisterAuthUseCase : IRegisterAuthUseCase
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<RegisteredUserResponse> Execute(RegisterAuthCommand request)
+    public async Task<RegisteredUserResponse> Execute(RegisterAccountCommand request)
     {
         await Validate(request);
 
         await using var transaction = await _unitOfWork.BeginTransactionAsync();
         try
         {
-            var userRequest = request.Adapt<RegisterUserRequest>();
+            var credentials = request.Adapt<UserCredentialsDto>();
 
-            var result = await _identityWriteOnly.Register(userRequest);
+            var result = await _identityWriteOnly.Register(credentials);
             if (!result.Success)
                 throw new ErrorOnValidationException(result.Errors!);
 
@@ -72,9 +72,9 @@ public class RegisterAuthUseCase : IRegisterAuthUseCase
         }
     }
 
-    private static async Task Validate(RegisterAuthCommand request)
+    private static async Task Validate(RegisterAccountCommand request)
     {
-        var result = new RegisterAuthValidator().Validate(request);
+        var result = new RegisterAccountValidator().Validate(request);
 
         if (!result.IsValid)
         {

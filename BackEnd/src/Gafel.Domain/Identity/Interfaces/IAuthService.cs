@@ -4,5 +4,5 @@ namespace Gafel.Domain.Identity.Interfaces;
 
 public interface IAuthService
 {
-    Task<LoginResult> Login(LoginRequest request);
+    Task<LoginResponseDto> Login(UserCredentialsDto credentials);
 }

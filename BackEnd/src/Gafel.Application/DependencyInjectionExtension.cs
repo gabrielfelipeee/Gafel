@@ -15,7 +15,7 @@ public static class DependencyInjectionExtension
 
     private static void AddUseCases(IServiceCollection services)
     {
-        services.AddScoped<IRegisterAuthUseCase, RegisterAuthUseCase>();
+        services.AddScoped<IRegisterAccountUseCase, RegisterAccountUseCase>();
         services.AddScoped<IDoLoginUseCase, DoLoginUseCase>();
     }
 }

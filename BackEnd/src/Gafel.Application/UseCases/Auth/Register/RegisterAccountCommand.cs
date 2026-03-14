@@ -1,6 +1,6 @@
 ﻿namespace Gafel.Application.UseCases.Auth.Register;
 
-public class RegisterAuthCommand
+public class RegisterAccountCommand
 {
     public string FullName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;

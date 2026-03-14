@@ -10,7 +10,7 @@ public class AuthController : GafelController
     [HttpPost("register")]
     [ProducesResponseType(typeof(RegisteredUserResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Register([FromBody] RegisterAuthCommand request, [FromServices] IRegisterAuthUseCase useCase)
+    public async Task<IActionResult> Register([FromBody] RegisterAccountCommand request, [FromServices] IRegisterAccountUseCase useCase)
     {
         var result = await useCase.Execute(request);
 

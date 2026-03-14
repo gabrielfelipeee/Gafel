@@ -4,9 +4,9 @@ using Gafel.Application.RuleExtensions;
 
 namespace Gafel.Application.UseCases.Auth.Register;
 
-public class RegisterAuthValidator : AbstractValidator<RegisterAuthCommand>
+public class RegisterAccountValidator : AbstractValidator<RegisterAccountCommand>
 {
-    public RegisterAuthValidator()
+    public RegisterAccountValidator()
     {
         RuleFor(person => person.FullName)
             .NotEmpty()

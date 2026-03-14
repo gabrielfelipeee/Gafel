@@ -11,13 +11,13 @@ public class AuthService(SignInManager<ApplicationUser> signInManager, UserManag
     private readonly SignInManager<ApplicationUser> _signInManager = signInManager;
     private readonly UserManager<ApplicationUser> _userManager = userManager;
 
-    public async Task<LoginResult> Login(LoginRequest request)
+    public async Task<LoginResponseDto> Login(UserCredentialsDto credentials)
     {
-        var user = await _userManager.FindByEmailAsync(request.Email);
+        var user = await _userManager.FindByEmailAsync(credentials.Email);
         if (user is null)
-            return new LoginResult(Success: false, ErrorMessage: ResourceMessagesException.INVALID_CREDENTIALS);
+            return new LoginResponseDto(Success: false, ErrorMessage: ResourceMessagesException.INVALID_CREDENTIALS);
 
-        var result = await _signInManager.CheckPasswordSignInAsync(user: user, password: request.Password, lockoutOnFailure: true);
+        var result = await _signInManager.CheckPasswordSignInAsync(user: user, password: credentials.Password, lockoutOnFailure: true);
         if (!result.Succeeded)
         {
             var message = result switch
@@ -28,9 +28,9 @@ public class AuthService(SignInManager<ApplicationUser> signInManager, UserManag
                 _ => ResourceMessagesException.INVALID_CREDENTIALS
             };
 
-            return new LoginResult(Success: false, ErrorMessage: message);
+            return new LoginResponseDto(Success: false, ErrorMessage: message);
         }
 
-        return new LoginResult(Success: true, UserId: user.Id);
+        return new LoginResponseDto(Success: true, UserId: user.Id);
     }
 }

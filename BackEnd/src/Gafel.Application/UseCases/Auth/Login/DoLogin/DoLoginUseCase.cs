@@ -26,9 +26,9 @@ public class DoLoginUseCase : IDoLoginUseCase
     {
         await Validate(request);
 
-        var loginRequest = request.Adapt<LoginRequest>();
+        var credentials = request.Adapt<UserCredentialsDto>();
 
-        var result = await _authService.Login(loginRequest);
+        var result = await _authService.Login(credentials);
         if (!result.Success)
             throw new InvalidLoginException(result.ErrorMessage!);
 

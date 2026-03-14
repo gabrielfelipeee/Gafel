@@ -5,5 +5,8 @@
     <Project Path="src/Gafel.Domain/Gafel.Domain.csproj" Id="5948ddef-af0f-4dd2-b82c-3f8c88ad6cdd" />
     <Project Path="src/Gafel.Infrastructure/Gafel.Infrastructure.csproj" Id="f654bc0e-e9a5-4ac0-8941-c363259d0285" />
   </Folder>
-  <Folder Name="/tests/" />
+  <Folder Name="/tests/">
+    <Project Path="tests/CommonTestUtilities/CommonTestUtilities.csproj" Id="b1312004-997a-4b20-a899-a7970591abc8" />
+    <Project Path="tests/Validators.Test/Validators.Test.csproj" Id="1dd23f98-432a-41c7-98fa-883a41525e04" />
+  </Folder>
 </Solution>
