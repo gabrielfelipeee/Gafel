@@ -4,14 +4,24 @@ namespace Gafel.Infrastructure.DataAccess;
 
 public class UnitOfWork(GafelDbContext dbContext) : IUnitOfWork
 {
-    private readonly GafelDbContext _dbContext = dbContext;
+    private readonly GafelDbContext _context = dbContext;
 
-    public async Task SaveChangesAsync() => await _dbContext.SaveChangesAsync();
+    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
-    public async Task<ITransaction> BeginTransactionAsync()
+    public async Task ExecuteInTransactionAsync(Func<Task> action)
     {
-        var transaction = await _dbContext.Database.BeginTransactionAsync();
-        return new TransactionWrapper(transaction); // Envolve a transação real no seu Wrapper
+        await using var transaction = await _context.Database.BeginTransactionAsync();
+        try
+        {
+            await action();
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
     }
 }
 

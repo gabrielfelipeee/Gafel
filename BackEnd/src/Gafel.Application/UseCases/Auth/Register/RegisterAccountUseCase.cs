@@ -34,8 +34,9 @@ public class RegisterAccountUseCase : IRegisterAccountUseCase
     {
         await Validate(request);
 
-        await using var transaction = await _unitOfWork.BeginTransactionAsync();
-        try
+        AuthResponse response = null!;
+
+        await _unitOfWork.ExecuteInTransactionAsync(async () =>
         {
             var credentials = request.Adapt<UserCredentialsDto>();
 
@@ -53,10 +54,7 @@ public class RegisterAccountUseCase : IRegisterAccountUseCase
             };
             await _personWriteOnlyRepository.Add(person);
 
-            await _unitOfWork.SaveChangesAsync();
-            await transaction.CommitAsync();
-
-            return new AuthResponse
+            response = new AuthResponse
             {
                 FullName = person.FullName,
                 Tokens = new()
@@ -64,12 +62,9 @@ public class RegisterAccountUseCase : IRegisterAccountUseCase
                     AccessToken = _accessTokenGenerator.Generate(userId)
                 }
             };
-        }
-        catch
-        {
-            await transaction.RollbackAsync();
-            throw;
-        }
+        });
+
+        return response;
     }
 
     private static async Task Validate(RegisterAccountCommand request)
