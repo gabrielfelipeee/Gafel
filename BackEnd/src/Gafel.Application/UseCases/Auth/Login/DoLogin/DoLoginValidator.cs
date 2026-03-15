@@ -12,13 +12,18 @@ public class DoLoginValidator : AbstractValidator<DoLoginCommand>
             .NotEmpty()
             .WithMessage(ResourceMessagesException.EMAIL_EMPTY);
 
-        When(user => !string.IsNullOrEmpty(user.Email), () =>
-        {
-            RuleFor(user => user.Email)
-                .EmailAddress()
-                .WithMessage(ResourceMessagesException.EMAIL_INVALID);
-        });
+        RuleFor(user => user.Email)
+            .EmailAddress()
+            .WithMessage(ResourceMessagesException.EMAIL_INVALID)
+            .When(user => !string.IsNullOrEmpty(user.Email));
 
-        RuleFor(user => user.Password).PasswordRequirements();
+
+        RuleFor(x => x.Password)
+            .NotEmpty()
+            .WithMessage(ResourceMessagesException.PASSWORD_EMPTY);
+
+        RuleFor(x => x.Password)
+            .PasswordPolicy()
+            .When(x => !string.IsNullOrEmpty(x.Password));
     }
 }
