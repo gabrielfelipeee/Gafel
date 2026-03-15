@@ -106,6 +106,15 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O nome não pode estar vazio.
+        /// </summary>
+        public static string FULL_NAME_EMPTY {
+            get {
+                return ResourceManager.GetString("FULL_NAME_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Email ou senha inválidos.
         /// </summary>
         public static string INVALID_CREDENTIALS {
@@ -129,15 +138,6 @@ namespace Gafel.Domain.Resources {
         public static string LOGIN_NOT_ALLOWED {
             get {
                 return ResourceManager.GetString("LOGIN_NOT_ALLOWED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a O nome não pode estar vazio.
-        /// </summary>
-        public static string NAME_EMPTY {
-            get {
-                return ResourceManager.GetString("NAME_EMPTY", resourceCulture);
             }
         }
         

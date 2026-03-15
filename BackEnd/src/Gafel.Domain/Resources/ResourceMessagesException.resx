@@ -129,7 +129,7 @@
   <data name="PASSWORD_EMPTY" xml:space="preserve">
     <value>A senha não pode estar vazia</value>
   </data>
-  <data name="NAME_EMPTY" xml:space="preserve">
+  <data name="FULL_NAME_EMPTY" xml:space="preserve">
     <value>O nome não pode estar vazio</value>
   </data>
   <data name="PASSWORD_TOO_SHORT" xml:space="preserve">
