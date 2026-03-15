@@ -16,11 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
+    <ProjectReference Include="..\..\src\Gafel.Application\Gafel.Application.csproj" />
+    <ProjectReference Include="..\CommonTestUtilities\CommonTestUtilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Auth\Register\" />
+    <Using Include="Xunit" />
   </ItemGroup>
 
 </Project>
