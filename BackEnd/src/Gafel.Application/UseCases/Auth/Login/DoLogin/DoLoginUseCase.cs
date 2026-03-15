@@ -1,5 +1,5 @@
 ﻿using Gafel.Application.Exceptions;
-using Gafel.Application.SharedResponses;
+using Gafel.Application.UseCases.Auth.SharedResponses;
 using Gafel.Application.Utils;
 using Gafel.Domain.Identity.Dtos;
 using Gafel.Domain.Identity.Interfaces;
@@ -22,7 +22,7 @@ public class DoLoginUseCase : IDoLoginUseCase
         _accessTokenGenerator = accessTokenGenerator;
     }
 
-    public async Task<RegisteredUserResponse> Execute(DoLoginCommand request)
+    public async Task<AuthResponse> Execute(DoLoginCommand request)
     {
         await Validate(request);
 
@@ -37,7 +37,7 @@ public class DoLoginUseCase : IDoLoginUseCase
         var person = await _personReadOnlyRepository.GetByUserId(userId)
             ?? throw new UserPersonNotFoundException();
 
-        return new RegisteredUserResponse
+        return new AuthResponse
         {
             FullName = person.FullName,
             Tokens = new()

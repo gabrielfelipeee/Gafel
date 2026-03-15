@@ -1,8 +1,8 @@
-﻿using Gafel.Application.SharedResponses;
+﻿using Gafel.Application.UseCases.Auth.SharedResponses;
 
 namespace Gafel.Application.UseCases.Auth.Login.DoLogin;
 
 public interface IDoLoginUseCase
 {
-    Task<RegisteredUserResponse> Execute(DoLoginCommand request);
+    Task<AuthResponse> Execute(DoLoginCommand request);
 }

@@ -1,8 +1,8 @@
-﻿using Gafel.Application.SharedResponses;
+﻿using Gafel.Application.UseCases.Auth.SharedResponses;
 
 namespace Gafel.Application.UseCases.Auth.Register;
 
 public interface IRegisterAccountUseCase
 {
-    Task<RegisteredUserResponse> Execute(RegisterAccountCommand request);
+    Task<AuthResponse> Execute(RegisterAccountCommand request);
 }

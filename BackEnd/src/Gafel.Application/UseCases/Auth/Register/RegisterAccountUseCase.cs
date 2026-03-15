@@ -1,5 +1,5 @@
 ﻿using Gafel.Application.Exceptions;
-using Gafel.Application.SharedResponses;
+using Gafel.Application.UseCases.Auth.SharedResponses;
 using Gafel.Application.Utils;
 using Gafel.Domain.Identity.Dtos;
 using Gafel.Domain.Identity.Interfaces;
@@ -30,7 +30,7 @@ public class RegisterAccountUseCase : IRegisterAccountUseCase
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<RegisteredUserResponse> Execute(RegisterAccountCommand request)
+    public async Task<AuthResponse> Execute(RegisterAccountCommand request)
     {
         await Validate(request);
 
@@ -56,7 +56,7 @@ public class RegisterAccountUseCase : IRegisterAccountUseCase
             await _unitOfWork.SaveChangesAsync();
             await transaction.CommitAsync();
 
-            return new RegisteredUserResponse
+            return new AuthResponse
             {
                 FullName = person.FullName,
                 Tokens = new()
