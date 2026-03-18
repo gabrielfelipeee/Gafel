@@ -1,11 +1,11 @@
 ﻿using Gafel.Application.Exceptions;
 using Gafel.Application.UseCases.Auth.SharedResponses;
 using Gafel.Application.Utils;
-using Gafel.Domain.Identity.Dtos;
-using Gafel.Domain.Identity.Interfaces;
+using Gafel.Domain.Dtos;
 using Gafel.Domain.Repositories;
 using Gafel.Domain.Repositories.Person;
 using Gafel.Domain.Security.Tokens;
+using Gafel.Domain.Services.Identity;
 using Mapster;
 
 namespace Gafel.Application.UseCases.Auth.Register;

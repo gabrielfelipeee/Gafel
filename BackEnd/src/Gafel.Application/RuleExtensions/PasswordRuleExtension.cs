@@ -10,13 +10,13 @@ public static partial class PasswordRuleExtension
     {
         return ruleBuilder
             .MinimumLength(8)
-            .WithMessage(ResourceMessagesException.PASSWORD_TOO_SHORT)
+            .WithMessage(ResourceMessagesException.USER_PASSWORD_TOO_SHORT)
 
             .Matches(ContainsDigit())
-            .WithMessage(ResourceMessagesException.PASSWORD_REQUIRES_NUMBER)
+            .WithMessage(ResourceMessagesException.USER_PASSWORD_REQUIRES_NUMBER)
 
             .Matches(ContainsSpecialCharacter())
-            .WithMessage(ResourceMessagesException.PASSWORD_REQUIRES_SPECIAL_CHARACTER);
+            .WithMessage(ResourceMessagesException.USER_PASSWORD_REQUIRES_SPECIAL_CHAR);
     }
 
     [GeneratedRegex(@"\d")]

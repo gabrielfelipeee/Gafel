@@ -1,4 +1,4 @@
-﻿namespace Gafel.Domain.Identity.Dtos;
+﻿namespace Gafel.Domain.Dtos;
 
 public record LoginResponseDto(
     bool Success,

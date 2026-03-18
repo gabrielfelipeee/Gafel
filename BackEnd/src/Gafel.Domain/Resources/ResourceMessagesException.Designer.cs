@@ -61,6 +61,42 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Email ou senha inválidos.
+        /// </summary>
+        public static string AUTH_INVALID_CREDENTIALS {
+            get {
+                return ResourceManager.GetString("AUTH_INVALID_CREDENTIALS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Usuário bloqueado. Tente novamente mais tarde.
+        /// </summary>
+        public static string AUTH_LOCKED_OUT {
+            get {
+                return ResourceManager.GetString("AUTH_LOCKED_OUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Login não permitido. Verifique se sua conta está confirmada.
+        /// </summary>
+        public static string AUTH_LOGIN_NOT_ALLOWED {
+            get {
+                return ResourceManager.GetString("AUTH_LOGIN_NOT_ALLOWED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A requisição não possui token de autenticação..
+        /// </summary>
+        public static string AUTH_NO_TOKEN {
+            get {
+                return ResourceManager.GetString("AUTH_NO_TOKEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O token de autenticação está expirado.
         /// </summary>
         public static string AUTH_TOKEN_EXPIRED {
@@ -79,128 +115,65 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Email já registrado.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Autenticação em dois fatores necessária.
         /// </summary>
-        public static string EMAIL_ALREADY_REGISTERED {
+        public static string AUTH_TWO_FACTOR_REQUIRED {
             get {
-                return ResourceManager.GetString("EMAIL_ALREADY_REGISTERED", resourceCulture);
+                return ResourceManager.GetString("AUTH_TWO_FACTOR_REQUIRED", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a O email não pode estar vazio.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Um ou mais erros de validação ocorreram..
         /// </summary>
-        public static string EMAIL_EMPTY {
+        public static string EXCEPTION_ERROR_ON_VALIDATION_DETAIL {
             get {
-                return ResourceManager.GetString("EMAIL_EMPTY", resourceCulture);
+                return ResourceManager.GetString("EXCEPTION_ERROR_ON_VALIDATION_DETAIL", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a O email é inválido.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Erro de validação.
         /// </summary>
-        public static string EMAIL_INVALID {
+        public static string EXCEPTION_ERROR_ON_VALIDATION_TITLE {
             get {
-                return ResourceManager.GetString("EMAIL_INVALID", resourceCulture);
+                return ResourceManager.GetString("EXCEPTION_ERROR_ON_VALIDATION_TITLE", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a O nome não pode estar vazio.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Falha na autenticação.
         /// </summary>
-        public static string FULL_NAME_EMPTY {
+        public static string EXCEPTION_INVALID_LOGIN_TITLE {
             get {
-                return ResourceManager.GetString("FULL_NAME_EMPTY", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Email ou senha inválidos.
-        /// </summary>
-        public static string INVALID_CREDENTIALS {
-            get {
-                return ResourceManager.GetString("INVALID_CREDENTIALS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Usuário bloqueado. Tente novamente mais tarde.
-        /// </summary>
-        public static string LOCKED_OUT {
-            get {
-                return ResourceManager.GetString("LOCKED_OUT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Login não permitido. Verifique se sua conta está confirmada.
-        /// </summary>
-        public static string LOGIN_NOT_ALLOWED {
-            get {
-                return ResourceManager.GetString("LOGIN_NOT_ALLOWED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a A requisição não possui token de autenticação..
-        /// </summary>
-        public static string NO_AUTH_TOKEN {
-            get {
-                return ResourceManager.GetString("NO_AUTH_TOKEN", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a A senha não pode estar vazia.
-        /// </summary>
-        public static string PASSWORD_EMPTY {
-            get {
-                return ResourceManager.GetString("PASSWORD_EMPTY", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a A senha deve conter pelo menos um número.
-        /// </summary>
-        public static string PASSWORD_REQUIRES_NUMBER {
-            get {
-                return ResourceManager.GetString("PASSWORD_REQUIRES_NUMBER", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a A senha deve conter pelo menos um caractere especial.
-        /// </summary>
-        public static string PASSWORD_REQUIRES_SPECIAL_CHARACTER {
-            get {
-                return ResourceManager.GetString("PASSWORD_REQUIRES_SPECIAL_CHARACTER", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a A senha deve ter no mínimo 8 caracteres.
-        /// </summary>
-        public static string PASSWORD_TOO_SHORT {
-            get {
-                return ResourceManager.GetString("PASSWORD_TOO_SHORT", resourceCulture);
+                return ResourceManager.GetString("EXCEPTION_INVALID_LOGIN_TITLE", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Perfil do usuário não foi encontrado.
         /// </summary>
-        public static string PERSON_NOT_FOUND {
+        public static string EXCEPTION_PERSON_NOT_FOUND_DETAIL {
             get {
-                return ResourceManager.GetString("PERSON_NOT_FOUND", resourceCulture);
+                return ResourceManager.GetString("EXCEPTION_PERSON_NOT_FOUND_DETAIL", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Autenticação em dois fatores necessária.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Perfil não encontrado.
         /// </summary>
-        public static string TWO_FACTOR_REQUIRED {
+        public static string EXCEPTION_PERSON_NOT_FOUND_TITLE {
             get {
-                return ResourceManager.GetString("TWO_FACTOR_REQUIRED", resourceCulture);
+                return ResourceManager.GetString("EXCEPTION_PERSON_NOT_FOUND_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O nome não pode estar vazio.
+        /// </summary>
+        public static string PERSON_FULL_NAME_EMPTY {
+            get {
+                return ResourceManager.GetString("PERSON_FULL_NAME_EMPTY", resourceCulture);
             }
         }
         
@@ -210,6 +183,69 @@ namespace Gafel.Domain.Resources {
         public static string UNKNOWN_ERROR {
             get {
                 return ResourceManager.GetString("UNKNOWN_ERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Email já registrado.
+        /// </summary>
+        public static string USER_EMAIL_ALREADY_REGISTERED {
+            get {
+                return ResourceManager.GetString("USER_EMAIL_ALREADY_REGISTERED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O email não pode estar vazio.
+        /// </summary>
+        public static string USER_EMAIL_EMPTY {
+            get {
+                return ResourceManager.GetString("USER_EMAIL_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O email é inválido.
+        /// </summary>
+        public static string USER_EMAIL_INVALID {
+            get {
+                return ResourceManager.GetString("USER_EMAIL_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A senha não pode estar vazia.
+        /// </summary>
+        public static string USER_PASSWORD_EMPTY {
+            get {
+                return ResourceManager.GetString("USER_PASSWORD_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A senha deve conter pelo menos um número.
+        /// </summary>
+        public static string USER_PASSWORD_REQUIRES_NUMBER {
+            get {
+                return ResourceManager.GetString("USER_PASSWORD_REQUIRES_NUMBER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A senha deve conter pelo menos um caractere especial.
+        /// </summary>
+        public static string USER_PASSWORD_REQUIRES_SPECIAL_CHAR {
+            get {
+                return ResourceManager.GetString("USER_PASSWORD_REQUIRES_SPECIAL_CHAR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A senha deve ter no mínimo 8 caracteres.
+        /// </summary>
+        public static string USER_PASSWORD_TOO_SHORT {
+            get {
+                return ResourceManager.GetString("USER_PASSWORD_TOO_SHORT", resourceCulture);
             }
         }
     }

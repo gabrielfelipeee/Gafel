@@ -10,22 +10,22 @@ public class RegisterAccountValidator : AbstractValidator<RegisterAccountCommand
     {
         RuleFor(person => person.FullName)
             .NotEmpty()
-            .WithMessage(ResourceMessagesException.FULL_NAME_EMPTY);
+            .WithMessage(ResourceMessagesException.PERSON_FULL_NAME_EMPTY);
 
 
         RuleFor(user => user.Email)
             .NotEmpty()
-            .WithMessage(ResourceMessagesException.EMAIL_EMPTY);
+            .WithMessage(ResourceMessagesException.USER_EMAIL_EMPTY);
 
         RuleFor(user => user.Email)
             .EmailAddress()
-            .WithMessage(ResourceMessagesException.EMAIL_INVALID)
+            .WithMessage(ResourceMessagesException.USER_EMAIL_INVALID)
             .When(user => !string.IsNullOrEmpty(user.Email));
 
 
         RuleFor(x => x.Password)
             .NotEmpty()
-            .WithMessage(ResourceMessagesException.PASSWORD_EMPTY);
+            .WithMessage(ResourceMessagesException.USER_PASSWORD_EMPTY);
         RuleFor(x => x.Password)
             .PasswordPolicy()
             .When(x => !string.IsNullOrEmpty(x.Password));

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Gafel.Infrastructure.Identity;
+namespace Gafel.Infrastructure.Services.Identity.Seed;
 
 public static class IdentitySeeder
 {

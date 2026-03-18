@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Gafel.Domain.Entities;
-using Gafel.Infrastructure.Identity.Entities;
+using Gafel.Infrastructure.Services.Identity.Entities;
 
 namespace Gafel.Infrastructure.DataAccess;
 

@@ -1,7 +1,7 @@
 ﻿using Gafel.Domain.Resources;
 using Microsoft.AspNetCore.Identity;
 
-namespace Gafel.Infrastructure.Identity;
+namespace Gafel.Infrastructure.Services.Identity.Configuration;
 
 public class CustomIdentityErrorDescriber : IdentityErrorDescriber
 {
@@ -15,7 +15,7 @@ public class CustomIdentityErrorDescriber : IdentityErrorDescriber
         return new IdentityError
         {
             Code = EmailField,
-            Description = ResourceMessagesException.EMAIL_ALREADY_REGISTERED
+            Description = ResourceMessagesException.USER_EMAIL_ALREADY_REGISTERED
         };
     }
     public override IdentityError InvalidEmail(string? email)
@@ -23,7 +23,7 @@ public class CustomIdentityErrorDescriber : IdentityErrorDescriber
         return new IdentityError
         {
             Code = EmailField,
-            Description = ResourceMessagesException.EMAIL_INVALID
+            Description = ResourceMessagesException.USER_EMAIL_INVALID
         };
     }
 
@@ -32,7 +32,7 @@ public class CustomIdentityErrorDescriber : IdentityErrorDescriber
         return new IdentityError
         {
             Code = EmailField,
-            Description = ResourceMessagesException.EMAIL_ALREADY_REGISTERED
+            Description = ResourceMessagesException.USER_EMAIL_ALREADY_REGISTERED
         };
     }
     #endregion
@@ -43,7 +43,7 @@ public class CustomIdentityErrorDescriber : IdentityErrorDescriber
         return new IdentityError
         {
             Code = PasswordField,
-            Description = ResourceMessagesException.PASSWORD_TOO_SHORT
+            Description = ResourceMessagesException.USER_PASSWORD_TOO_SHORT
         };
     }
 
@@ -52,7 +52,7 @@ public class CustomIdentityErrorDescriber : IdentityErrorDescriber
         return new IdentityError
         {
             Code = PasswordField,
-            Description = ResourceMessagesException.PASSWORD_REQUIRES_SPECIAL_CHARACTER
+            Description = ResourceMessagesException.USER_PASSWORD_REQUIRES_SPECIAL_CHAR
         };
     }
 
@@ -61,7 +61,7 @@ public class CustomIdentityErrorDescriber : IdentityErrorDescriber
         return new IdentityError
         {
             Code = PasswordField,
-            Description = ResourceMessagesException.PASSWORD_REQUIRES_NUMBER
+            Description = ResourceMessagesException.USER_PASSWORD_REQUIRES_NUMBER
         };
     }
     #endregion

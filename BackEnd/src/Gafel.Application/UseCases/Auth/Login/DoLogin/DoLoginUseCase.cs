@@ -1,10 +1,10 @@
 ﻿using Gafel.Application.Exceptions;
 using Gafel.Application.UseCases.Auth.SharedResponses;
 using Gafel.Application.Utils;
-using Gafel.Domain.Identity.Dtos;
-using Gafel.Domain.Identity.Interfaces;
+using Gafel.Domain.Dtos;
 using Gafel.Domain.Repositories.Person;
 using Gafel.Domain.Security.Tokens;
+using Gafel.Domain.Services.Identity;
 using Mapster;
 
 namespace Gafel.Application.UseCases.Auth.Login.DoLogin;
@@ -35,7 +35,7 @@ public class DoLoginUseCase : IDoLoginUseCase
         var userId = result.UserId!.Value;
 
         var person = await _personReadOnlyRepository.GetByUserId(userId)
-            ?? throw new UserPersonNotFoundException();
+            ?? throw new PersonNotFoundException();
 
         return new AuthResponse
         {

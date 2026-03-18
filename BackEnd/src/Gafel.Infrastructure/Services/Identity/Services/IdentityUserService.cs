@@ -1,10 +1,10 @@
 ﻿using Gafel.Domain.Constants;
-using Gafel.Domain.Identity.Dtos;
-using Gafel.Domain.Identity.Interfaces;
-using Gafel.Infrastructure.Identity.Entities;
+using Gafel.Domain.Dtos;
+using Gafel.Domain.Services.Identity;
+using Gafel.Infrastructure.Services.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace Gafel.Infrastructure.Identity.Services;
+namespace Gafel.Infrastructure.Services.Identity.Services;
 
 public class IdentityUserService(UserManager<ApplicationUser> userManager) : IUserWriteOnlyService
 {

@@ -43,7 +43,7 @@ public class CustomAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewa
 
         // Header ausente
         if (string.IsNullOrWhiteSpace(authHeader))
-            return ResourceMessagesException.NO_AUTH_TOKEN;
+            return ResourceMessagesException.AUTH_NO_TOKEN;
 
         // Token expirado
         if (context.Items.TryGetValue("JwtException", out var exception) && exception is SecurityTokenExpiredException)

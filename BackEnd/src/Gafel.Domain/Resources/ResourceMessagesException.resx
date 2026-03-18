@@ -117,49 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EMAIL_EMPTY" xml:space="preserve">
+  <data name="USER_EMAIL_EMPTY" xml:space="preserve">
     <value>O email não pode estar vazio</value>
   </data>
-  <data name="EMAIL_INVALID" xml:space="preserve">
+  <data name="USER_EMAIL_INVALID" xml:space="preserve">
     <value>O email é inválido</value>
   </data>
-  <data name="EMAIL_ALREADY_REGISTERED" xml:space="preserve">
+  <data name="USER_EMAIL_ALREADY_REGISTERED" xml:space="preserve">
     <value>Email já registrado</value>
   </data>
-  <data name="PASSWORD_EMPTY" xml:space="preserve">
+  <data name="USER_PASSWORD_EMPTY" xml:space="preserve">
     <value>A senha não pode estar vazia</value>
   </data>
-  <data name="FULL_NAME_EMPTY" xml:space="preserve">
+  <data name="PERSON_FULL_NAME_EMPTY" xml:space="preserve">
     <value>O nome não pode estar vazio</value>
   </data>
-  <data name="PASSWORD_TOO_SHORT" xml:space="preserve">
+  <data name="USER_PASSWORD_TOO_SHORT" xml:space="preserve">
     <value>A senha deve ter no mínimo 8 caracteres</value>
   </data>
-  <data name="PASSWORD_REQUIRES_NUMBER" xml:space="preserve">
+  <data name="USER_PASSWORD_REQUIRES_NUMBER" xml:space="preserve">
     <value>A senha deve conter pelo menos um número</value>
   </data>
-  <data name="PASSWORD_REQUIRES_SPECIAL_CHARACTER" xml:space="preserve">
+  <data name="USER_PASSWORD_REQUIRES_SPECIAL_CHAR" xml:space="preserve">
     <value>A senha deve conter pelo menos um caractere especial</value>
   </data>
   <data name="UNKNOWN_ERROR" xml:space="preserve">
     <value>Erro desconhecido</value>
   </data>
-  <data name="LOCKED_OUT" xml:space="preserve">
+  <data name="AUTH_LOCKED_OUT" xml:space="preserve">
     <value>Usuário bloqueado. Tente novamente mais tarde</value>
   </data>
-  <data name="LOGIN_NOT_ALLOWED" xml:space="preserve">
+  <data name="AUTH_LOGIN_NOT_ALLOWED" xml:space="preserve">
     <value>Login não permitido. Verifique se sua conta está confirmada</value>
   </data>
-  <data name="TWO_FACTOR_REQUIRED" xml:space="preserve">
+  <data name="AUTH_TWO_FACTOR_REQUIRED" xml:space="preserve">
     <value>Autenticação em dois fatores necessária</value>
   </data>
-  <data name="INVALID_CREDENTIALS" xml:space="preserve">
+  <data name="AUTH_INVALID_CREDENTIALS" xml:space="preserve">
     <value>Email ou senha inválidos</value>
   </data>
-  <data name="PERSON_NOT_FOUND" xml:space="preserve">
+  <data name="EXCEPTION_PERSON_NOT_FOUND_DETAIL" xml:space="preserve">
     <value>Perfil do usuário não foi encontrado</value>
   </data>
-  <data name="NO_AUTH_TOKEN" xml:space="preserve">
+  <data name="AUTH_NO_TOKEN" xml:space="preserve">
     <value>A requisição não possui token de autenticação.</value>
   </data>
   <data name="AUTH_TOKEN_INVALID" xml:space="preserve">
@@ -167,5 +167,17 @@
   </data>
   <data name="AUTH_TOKEN_EXPIRED" xml:space="preserve">
     <value>O token de autenticação está expirado</value>
+  </data>
+  <data name="EXCEPTION_ERROR_ON_VALIDATION_TITLE" xml:space="preserve">
+    <value>Erro de validação</value>
+  </data>
+  <data name="EXCEPTION_ERROR_ON_VALIDATION_DETAIL" xml:space="preserve">
+    <value>Um ou mais erros de validação ocorreram.</value>
+  </data>
+  <data name="EXCEPTION_INVALID_LOGIN_TITLE" xml:space="preserve">
+    <value>Falha na autenticação</value>
+  </data>
+  <data name="EXCEPTION_PERSON_NOT_FOUND_TITLE" xml:space="preserve">
+    <value>Perfil não encontrado</value>
   </data>
 </root>

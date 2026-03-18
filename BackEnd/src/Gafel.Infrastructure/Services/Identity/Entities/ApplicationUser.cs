@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Gafel.Infrastructure.Identity.Entities;
+namespace Gafel.Infrastructure.Services.Identity.Entities;
 
 public class ApplicationUser : IdentityUser<long>
 {

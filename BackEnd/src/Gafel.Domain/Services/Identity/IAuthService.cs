@@ -1,6 +1,6 @@
-﻿using Gafel.Domain.Identity.Dtos;
+﻿using Gafel.Domain.Dtos;
 
-namespace Gafel.Domain.Identity.Interfaces;
+namespace Gafel.Domain.Services.Identity;
 
 public interface IAuthService
 {
