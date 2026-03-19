@@ -33,7 +33,7 @@ public class RegisterAccountValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.FullName)
-            .WithErrorMessage(ResourceMessagesException.FULL_NAME_EMPTY);
+            .WithErrorMessage(ResourceMessagesException.PERSON_FULL_NAME_EMPTY);
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class RegisterAccountValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.Email)
-            .WithErrorMessage(ResourceMessagesException.EMAIL_EMPTY);
+            .WithErrorMessage(ResourceMessagesException.USER_EMAIL_EMPTY);
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class RegisterAccountValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.Email)
-            .WithErrorMessage(ResourceMessagesException.EMAIL_INVALID);
+            .WithErrorMessage(ResourceMessagesException.USER_EMAIL_INVALID);
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class RegisterAccountValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.Password)
-            .WithErrorMessage(ResourceMessagesException.PASSWORD_EMPTY);
+            .WithErrorMessage(ResourceMessagesException.USER_PASSWORD_EMPTY);
     }
 
     [Theory]
@@ -94,7 +94,7 @@ public class RegisterAccountValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.Password)
-            .WithErrorMessage(ResourceMessagesException.PASSWORD_TOO_SHORT);
+            .WithErrorMessage(ResourceMessagesException.USER_PASSWORD_TOO_SHORT);
     }
 
     [Fact]
@@ -107,7 +107,7 @@ public class RegisterAccountValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.Password)
-            .WithErrorMessage(ResourceMessagesException.PASSWORD_REQUIRES_NUMBER);
+            .WithErrorMessage(ResourceMessagesException.USER_PASSWORD_REQUIRES_NUMBER);
     }
 
     [Fact]
@@ -120,7 +120,7 @@ public class RegisterAccountValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.Password)
-            .WithErrorMessage(ResourceMessagesException.PASSWORD_REQUIRES_SPECIAL_CHARACTER);
+            .WithErrorMessage(ResourceMessagesException.USER_PASSWORD_REQUIRES_SPECIAL_CHAR);
     }
 
 
@@ -134,8 +134,8 @@ public class RegisterAccountValidatorTest
 
         result.Errors.Count.ShouldBe(2);
         result.ShouldHaveValidationErrorFor(x => x.Password)
-            .WithErrorMessage(ResourceMessagesException.PASSWORD_REQUIRES_NUMBER);
+            .WithErrorMessage(ResourceMessagesException.USER_PASSWORD_REQUIRES_NUMBER);
         result.ShouldHaveValidationErrorFor(x => x.Password)
-            .WithErrorMessage(ResourceMessagesException.PASSWORD_REQUIRES_SPECIAL_CHARACTER);
+            .WithErrorMessage(ResourceMessagesException.USER_PASSWORD_REQUIRES_SPECIAL_CHAR);
     }
 }
