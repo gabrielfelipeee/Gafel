@@ -22,13 +22,13 @@ public static class DependencyInjectionExtension
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        AddDbContextMySql(services, configuration);
-        AddFluentMigratorMySql(services, configuration);
-
         AddTokens(services, configuration);
         AddIdentity(services);
         AddIdentityService(services);
         AddRepositories(services);
+
+        AddDbContextSqlSqerver(services, configuration);
+        AddFluentMigratorSqlServer(services, configuration);
     }
 
     private static void AddTokens(IServiceCollection services, IConfiguration configuration)
@@ -75,34 +75,27 @@ public static class DependencyInjectionExtension
     }
 
 
-    private static void AddDbContextMySql(IServiceCollection services, IConfiguration configuration)
+    private static void AddDbContextSqlSqerver(IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.ConnectionString();
-        var serverVersion = ServerVersion.AutoDetect(connectionString);
-
-        services.AddDbContext<GafelDbContext>(options =>
-        {
-            options.UseMySql(connectionString, serverVersion)
-            .UseSnakeCaseNamingConvention();
-        });
+        services.AddDbContext<GafelDbContext>(options => options.UseSqlServer(connectionString).UseSnakeCaseNamingConvention());
     }
 
-    // Método responsável por configurar o FluentMigrator para utilizar MySQL
-    private static void AddFluentMigratorMySql(IServiceCollection services, IConfiguration configuration)
+    // Método responsável por configurar o FluentMigrator para utilizar SqlServer
+    private static void AddFluentMigratorSqlServer(IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.ConnectionString();
 
         // Registra os serviços principais do FluentMigrator no container de injeção de dependência
         services.AddFluentMigratorCore().ConfigureRunner(options =>
         {
-            options
-                .AddMySql8()     // Define o banco de dados como MySQL 5.x
-                .WithGlobalConnectionString(connectionString)// Define a string de conexão que será usada pelas migrations
+            options.AddSqlServer()
+            .WithGlobalConnectionString(connectionString) // Define a string de conexão que será usada pelas migrations
 
-                // Define o assembly onde estão localizadas as classes de migration
-                // Aqui ele carrega dinamicamente o assembly chamado "Gafel.Infrastructure"
-                // e escaneia todas as classes que implementam migrations
-                .ScanIn(Assembly.Load("Gafel.Infrastructure")).For.All();
+            // Define o assembly onde estão localizadas as classes de migration
+            // Aqui ele carrega dinamicamente o assembly chamado "Gafel.Infrastructure"
+            // e escaneia todas as classes que implementam migrations
+            .ScanIn(Assembly.Load("Gafel.Infrastructure")).For.All();
         });
     }
 }

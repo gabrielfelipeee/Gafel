@@ -1,33 +1,33 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using MySqlConnector;
-using Dapper;
+﻿using Dapper;
 using FluentMigrator.Runner;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Gafel.Infrastructure.Migrations;
 public static class DatabaseMigration
 {
     public static void Migrate(IServiceProvider serviceProvider, string connectionString)
     {
-        EnsureDatabaseCreatedMySql(connectionString);
+        EnsureDatabaseCreatedSqlServer(connectionString);
         MigrationDatabase(serviceProvider);
     }
 
-    // Método para garantir que o banco de dados seja criado no MySQL, caso não exista.
-    private static void EnsureDatabaseCreatedMySql(string connectionString)
+    // Método para garantir que o banco de dados seja criado no SqlServer, caso não exista.
+    private static void EnsureDatabaseCreatedSqlServer(string connectionString)
     {
         // Cria um objeto que interpreta a connection string.
         // facilita o acesso a partes da string, como o nome do banco (Database), usuário, servidor etc.
-        var connectionStringBuilder = new MySqlConnectionStringBuilder(connectionString);
+        var connectionStringBuilder = new SqlConnectionStringBuilder(connectionString);
 
         // Obtém o nome do banco de dados a partir da string de conexão.
-        var databaseName = connectionStringBuilder.Database;
+        var databaseName = connectionStringBuilder.InitialCatalog;
 
         // Removendo o nome do db para não dá erro caso ele não exista
-        connectionStringBuilder.Remove("Database");
+        connectionStringBuilder.Remove("Initial Catalog");
 
         // Abre uma nova conexão com o banco de dados MySQL usando a string de conexão fornecida.
         // O using var garante que a conexão será fechada automaticamente ao final do bloco
-        using var dbConnection = new MySqlConnection(connectionStringBuilder.ConnectionString);
+        using var dbConnection = new SqlConnection(connectionStringBuilder.ConnectionString);
 
         // Cria um objeto de parâmetros para passar valores com segurança em uma query (usando o Dapper).
         var parameters = new DynamicParameters();
@@ -35,10 +35,11 @@ public static class DatabaseMigration
         // Adiciona o nome do banco ao objeto de parâmetros
         parameters.Add("dbName", databaseName);
 
+
         // Executa uma consulta SQL para verificar se o banco de dados já existe, consultando o esquema do banco de dados.
-        var records = dbConnection.Query("SELECT * FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = @dbName", parameters);
+        var records = dbConnection.Query("SELECT * FROM sys.databases WHERE name = @dbName", parameters);
         if (!records.Any())
-            dbConnection.Execute($"CREATE DATABASE {databaseName}");  // Cria o banco de dados com o nome especificado na string de conexão.
+            dbConnection.Execute($"CREATE DATABASE {databaseName}"); // Cria o banco de dados com o nome especificado na string de conexão.
     }
 
     private static void MigrationDatabase(IServiceProvider serviceProvider)
