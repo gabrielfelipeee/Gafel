@@ -27,6 +27,11 @@ public static class DependencyInjectionExtension
         AddIdentityService(services);
         AddRepositories(services);
 
+
+        // Não precisa adicionar o contexto e nem o FluentMigrator nos testes
+        if (configuration.IsUnitTestEnvironment())
+            return;
+
         AddDbContextSqlSqerver(services, configuration);
         AddFluentMigratorSqlServer(services, configuration);
     }

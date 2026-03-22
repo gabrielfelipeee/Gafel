@@ -74,6 +74,9 @@ app.Run();
 
 async Task InitializeDatabaseAsync()
 {
+    if (builder.Configuration.IsUnitTestEnvironment())
+        return;
+
     using var scope = app.Services.CreateScope();
     var service = scope.ServiceProvider;
 
@@ -120,4 +123,9 @@ void AddAuthentication()
             }
         };
     });
+}
+
+public partial class Program
+{
+    protected Program() { }
 }
