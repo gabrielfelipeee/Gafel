@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Gafel.API\Gafel.API.csproj" />
+    <ProjectReference Include="..\..\src\Gafel.Infrastructure\Gafel.Infrastructure.csproj" />
     <ProjectReference Include="..\CommonTestUtilities\CommonTestUtilities.csproj" />
   </ItemGroup>
 

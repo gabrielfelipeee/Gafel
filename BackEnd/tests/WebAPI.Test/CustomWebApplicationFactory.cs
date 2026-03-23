@@ -1,16 +1,24 @@
-﻿using Gafel.Infrastructure.DataAccess;
+﻿using CommonTestUtilities.Commands;
+using Gafel.Domain.Constants;
+using Gafel.Domain.Entities;
+using Gafel.Infrastructure.DataAccess;
+using Gafel.Infrastructure.Services.Identity.Entities;
+using Mapster;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Gafel.Domain.Constants;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebAPI.Test;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
+    private string _personFullName = default!;
+    private string _userEmail = default!;
+    private string _userPassword = default!;
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Test")
@@ -31,18 +39,39 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
                 using var scope = services.BuildServiceProvider().CreateScope();
 
-                var dbContext = scope.ServiceProvider.GetRequiredService<GafelDbContext>();
+                var context = scope.ServiceProvider.GetRequiredService<GafelDbContext>();
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<long>>>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-                dbContext.Database.EnsureDeleted(); // Garante que o db inicie vazio
+                context.Database.EnsureDeleted(); // Garante que o db inicie vazio
 
-                StartDatabase(roleManager).GetAwaiter().GetResult();
+                StartDatabase(context, userManager, roleManager).GetAwaiter().GetResult();
             });
     }
 
-    private static async Task StartDatabase(RoleManager<IdentityRole<long>> roleManager)
+    public string GetPersonFullName() => _personFullName;
+
+    public string GetUserEmail() => _userEmail;
+    public string GetUserPassword() => _userPassword;
+
+
+    private async Task StartDatabase(GafelDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<long>> roleManager)
     {
         foreach (var role in Roles.All)
             await roleManager.CreateAsync(new IdentityRole<long>(role));
+
+        var commandRegister = RegisterAccountCommandBuilder.Build();
+        _personFullName = commandRegister.FullName;
+        _userEmail = commandRegister.Email;
+        _userPassword = commandRegister.Password;
+
+        var user = new ApplicationUser(commandRegister.Email);
+        await userManager.CreateAsync(user, commandRegister.Password);
+
+        var person = commandRegister.Adapt<Person>();
+        person.UserId = user.Id;
+        context.People.Add(person);
+
+        context.SaveChanges();
     }
 }
