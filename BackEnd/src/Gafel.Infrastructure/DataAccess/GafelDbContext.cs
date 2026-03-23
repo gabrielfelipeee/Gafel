@@ -9,7 +9,7 @@ namespace Gafel.Infrastructure.DataAccess;
 public class GafelDbContext(DbContextOptions<GafelDbContext> options) : IdentityDbContext<ApplicationUser, IdentityRole<long>, long>(options)
 {
 
-    public DbSet<Person> Peoples { get; set; }
+    public DbSet<Person> People { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
