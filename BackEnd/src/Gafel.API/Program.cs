@@ -8,6 +8,7 @@ using Gafel.Infrastructure.Services.Identity.Seed;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -108,10 +109,7 @@ void AddAuthentication()
 
             RequireExpirationTime = true,
             ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero,
-
-            // Garante que o algoritmo seja exatamente o esperado
-            ValidAlgorithms = [SecurityAlgorithms.HmacSha256Signature]
+            ClockSkew = TimeSpan.Zero
         };
         options.Events = new JwtBearerEvents
         {

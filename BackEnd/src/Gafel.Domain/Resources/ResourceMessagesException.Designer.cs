@@ -223,6 +223,15 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Senha atual incorreta.
+        /// </summary>
+        public static string USER_PASSWORD_INCORRECT {
+            get {
+                return ResourceManager.GetString("USER_PASSWORD_INCORRECT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a A senha deve conter pelo menos um número.
         /// </summary>
         public static string USER_PASSWORD_REQUIRES_NUMBER {

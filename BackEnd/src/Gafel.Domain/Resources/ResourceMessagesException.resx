@@ -180,4 +180,7 @@
   <data name="EXCEPTION_PERSON_NOT_FOUND_TITLE" xml:space="preserve">
     <value>Perfil não encontrado</value>
   </data>
+  <data name="USER_PASSWORD_INCORRECT" xml:space="preserve">
+    <value>Senha atual incorreta</value>
+  </data>
 </root>

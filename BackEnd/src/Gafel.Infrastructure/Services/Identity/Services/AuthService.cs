@@ -1,6 +1,7 @@
 ﻿using Gafel.Domain.Dtos;
 using Gafel.Domain.Resources;
 using Gafel.Domain.Services.Identity;
+using Gafel.Infrastructure.Extensions;
 using Gafel.Infrastructure.Services.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -32,5 +33,16 @@ public class AuthService(SignInManager<ApplicationUser> signInManager, UserManag
         }
 
         return new LoginResponseDto(Success: true, UserId: user.Id);
+    }
+
+    public async Task<ChangePasswordResponseDto> ChangePassword(long userId, string password, string newPassword)
+    {
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+
+        var result = await _userManager.ChangePasswordAsync(user!, password, newPassword);
+        if (!result.Succeeded)
+            return new ChangePasswordResponseDto(Success: false, Errors: result.Errors.ToErrorsByCodeDictionary());
+
+        return new ChangePasswordResponseDto(Success: result.Succeeded);
     }
 }

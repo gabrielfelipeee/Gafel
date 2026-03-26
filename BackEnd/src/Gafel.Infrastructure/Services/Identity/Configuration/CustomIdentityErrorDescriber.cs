@@ -64,5 +64,14 @@ public class CustomIdentityErrorDescriber : IdentityErrorDescriber
             Description = ResourceMessagesException.USER_PASSWORD_REQUIRES_NUMBER
         };
     }
+
+    public override IdentityError PasswordMismatch()
+    {
+        return new IdentityError
+        {
+            Code = PasswordField,
+            Description = ResourceMessagesException.USER_PASSWORD_INCORRECT
+        };
+    }
     #endregion
 }
