@@ -1,6 +1,6 @@
 ﻿using Gafel.Application.Exceptions;
+using Gafel.Application.Extensions;
 using Gafel.Application.UseCases.Auth.SharedResponses;
-using Gafel.Application.Utils;
 using Gafel.Domain.Dtos;
 using Gafel.Domain.Repositories.Person;
 using Gafel.Domain.Security.Tokens;
@@ -53,7 +53,7 @@ public class DoLoginUseCase : IDoLoginUseCase
 
         if (!result.IsValid)
         {
-            var errors = ValidationErrors.ToDictionary(result.Errors);
+            var errors = result.Errors.ToErrorsByPropertyDictionary();
             throw new ErrorOnValidationException(errors);
         }
     }

@@ -1,6 +1,7 @@
 ﻿using Gafel.Domain.Constants;
 using Gafel.Domain.Dtos;
 using Gafel.Domain.Services.Identity;
+using Gafel.Infrastructure.Extensions;
 using Gafel.Infrastructure.Services.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -16,7 +17,7 @@ public class IdentityUserService(UserManager<ApplicationUser> userManager) : IUs
 
         var result = await _userManager.CreateAsync(user, request.Password);
         if (!result.Succeeded)
-            return new RegisterUserResponseDto(Success: false, Errors: MapErrors(result.Errors));
+            return new RegisterUserResponseDto(Success: false, Errors: result.Errors.ToErrorsByCodeDictionary());
 
         await _userManager.AddToRoleAsync(user, Roles.User);
 
@@ -41,13 +42,4 @@ public class IdentityUserService(UserManager<ApplicationUser> userManager) : IUs
         return (resultUsername.Succeeded, resultUsername.Errors.Select(e => e.Description));
     }
     */
-
-    private static Dictionary<string, string[]> MapErrors(IEnumerable<IdentityError> errors)
-    {
-        return errors
-            .GroupBy(e => e.Code)
-            .ToDictionary(
-                g => g.Key,
-                g => g.DistinctBy(x => x.Description).Select(e => e.Description).ToArray());
-    }
 }

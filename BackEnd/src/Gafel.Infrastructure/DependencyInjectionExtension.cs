@@ -2,11 +2,13 @@
 using Gafel.Domain.Repositories;
 using Gafel.Domain.Repositories.Person;
 using Gafel.Domain.Security.Tokens;
+using Gafel.Domain.Services.CurrentUser;
 using Gafel.Domain.Services.Identity;
 using Gafel.Infrastructure.DataAccess;
 using Gafel.Infrastructure.DataAccess.Repositories;
 using Gafel.Infrastructure.Extensions;
 using Gafel.Infrastructure.Security.Tokens.Access;
+using Gafel.Infrastructure.Services.CurrentUser;
 using Gafel.Infrastructure.Services.Identity.Configuration;
 using Gafel.Infrastructure.Services.Identity.Entities;
 using Gafel.Infrastructure.Services.Identity.Services;
@@ -23,6 +25,7 @@ public static class DependencyInjectionExtension
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         AddTokens(services, configuration);
+        AddCurrentUser(services);
         AddIdentity(services);
         AddIdentityService(services);
         AddRepositories(services);
@@ -43,6 +46,7 @@ public static class DependencyInjectionExtension
 
         services.AddScoped<IAccessTokenGenerator>(option => new JwtTokenGenerator(expirationTimeMinutes, signinKey!));
     }
+    private static void AddCurrentUser(IServiceCollection services) => services.AddScoped<ICurrentUser, CurrentUser>();
 
     private static void AddIdentity(IServiceCollection services)
     {
