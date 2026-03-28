@@ -18,6 +18,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     private string _personFullName = default!;
     private string _userEmail = default!;
     private string _userPassword = default!;
+    private long _userId = default!;
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -51,6 +52,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
     public string GetPersonFullName() => _personFullName;
 
+    public long GetUserId() => _userId;
     public string GetUserEmail() => _userEmail;
     public string GetUserPassword() => _userPassword;
 
@@ -67,6 +69,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
         var user = new ApplicationUser(commandRegister.Email);
         await userManager.CreateAsync(user, commandRegister.Password);
+        _userId = user.Id;
 
         var person = commandRegister.Adapt<Person>();
         person.UserId = user.Id;
