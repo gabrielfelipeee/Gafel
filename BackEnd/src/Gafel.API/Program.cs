@@ -1,20 +1,15 @@
 using Gafel.API.Converters;
+using Gafel.API.Extensions;
 using Gafel.API.Handlers;
 using Gafel.Application;
 using Gafel.Infrastructure;
-using Gafel.Infrastructure.Extensions;
-using Gafel.Infrastructure.Migrations;
-using Gafel.Infrastructure.Services.Identity.Seed;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Web/Controllers e JSON
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new StringConverter()));
 
@@ -27,17 +22,16 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 });
 
 
-// Handler de Autorização
+// Configurações de Infraestrutura e Aplicação
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
+
+
+// Segurança (Auth)
 builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
 
-// Autenticação e Autorização
-AddAuthentication();
+builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
-
-
-// DI de Application e Infra
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
 
 
 // Handler Global
@@ -63,65 +57,19 @@ if (app.Environment.IsDevelopment())
 // Ativa o Handler Global
 app.UseExceptionHandler();
 
+
 app.UseHttpsRedirection();
+
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+
 app.MapControllers();
 
-await InitializeDatabaseAsync();
+await app.UseDatabaseInitialization();
 
 app.Run();
-
-async Task InitializeDatabaseAsync()
-{
-    if (builder.Configuration.IsUnitTestEnvironment())
-        return;
-
-    using var scope = app.Services.CreateScope();
-    var service = scope.ServiceProvider;
-
-    var connectionString = builder.Configuration.ConnectionString();
-
-    DatabaseMigration.Migrate(service, connectionString);
-
-    await IdentitySeeder.SeedRolesAsync(service);
-}
-
-void AddAuthentication()
-{
-    builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(options =>
-    {
-        var signinKey = builder.Configuration.GetValue<string>("Settings:Jwt:SigninKey");
-
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = false,
-            ValidateAudience = false,
-
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signinKey!)),
-
-            RequireExpirationTime = true,
-            ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero
-        };
-        options.Events = new JwtBearerEvents
-        {
-            OnAuthenticationFailed = context =>
-            {
-                // Armazena a exceção para que o middleware de autorização possa ler depois
-                context.HttpContext.Items["JwtException"] = context.Exception;
-                return Task.CompletedTask;
-            }
-        };
-    });
-}
 
 public partial class Program
 {

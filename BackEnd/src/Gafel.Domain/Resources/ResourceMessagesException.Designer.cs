@@ -151,6 +151,15 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O usuário associado ao token não é mais válido.
+        /// </summary>
+        public static string EXCEPTION_INVALID_USER_TOKEN_DETAIL {
+            get {
+                return ResourceManager.GetString("EXCEPTION_INVALID_USER_TOKEN_DETAIL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Perfil do usuário não foi encontrado.
         /// </summary>
         public static string EXCEPTION_PERSON_NOT_FOUND_DETAIL {
@@ -174,6 +183,15 @@ namespace Gafel.Domain.Resources {
         public static string PERSON_FULL_NAME_EMPTY {
             get {
                 return ResourceManager.GetString("PERSON_FULL_NAME_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não autorizado.
+        /// </summary>
+        public static string UNAUTHORIZED {
+            get {
+                return ResourceManager.GetString("UNAUTHORIZED", resourceCulture);
             }
         }
         

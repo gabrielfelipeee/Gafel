@@ -183,4 +183,10 @@
   <data name="USER_PASSWORD_INCORRECT" xml:space="preserve">
     <value>Senha atual incorreta</value>
   </data>
+  <data name="UNAUTHORIZED" xml:space="preserve">
+    <value>Não autorizado</value>
+  </data>
+  <data name="EXCEPTION_INVALID_USER_TOKEN_DETAIL" xml:space="preserve">
+    <value>O usuário associado ao token não é mais válido</value>
+  </data>
 </root>

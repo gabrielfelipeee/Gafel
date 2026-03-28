@@ -1,4 +1,7 @@
-﻿using Gafel.Domain.Resources;
+﻿using Gafel.API.Extensions;
+using Gafel.Application.Exceptions;
+using Gafel.Domain.Constants;
+using Gafel.Domain.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +27,7 @@ public class CustomAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewa
 
             var problem = new ProblemDetails
             {
-                Title = "Não autorizado",
+                Title = ResourceMessagesException.UNAUTHORIZED,
                 Detail = GetDetailMessage(context),
                 Status = StatusCodes.Status401Unauthorized,
                 Instance = context.Request.Path
@@ -39,17 +42,19 @@ public class CustomAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewa
 
     private static string GetDetailMessage(HttpContext context)
     {
-        var authHeader = context.Request.Headers.Authorization.ToString();
-
         // Header ausente
-        if (string.IsNullOrWhiteSpace(authHeader))
+        if (!context.Request.Headers.ContainsKey("Authorization"))
             return ResourceMessagesException.AUTH_NO_TOKEN;
 
-        // Token expirado
-        if (context.Items.TryGetValue("JwtException", out var exception) && exception is SecurityTokenExpiredException)
-            return ResourceMessagesException.AUTH_TOKEN_EXPIRED;
+        // Tenta obter a exceção armazenada no pipeline de autenticação 
+        if (!context.Items.TryGetValue(HttpContextKeys.AuthException, out var exception))
+            return ResourceMessagesException.AUTH_TOKEN_INVALID;
 
-        // Token inválido
-        return ResourceMessagesException.AUTH_TOKEN_INVALID;
+        return exception switch
+        {
+            SecurityTokenExpiredException => ResourceMessagesException.AUTH_TOKEN_EXPIRED,
+            InvalidUserTokenException ex => ex.GetErrorDetail(),
+            _ => ResourceMessagesException.AUTH_TOKEN_INVALID
+        };
     }
 }
