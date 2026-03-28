@@ -1,8 +1,10 @@
 ﻿using CommonTestUtilities.Commands;
+using CommonTestUtilities.Dtos;
 using CommonTestUtilities.Services.CurrentUser;
 using CommonTestUtilities.Services.Identity;
 using Gafel.Application.Exceptions;
 using Gafel.Application.UseCases.Auth.ChangePassword;
+using Gafel.Domain.Dtos;
 using Gafel.Domain.Resources;
 using Shouldly;
 
@@ -14,7 +16,8 @@ public class ChangePasswordUseCaseTest
     public async Task Success()
     {
         var request = ChangePasswordCommandBuilder.Build();
-        var useCase = CreateUseCase();
+        var user = UserDtoBuilder.Build();
+        var useCase = CreateUseCase(user: user);
 
         async Task act() => await useCase.Execute(request);
 
@@ -26,7 +29,8 @@ public class ChangePasswordUseCaseTest
     {
         var request = ChangePasswordCommandBuilder.Build();
         request.NewPassword = string.Empty;
-        var useCase = CreateUseCase();
+        var user = UserDtoBuilder.Build();
+        var useCase = CreateUseCase(user: user);
 
         var exception = await Should.ThrowAsync<ErrorOnValidationException>(() => useCase.Execute(request));
 
@@ -45,7 +49,8 @@ public class ChangePasswordUseCaseTest
     {
         var request = ChangePasswordCommandBuilder.Build();
         request.NewPassword = "123";
-        var useCase = CreateUseCase();
+        var user = UserDtoBuilder.Build();
+        var useCase = CreateUseCase(user: user);
 
         var exception = await Should.ThrowAsync<ErrorOnValidationException>(() => useCase.Execute(request));
 
@@ -66,7 +71,8 @@ public class ChangePasswordUseCaseTest
     public async Task Error_CurrentPassword_Different()
     {
         var request = ChangePasswordCommandBuilder.Build();
-        var useCase = CreateUseCase(currentPasswordDifferent: true);
+        var user = UserDtoBuilder.Build();
+        var useCase = CreateUseCase(user: user, currentPasswordDifferent: true);
 
         var exception = await Should.ThrowAsync<ErrorOnValidationException>(() => useCase.Execute(request));
 
@@ -80,7 +86,7 @@ public class ChangePasswordUseCaseTest
         value.ShouldContain(ResourceMessagesException.USER_PASSWORD_INCORRECT);
     }
 
-    private static ChangePasswordUseCase CreateUseCase(bool currentPasswordDifferent = false)
+    private static ChangePasswordUseCase CreateUseCase(UserDto user, bool currentPasswordDifferent = false)
     {
         var authService = new AuthServiceBuilder();
         if (currentPasswordDifferent)
@@ -88,7 +94,7 @@ public class ChangePasswordUseCaseTest
         else
             authService.ChangePassword();
 
-        var currentUser = CurrentUserBuilder.Build();
+        var currentUser = CurrentUserBuilder.Build(user);
 
         return new(authService.Build(), currentUser);
     }

@@ -19,9 +19,9 @@ public class ChangePasswordUseCase : IChangePasswordUseCase
     {
         Validate(request);
 
-        var currentUserId = _currentUser.UserId;
+        var currentUser = _currentUser.CurrentUser();
 
-        var result = await _authService.ChangePassword(userId: currentUserId, password: request.Password, newPassword: request.NewPassword);
+        var result = await _authService.ChangePassword(userId: currentUser.Id, password: request.Password, newPassword: request.NewPassword);
         if (!result.Success)
             throw new ErrorOnValidationException(result.Errors!);
     }

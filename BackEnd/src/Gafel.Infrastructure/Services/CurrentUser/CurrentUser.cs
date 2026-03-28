@@ -1,6 +1,7 @@
-﻿using Gafel.Domain.Services.CurrentUser;
+﻿using Gafel.Domain.Constants;
+using Gafel.Domain.Dtos;
+using Gafel.Domain.Services.CurrentUser;
 using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
 
 namespace Gafel.Infrastructure.Services.CurrentUser;
 
@@ -8,12 +9,8 @@ public class CurrentUser(IHttpContextAccessor contextAccessor) : ICurrentUser
 {
     private readonly IHttpContextAccessor _contextAccessor = contextAccessor;
 
-    public long UserId
+    UserDto ICurrentUser.CurrentUser()
     {
-        get
-        {
-            var value = _contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid)!;
-            return long.Parse(value);
-        }
+        return (UserDto)_contextAccessor.HttpContext.Items[HttpContextKeys.CurrentUser]!;
     }
 }

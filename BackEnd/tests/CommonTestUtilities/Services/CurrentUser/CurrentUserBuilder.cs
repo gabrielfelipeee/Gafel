@@ -1,16 +1,18 @@
-﻿using Gafel.Domain.Services.CurrentUser;
+﻿using Gafel.Domain.Dtos;
+using Gafel.Domain.Services.CurrentUser;
 using Moq;
 
-namespace CommonTestUtilities.Services.CurrentUser;
-
-public class CurrentUserBuilder
+namespace CommonTestUtilities.Services.CurrentUser
 {
-    public static ICurrentUser Build()
+    public class CurrentUserBuilder
     {
-        var mock = new Mock<ICurrentUser>();
+        public static ICurrentUser Build(UserDto user)
+        {
+            var mock = new Mock<ICurrentUser>();
 
-        mock.Setup(r => r.UserId).Returns(1);
+            mock.Setup(x => x.CurrentUser()).Returns(user);
 
-        return mock.Object;
+            return mock.Object;
+        }
     }
 }
