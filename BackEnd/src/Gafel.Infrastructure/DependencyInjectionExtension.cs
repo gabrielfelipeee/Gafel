@@ -27,7 +27,7 @@ public static class DependencyInjectionExtension
         AddTokens(services, configuration);
         AddCurrentUser(services);
         AddIdentity(services);
-        AddIdentityService(services);
+        AddIdentityServices(services);
         AddRepositories(services);
 
 
@@ -69,10 +69,11 @@ public static class DependencyInjectionExtension
             .AddErrorDescriber<CustomIdentityErrorDescriber>()
             .AddDefaultTokenProviders();
     }
-    private static void AddIdentityService(IServiceCollection services)
+    private static void AddIdentityServices(IServiceCollection services)
     {
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserWriteOnlyService, IdentityUserService>();
+        services.AddScoped<IUserReadOnlyService, IdentityUserService>();
     }
 
     private static void AddRepositories(IServiceCollection services)
