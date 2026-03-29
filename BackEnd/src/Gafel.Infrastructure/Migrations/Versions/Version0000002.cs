@@ -9,10 +9,10 @@ public class Version0000002 : VersionBase
     {
         CreateTableWithDefaults("people")
             .WithColumn("full_name").AsString(60).NotNullable()
-            .WithColumn("cpf").AsString(11).Nullable()
+            .WithColumn("cpf").AsFixedLengthString(11).Nullable()
             .WithColumn("date_of_birth").AsDate().Nullable()
             .WithColumn("city").AsString(60).Nullable()
-            .WithColumn("uf").AsString(2).Nullable()
+            .WithColumn("uf").AsFixedLengthString(2).Nullable()
             .WithColumn("user_id").AsInt64().NotNullable()
                 .ForeignKey("fk_people_users_id", "users", "id");
 

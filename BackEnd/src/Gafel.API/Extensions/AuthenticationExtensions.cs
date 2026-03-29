@@ -69,7 +69,7 @@ public static class AuthenticationExtensions
             context.Fail(string.Empty);
             return;
         }
-        Console.Write(context.HttpContext.User);
+
         context.HttpContext.Items[HttpContextKeys.CurrentUser] = user;
     }
 }

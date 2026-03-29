@@ -23,6 +23,12 @@ public class GafelDbContext(DbContextOptions<GafelDbContext> options) : Identity
         modelBuilder.Entity<IdentityUserToken<long>>().ToTable("user_tokens");
         modelBuilder.Entity<IdentityRoleClaim<long>>().ToTable("role_claims");
 
+        // Configura a propriedade Uf para ser armazenada como string no banco de dados,
+        modelBuilder.Entity<Person>()
+            .Property(person => person.Uf)
+            .HasConversion<string>()
+            .HasMaxLength(2);
+
         // Aplica todas as configurações de mapeamento de entidades para o modelo de dados, que estão no mesmo assembly.
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(GafelDbContext).Assembly);
     }
