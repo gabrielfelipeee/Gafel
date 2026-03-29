@@ -178,11 +178,83 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Cidade inválida.
+        /// </summary>
+        public static string PERSON_CITY_INVALID {
+            get {
+                return ResourceManager.GetString("PERSON_CITY_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a CPF já cadastrado.
+        /// </summary>
+        public static string PERSON_CPF_ALREADY_REGISTERED {
+            get {
+                return ResourceManager.GetString("PERSON_CPF_ALREADY_REGISTERED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a CPF inválido.
+        /// </summary>
+        public static string PERSON_CPF_INVALID {
+            get {
+                return ResourceManager.GetString("PERSON_CPF_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O CPF não pode ser atualizado.
+        /// </summary>
+        public static string PERSON_CPF_UPDATE_NOT_ALLOWED {
+            get {
+                return ResourceManager.GetString("PERSON_CPF_UPDATE_NOT_ALLOWED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Data de nascimento não pode ser no futuro.
+        /// </summary>
+        public static string PERSON_DATE_OF_BIRTH_FUTURE {
+            get {
+                return ResourceManager.GetString("PERSON_DATE_OF_BIRTH_FUTURE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Data de nascimento inválida.
+        /// </summary>
+        public static string PERSON_DATE_OF_BIRTH_INVALID {
+            get {
+                return ResourceManager.GetString("PERSON_DATE_OF_BIRTH_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A data de nascimento não pode ser atualizada.
+        /// </summary>
+        public static string PERSON_DATE_OF_BIRTH_UPDATE_NOT_ALLOWED {
+            get {
+                return ResourceManager.GetString("PERSON_DATE_OF_BIRTH_UPDATE_NOT_ALLOWED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O nome não pode estar vazio.
         /// </summary>
         public static string PERSON_FULL_NAME_EMPTY {
             get {
                 return ResourceManager.GetString("PERSON_FULL_NAME_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a UF inválida.
+        /// </summary>
+        public static string PERSON_UF_INVALID {
+            get {
+                return ResourceManager.GetString("PERSON_UF_INVALID", resourceCulture);
             }
         }
         

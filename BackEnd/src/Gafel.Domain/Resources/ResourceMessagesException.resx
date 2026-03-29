@@ -189,4 +189,28 @@
   <data name="EXCEPTION_INVALID_USER_TOKEN_DETAIL" xml:space="preserve">
     <value>O usuário associado ao token não é mais válido</value>
   </data>
+  <data name="PERSON_CPF_INVALID" xml:space="preserve">
+    <value>CPF inválido</value>
+  </data>
+  <data name="PERSON_UF_INVALID" xml:space="preserve">
+    <value>UF inválida</value>
+  </data>
+  <data name="PERSON_CITY_INVALID" xml:space="preserve">
+    <value>Cidade inválida</value>
+  </data>
+  <data name="PERSON_DATE_OF_BIRTH_INVALID" xml:space="preserve">
+    <value>Data de nascimento inválida</value>
+  </data>
+  <data name="PERSON_DATE_OF_BIRTH_FUTURE" xml:space="preserve">
+    <value>Data de nascimento não pode ser no futuro</value>
+  </data>
+  <data name="PERSON_CPF_ALREADY_REGISTERED" xml:space="preserve">
+    <value>CPF já cadastrado</value>
+  </data>
+  <data name="PERSON_CPF_UPDATE_NOT_ALLOWED" xml:space="preserve">
+    <value>O CPF não pode ser atualizado</value>
+  </data>
+  <data name="PERSON_DATE_OF_BIRTH_UPDATE_NOT_ALLOWED" xml:space="preserve">
+    <value>A data de nascimento não pode ser atualizada</value>
+  </data>
 </root>
