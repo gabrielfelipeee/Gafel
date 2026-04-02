@@ -23,8 +23,7 @@ public class UpdatePersonValidator : AbstractValidator<UpdatePersonCommand>
             .When(person => !string.IsNullOrWhiteSpace(person.Uf));
 
         RuleFor(person => person.City)
-            .MinimumLength(2)
-            .MaximumLength(60)
+            .Length(3, 60)
             .WithMessage(ResourceMessagesException.PERSON_CITY_INVALID)
             .When(person => !string.IsNullOrWhiteSpace(person.City));
     }
