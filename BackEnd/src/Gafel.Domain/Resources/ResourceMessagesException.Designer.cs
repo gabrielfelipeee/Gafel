@@ -124,6 +124,42 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a CPF já cadastrado.
+        /// </summary>
+        public static string CPF_ALREADY_REGISTERED {
+            get {
+                return ResourceManager.GetString("CPF_ALREADY_REGISTERED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a CPF não pode ser vazio.
+        /// </summary>
+        public static string CPF_EMPTY {
+            get {
+                return ResourceManager.GetString("CPF_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a CPF inválido.
+        /// </summary>
+        public static string CPF_INVALID {
+            get {
+                return ResourceManager.GetString("CPF_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O CPF não pode ser atualizado.
+        /// </summary>
+        public static string CPF_UPDATE_NOT_ALLOWED {
+            get {
+                return ResourceManager.GetString("CPF_UPDATE_NOT_ALLOWED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Um ou mais erros de validação ocorreram..
         /// </summary>
         public static string EXCEPTION_ERROR_ON_VALIDATION_DETAIL {
@@ -183,33 +219,6 @@ namespace Gafel.Domain.Resources {
         public static string PERSON_CITY_INVALID {
             get {
                 return ResourceManager.GetString("PERSON_CITY_INVALID", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a CPF já cadastrado.
-        /// </summary>
-        public static string PERSON_CPF_ALREADY_REGISTERED {
-            get {
-                return ResourceManager.GetString("PERSON_CPF_ALREADY_REGISTERED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a CPF inválido.
-        /// </summary>
-        public static string PERSON_CPF_INVALID {
-            get {
-                return ResourceManager.GetString("PERSON_CPF_INVALID", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a O CPF não pode ser atualizado.
-        /// </summary>
-        public static string PERSON_CPF_UPDATE_NOT_ALLOWED {
-            get {
-                return ResourceManager.GetString("PERSON_CPF_UPDATE_NOT_ALLOWED", resourceCulture);
             }
         }
         

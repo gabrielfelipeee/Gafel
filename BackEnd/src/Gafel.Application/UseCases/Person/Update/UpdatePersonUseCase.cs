@@ -1,11 +1,11 @@
-﻿using FluentValidation.Results;
-using Gafel.Application.Exceptions;
+﻿using Gafel.Application.Exceptions;
 using Gafel.Application.Extensions;
+using Gafel.Domain.Enums;
 using Gafel.Domain.Repositories;
 using Gafel.Domain.Repositories.Person;
 using Gafel.Domain.Resources;
 using Gafel.Domain.Services.CurrentUser;
-using Mapster;
+using Gafel.Domain.ValueObjects;
 
 namespace Gafel.Application.UseCases.Person.Update;
 
@@ -30,45 +30,69 @@ public class UpdatePersonUseCase : IUpdatePersonUseCase
 
     public async Task Execute(UpdatePersonCommand request)
     {
+        Validate(request);
+
         var currentUser = _currentUser.CurrentUser();
+        var person = await _personUpdateOnlyRepository.GetByUserId(currentUser.Id) ?? throw new PersonNotFoundException();
 
-        var person = await _personUpdateOnlyRepository.GetByUserId(currentUser.Id)
-            ?? throw new PersonNotFoundException();
+        var errors = new Dictionary<string, string[]>();
 
-        await Validate(
-            request: request,
-            personId: person.Id,
-            currentCpf: person.Cpf,
-            currentDateOfBirth: person.DateOfBirth
-        );
+        // CPF
+        if (!string.IsNullOrWhiteSpace(request.Cpf))
+        {
+            var cpfResult = Cpf.Create(request.Cpf);
 
-        request.Adapt(person);
+            if (!cpfResult.IsSuccess)
+                AddError(errors, nameof(request.Cpf), cpfResult.ErrorMessage!);
+            else
+            {
+                var newCpf = cpfResult.Value!;
+
+                // Só consulta o banco se a pessoa estiver tentando cadastrar um CPF e ainda não tiver um. (Unicidade)
+                if (person.Cpf is null && await _personReadOnlyRepository.ExistPersonWithCpf(cpf: newCpf, excludeId: person.Id))
+                    AddError(errors, nameof(request.Cpf), ResourceMessagesException.CPF_ALREADY_REGISTERED);
+                else
+                {
+                    // Entidade decide se aceita (Imutabilidade)
+                    var result = person.SetCpf(newCpf);
+                    if (!result.IsSuccess)
+                        AddError(errors, nameof(request.Cpf), result.ErrorMessage!);
+                }
+            }
+        }
+
+        // Data de Nascimento
+        if (request.DateOfBirth.HasValue)
+        {
+            var dobResult = DateOfBirth.Create(request.DateOfBirth.Value);
+
+            if (!dobResult.IsSuccess)
+                AddError(errors, nameof(request.DateOfBirth), dobResult.ErrorMessage!);
+            else
+            {
+                // Entidade decide se aceita (Imutabilidade)
+                var result = person.SetDateOfBirth(dobResult.Value!);
+                if (!result.IsSuccess)
+                    AddError(errors, nameof(request.DateOfBirth), result.ErrorMessage!);
+            }
+        }
+
+        if (errors.Count > 0)
+            throw new ErrorOnValidationException(errors);
+
+        // Atualização de campos mutáveis
+        person.FullName = request.FullName;
+        person.City = request.City;
+        person.Uf = string.IsNullOrWhiteSpace(request.Uf) ? null : Enum.Parse<Uf>(request.Uf, true);
         person.UpdatedAt = DateTime.UtcNow;
 
         _personUpdateOnlyRepository.Update(person);
         await _unitOfWork.SaveChangesAsync();
     }
 
-    private async Task Validate(UpdatePersonCommand request, long personId, string? currentCpf = null, DateOnly? currentDateOfBirth = null)
+    private static void Validate(UpdatePersonCommand request)
     {
         var result = new UpdatePersonValidator().Validate(request);
-
-        // Já tem data de nascimento, não pode ser atualizado
-        if (currentDateOfBirth.HasValue && !currentDateOfBirth.Equals(request.DateOfBirth))
-            result.Errors.Add(new ValidationFailure(nameof(request.DateOfBirth), ResourceMessagesException.PERSON_DATE_OF_BIRTH_UPDATE_NOT_ALLOWED));
-
-        // Já tem CPF, não pode ser atualizado
-        var hasCurrentCpf = !string.IsNullOrWhiteSpace(currentCpf);
-        var hasNewCpf = !string.IsNullOrWhiteSpace(request.Cpf);
-
-        if (hasCurrentCpf && !string.Equals(currentCpf, request.Cpf, StringComparison.Ordinal))
-            result.Errors.Add(new ValidationFailure(nameof(request.Cpf), ResourceMessagesException.PERSON_CPF_UPDATE_NOT_ALLOWED));
-        else if (!hasCurrentCpf && hasNewCpf)
-        {
-            var existCpf = await _personReadOnlyRepository.ExistPersonWithCpf(cpf: request.Cpf!, excludeId: personId);
-            if (existCpf)
-                result.Errors.Add(new ValidationFailure(nameof(request.Cpf), ResourceMessagesException.PERSON_CPF_ALREADY_REGISTERED));
-        }
 
         if (!result.IsValid)
         {
@@ -76,5 +100,13 @@ public class UpdatePersonUseCase : IUpdatePersonUseCase
 
             throw new ErrorOnValidationException(errors);
         }
+    }
+
+    private static void AddError(Dictionary<string, string[]> errors, string key, string message)
+    {
+        if (errors.TryGetValue(key, out string[]? value))
+            errors[key] = [.. value, message];
+        else
+            errors.Add(key, [message]);
     }
 }

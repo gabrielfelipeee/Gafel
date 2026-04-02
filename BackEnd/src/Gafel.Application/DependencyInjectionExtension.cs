@@ -1,4 +1,3 @@
-using Gafel.Application.Services.Mapster;
 using Gafel.Application.UseCases.Auth.ChangePassword;
 using Gafel.Application.UseCases.Auth.Login.DoLogin;
 using Gafel.Application.UseCases.Auth.Register;
@@ -14,7 +13,6 @@ public static class DependencyInjectionExtension
     public static void AddApplication(this IServiceCollection services)
     {
         AddUseCases(services);
-        AddMapsterConfigurations();
     }
 
     private static void AddUseCases(IServiceCollection services)
@@ -24,10 +22,5 @@ public static class DependencyInjectionExtension
         services.AddScoped<IChangePasswordUseCase, ChangePasswordUseCase>();
 
         services.AddScoped<IUpdatePersonUseCase, UpdatePersonUseCase>();
-    }
-
-    private static void AddMapsterConfigurations()
-    {
-        MapsterConfigurations.Configure();
     }
 }

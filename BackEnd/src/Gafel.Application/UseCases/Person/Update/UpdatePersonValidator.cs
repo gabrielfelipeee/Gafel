@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Gafel.Domain.Constants;
 using Gafel.Domain.Enums;
 using Gafel.Domain.Resources;
 
@@ -14,22 +13,9 @@ public class UpdatePersonValidator : AbstractValidator<UpdatePersonCommand>
             .WithMessage(ResourceMessagesException.PERSON_FULL_NAME_EMPTY);
 
         RuleFor(person => person.Cpf)
-            .IsValidCPF()
-            .WithMessage(ResourceMessagesException.PERSON_CPF_INVALID)
-            .When(person => !string.IsNullOrWhiteSpace(person.Cpf));
-
-        RuleFor(person => person.DateOfBirth)
-            .Custom((dateOfBirth, context) =>
-            {
-                var today = DateOnly.FromDateTime(DateTime.UtcNow);
-
-                if (dateOfBirth > today)
-                    context.AddFailure(ResourceMessagesException.PERSON_DATE_OF_BIRTH_FUTURE);
-
-                if (dateOfBirth > today.AddYears(-(int)GafelRuleContants.MINIMUM_AGE))
-                    context.AddFailure(ResourceMessagesException.PERSON_DATE_OF_BIRTH_INVALID);
-            })
-            .When(person => person.DateOfBirth.HasValue);
+            .Length(11, 14)
+            .WithMessage(ResourceMessagesException.CPF_INVALID)
+            .When(x => !string.IsNullOrWhiteSpace(x.Cpf));
 
         RuleFor(person => person.Uf)
             .Must(uf => Enum.TryParse<Uf>(uf, true, out _))

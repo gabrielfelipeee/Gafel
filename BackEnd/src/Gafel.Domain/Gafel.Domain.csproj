@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DocsBRValidator" Version="1.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Resources\ResourceMessagesException.Designer.cs">
       <DependentUpon>ResourceMessagesException.resx</DependentUpon>
       <DesignTime>True</DesignTime>

@@ -1,5 +1,6 @@
 ﻿using Gafel.Domain.Entities;
 using Gafel.Domain.Repositories.Person;
+using Gafel.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gafel.Infrastructure.DataAccess.Repositories;
@@ -12,13 +13,18 @@ public class PersonRepository(GafelDbContext context) : IPersonReadOnlyRepositor
     async Task<Person?> IPersonReadOnlyRepository.GetByUserId(long userId)
         => await _context.People.AsNoTracking().FirstOrDefaultAsync(p => p.UserId == userId);
 
-    public async Task<bool> ExistPersonWithCpf(string cpf, long? excludeId = null)
-        => await _context.People.AsNoTracking().AnyAsync(p => p.Cpf == cpf && (!excludeId.HasValue || p.Id != excludeId));
-
-
+    public async Task<bool> ExistPersonWithCpf(Cpf cpf, long? excludeId = null)
+    {
+        return await _context.People
+            .AsNoTracking()
+            .AnyAsync(p =>
+                p.Cpf != null &&
+                p.Cpf == cpf &&
+                (!excludeId.HasValue || p.Id != excludeId.Value));
+    }
 
     // Write
-    public async Task Add(Person people) => await _context.People.AddAsync(people);
+    public async Task Add(Person person) => await _context.People.AddAsync(person);
 
 
     // Update

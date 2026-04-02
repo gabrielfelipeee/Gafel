@@ -1,5 +1,4 @@
-﻿using Gafel.API.Extensions;
-using Gafel.Application.Exceptions;
+﻿using Gafel.Application.Exceptions;
 using Gafel.Domain.Constants;
 using Gafel.Domain.Resources;
 using Microsoft.AspNetCore.Authorization;
