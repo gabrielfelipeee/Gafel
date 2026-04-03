@@ -1,21 +1,23 @@
-﻿using CommonTestUtilities.Commands;
+﻿using CommonTestUtilities.Dtos;
+using CommonTestUtilities.Entities;
+using CommonTestUtilities.Helpers;
 using Gafel.Domain.Constants;
-using Gafel.Domain.Entities;
 using Gafel.Infrastructure.DataAccess;
 using Gafel.Infrastructure.Services.Identity.Entities;
-using Mapster;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using Bogus;
 
 namespace WebAPI.Test;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     private string _personFullName = default!;
+    private string _personCpf = default!;
     private string _userEmail = default!;
     private string _userPassword = default!;
     private long _userId = default!;
@@ -51,6 +53,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     }
 
     public string GetPersonFullName() => _personFullName;
+    public string GetPersonCpf() => _personCpf;
 
     public long GetUserId() => _userId;
     public string GetUserEmail() => _userEmail;
@@ -62,19 +65,24 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         foreach (var role in Roles.All)
             await roleManager.CreateAsync(new IdentityRole<long>(role));
 
-        var commandRegister = RegisterAccountCommandBuilder.Build();
-        _personFullName = commandRegister.FullName;
-        _userEmail = commandRegister.Email;
-        _userPassword = commandRegister.Password;
+        var userDto = UserDtoBuilder.Build();
+        var password = PasswordGenerator.Generate(new Faker());
 
-        var user = new ApplicationUser(commandRegister.Email);
-        await userManager.CreateAsync(user, commandRegister.Password);
-        _userId = user.Id;
+        var applicationUser = new ApplicationUser(userDto.Email);
+        await userManager.CreateAsync(applicationUser, password);
 
-        var person = commandRegister.Adapt<Person>();
-        person.UserId = user.Id;
+
+        var person = PersonBuilder.Build(withCpf: true, withDateOfBirth: true);
+        person.UserId = userDto.Id;
         context.People.Add(person);
 
         context.SaveChanges();
+
+        _userId = applicationUser.Id;
+        _userEmail = userDto.Email;
+        _userPassword = password;
+
+        _personFullName = person.FullName;
+        _personCpf = person.Cpf!.Value;
     }
 }
