@@ -78,7 +78,7 @@ public class DoLoginUseCaseTest
         value.ShouldContain(ResourceMessagesException.USER_EMAIL_INVALID);
     }
 
-    private static DoLoginUseCase CreateUseCase(Person? person = null, bool invalidCredentials = false)
+    private static DoLoginUseCase CreateUseCase(Gafel.Domain.Entities.Person? person = null, bool invalidCredentials = false)
     {
         var authService = new AuthServiceBuilder();
         if (invalidCredentials)
