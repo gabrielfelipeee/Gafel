@@ -59,9 +59,9 @@ public static class AuthenticationExtensions
             return;
         }
 
-        var userReadIOnlyService = context.HttpContext.RequestServices.GetRequiredService<IUserReadOnlyService>();
+        var userReadOnlyService = context.HttpContext.RequestServices.GetRequiredService<IUserReadOnlyService>();
 
-        var user = await userReadIOnlyService.GetById(userId);
+        var user = await userReadOnlyService.GetById(userId);
 
         if (user is null)
         {
