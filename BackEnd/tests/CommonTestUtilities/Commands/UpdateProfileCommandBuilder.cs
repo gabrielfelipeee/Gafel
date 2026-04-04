@@ -1,14 +1,14 @@
 ﻿using Bogus;
 using Bogus.Extensions.Brazil;
-using Gafel.Application.UseCases.Person.Update;
+using Gafel.Application.UseCases.Account.UpdateProfile;
 
 namespace CommonTestUtilities.Commands;
 
-public static class UpdatePersonCommandBuilder
+public static class UpdateProfileCommandBuilder
 {
-    public static UpdatePersonCommand Build(bool withCpf = false, bool withDateOfBirth = false)
+    public static UpdateProfileCommand Build(bool withCpf = false, bool withDateOfBirth = false)
     {
-        var mock = new Faker<UpdatePersonCommand>("pt_BR")
+        var mock = new Faker<UpdateProfileCommand>("pt_BR")
         .RuleFor(person => person.FullName, faker => faker.Person.FullName)
         .RuleFor(person => person.Uf, faker => faker.Address.StateAbbr())
         .RuleFor(person => person.City, (faker, person) => faker.Address.City());

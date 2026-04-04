@@ -2,11 +2,11 @@
 using Gafel.Domain.Enums;
 using Gafel.Domain.Resources;
 
-namespace Gafel.Application.UseCases.Person.Update;
+namespace Gafel.Application.UseCases.Account.UpdateProfile;
 
-public class UpdatePersonValidator : AbstractValidator<UpdatePersonCommand>
+public class UpdateProfileValidator : AbstractValidator<UpdateProfileCommand>
 {
-    public UpdatePersonValidator()
+    public UpdateProfileValidator()
     {
         RuleFor(person => person.FullName)
             .NotEmpty()

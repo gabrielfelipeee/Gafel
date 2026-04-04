@@ -5,13 +5,13 @@ using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Repositories.Person;
 using CommonTestUtilities.Services.CurrentUser;
 using Gafel.Application.Exceptions;
-using Gafel.Application.UseCases.Person.Update;
+using Gafel.Application.UseCases.Account.UpdateProfile;
 using Gafel.Domain.Resources;
 using Shouldly;
 
-namespace UseCases.Test.Person.Update;
+namespace UseCases.Test.Account.UpdateProfile;
 
-public class UpdatePersonUseCaseTest
+public class UpdateProfileUseCaseTest
 {
     [Fact]
     public async Task Success()
@@ -19,7 +19,7 @@ public class UpdatePersonUseCaseTest
         // Arrange 
         var user = UserDtoBuilder.Build();
         var person = PersonBuilder.Build();
-        var request = UpdatePersonCommandBuilder.Build();
+        var request = UpdateProfileCommandBuilder.Build();
 
         var useCase = CreateUseCase(user: user, person: person);
 
@@ -35,7 +35,7 @@ public class UpdatePersonUseCaseTest
     {
         var user = UserDtoBuilder.Build();
         var person = PersonBuilder.Build();
-        var request = UpdatePersonCommandBuilder.Build();
+        var request = UpdateProfileCommandBuilder.Build();
         request.Cpf = "00000000000";
         var useCase = CreateUseCase(user: user, person: person);
 
@@ -56,7 +56,7 @@ public class UpdatePersonUseCaseTest
     {
         var user = UserDtoBuilder.Build();
         var person = PersonBuilder.Build();
-        var request = UpdatePersonCommandBuilder.Build(withCpf: true);
+        var request = UpdateProfileCommandBuilder.Build(withCpf: true);
         var useCase = CreateUseCase(user: user, person: person, existPersonWithCpf: true);
 
         var exception = await Should.ThrowAsync<ErrorOnValidationException>(() => useCase.Execute(request));
@@ -77,7 +77,7 @@ public class UpdatePersonUseCaseTest
     {
         var user = UserDtoBuilder.Build();
         var person = PersonBuilder.Build(withCpf: true);
-        var request = UpdatePersonCommandBuilder.Build(withCpf: true);
+        var request = UpdateProfileCommandBuilder.Build(withCpf: true);
         var useCase = CreateUseCase(user: user, person: person);
 
         var exception = await Should.ThrowAsync<ErrorOnValidationException>(() => useCase.Execute(request));
@@ -98,7 +98,7 @@ public class UpdatePersonUseCaseTest
     {
         var user = UserDtoBuilder.Build();
         var person = PersonBuilder.Build();
-        var request = UpdatePersonCommandBuilder.Build();
+        var request = UpdateProfileCommandBuilder.Build();
         request.DateOfBirth = DateOnly.FromDateTime(DateTime.UtcNow);
         var useCase = CreateUseCase(user: user, person: person);
 
@@ -119,7 +119,7 @@ public class UpdatePersonUseCaseTest
     {
         var user = UserDtoBuilder.Build();
         var person = PersonBuilder.Build();
-        var request = UpdatePersonCommandBuilder.Build();
+        var request = UpdateProfileCommandBuilder.Build();
         request.DateOfBirth = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(5));
         var useCase = CreateUseCase(user: user, person: person);
 
@@ -140,7 +140,7 @@ public class UpdatePersonUseCaseTest
     {
         var user = UserDtoBuilder.Build();
         var person = PersonBuilder.Build(withDateOfBirth: true);
-        var request = UpdatePersonCommandBuilder.Build(withDateOfBirth: true);
+        var request = UpdateProfileCommandBuilder.Build(withDateOfBirth: true);
         request.DateOfBirth = request.DateOfBirth!.Value.AddDays(-1);
         var useCase = CreateUseCase(user: user, person: person);
 
@@ -156,7 +156,7 @@ public class UpdatePersonUseCaseTest
         value.ShouldBe(ResourceMessagesException.PERSON_DATE_OF_BIRTH_UPDATE_NOT_ALLOWED);
     }
 
-    private static UpdatePersonUseCase CreateUseCase(
+    private static UpdateProfileUseCase CreateUseCase(
         Gafel.Domain.Dtos.UserDto user,
         Gafel.Domain.Entities.Person? person = null,
         bool existPersonWithCpf = false)

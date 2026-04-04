@@ -1,4 +1,4 @@
-﻿using Gafel.Application.UseCases.Person.Update;
+﻿using Gafel.Application.UseCases.Account.UpdateProfile;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +11,7 @@ public class MeController : GafelController
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update([FromBody] UpdatePersonCommand request, [FromServices] IUpdatePersonUseCase useCase)
+    public async Task<IActionResult> Update([FromBody] UpdateProfileCommand request, [FromServices] IUpdateProfileUseCase useCase)
     {
         await useCase.Execute(request);
 

@@ -8,9 +8,9 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace WebAPI.Test.Person.Update;
+namespace WebAPI.Test.Account.UpdateProfile;
 
-public class UpdatePersonTest(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
+public class UpdateProfileTest(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly HttpClient _httpClient = factory.CreateClient();
 
@@ -21,7 +21,7 @@ public class UpdatePersonTest(CustomWebApplicationFactory factory) : IClassFixtu
     public async Task Success()
     {
         // Arrange
-        var request = UpdatePersonCommandBuilder.Build();
+        var request = UpdateProfileCommandBuilder.Build();
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
         // Act
@@ -35,7 +35,7 @@ public class UpdatePersonTest(CustomWebApplicationFactory factory) : IClassFixtu
     [Fact]
     public async Task Error_Cpf_Invalid()
     {
-        var request = UpdatePersonCommandBuilder.Build();
+        var request = UpdateProfileCommandBuilder.Build();
         request.Cpf = "00000000000";
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
@@ -78,7 +78,7 @@ public class UpdatePersonTest(CustomWebApplicationFactory factory) : IClassFixtu
 
 
         // Tenta atualizar a nova pessoa com um CPF existente no banco
-        var request = UpdatePersonCommandBuilder.Build();
+        var request = UpdateProfileCommandBuilder.Build();
         request.Cpf = _personCpf;
 
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -107,7 +107,7 @@ public class UpdatePersonTest(CustomWebApplicationFactory factory) : IClassFixtu
     [Fact]
     public async Task Error_Cpf_Cannot_Be_Modified_After_Creation()
     {
-        var request = UpdatePersonCommandBuilder.Build(withCpf: true);
+        var request = UpdateProfileCommandBuilder.Build(withCpf: true);
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -136,7 +136,7 @@ public class UpdatePersonTest(CustomWebApplicationFactory factory) : IClassFixtu
     [Fact]
     public async Task Error_DateOfBirth_Invalid()
     {
-        var request = UpdatePersonCommandBuilder.Build(withDateOfBirth: true);
+        var request = UpdateProfileCommandBuilder.Build(withDateOfBirth: true);
         request.DateOfBirth = DateOnly.FromDateTime(DateTime.UtcNow);
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
@@ -166,7 +166,7 @@ public class UpdatePersonTest(CustomWebApplicationFactory factory) : IClassFixtu
     [Fact]
     public async Task Error_DateOfBirth_Future()
     {
-        var request = UpdatePersonCommandBuilder.Build(withDateOfBirth: true);
+        var request = UpdateProfileCommandBuilder.Build(withDateOfBirth: true);
         request.DateOfBirth = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(5));
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
@@ -196,7 +196,7 @@ public class UpdatePersonTest(CustomWebApplicationFactory factory) : IClassFixtu
     [Fact]
     public async Task Error_Uf_Invalid()
     {
-        var request = UpdatePersonCommandBuilder.Build();
+        var request = UpdateProfileCommandBuilder.Build();
         request.Uf = "XX";
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
@@ -226,7 +226,7 @@ public class UpdatePersonTest(CustomWebApplicationFactory factory) : IClassFixtu
     [Fact]
     public async Task Error_FullName_Empty()
     {
-        var request = UpdatePersonCommandBuilder.Build();
+        var request = UpdateProfileCommandBuilder.Build();
         request.FullName = string.Empty;
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
@@ -256,7 +256,7 @@ public class UpdatePersonTest(CustomWebApplicationFactory factory) : IClassFixtu
     [Fact]
     public async Task Error_City_Length_Equal_To_2()
     {
-        var request = UpdatePersonCommandBuilder.Build();
+        var request = UpdateProfileCommandBuilder.Build();
         request.City = "Sp";
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 

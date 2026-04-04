@@ -1,6 +1,6 @@
-﻿namespace Gafel.Application.UseCases.Person.Update;
+﻿namespace Gafel.Application.UseCases.Account.UpdateProfile;
 
-public class UpdatePersonCommand
+public class UpdateProfileCommand
 {
     public string FullName { get; set; } = string.Empty;
     public string? Cpf { get; set; }

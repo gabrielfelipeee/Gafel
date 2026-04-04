@@ -7,16 +7,16 @@ using Gafel.Domain.Resources;
 using Gafel.Domain.Services.CurrentUser;
 using Gafel.Domain.ValueObjects;
 
-namespace Gafel.Application.UseCases.Person.Update;
+namespace Gafel.Application.UseCases.Account.UpdateProfile;
 
-public class UpdatePersonUseCase : IUpdatePersonUseCase
+public class UpdateProfileUseCase : IUpdateProfileUseCase
 {
     private readonly ICurrentUser _currentUser;
     private readonly IPersonUpdateOnlyRepository _personUpdateOnlyRepository;
     private readonly IPersonReadOnlyRepository _personReadOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdatePersonUseCase(
+    public UpdateProfileUseCase(
         ICurrentUser currentUser,
         IPersonUpdateOnlyRepository personUpdateOnlyRepository,
         IPersonReadOnlyRepository personReadOnlyRepository,
@@ -28,7 +28,7 @@ public class UpdatePersonUseCase : IUpdatePersonUseCase
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Execute(UpdatePersonCommand request)
+    public async Task Execute(UpdateProfileCommand request)
     {
         Validate(request);
 
@@ -90,9 +90,9 @@ public class UpdatePersonUseCase : IUpdatePersonUseCase
         await _unitOfWork.SaveChangesAsync();
     }
 
-    private static void Validate(UpdatePersonCommand request)
+    private static void Validate(UpdateProfileCommand request)
     {
-        var result = new UpdatePersonValidator().Validate(request);
+        var result = new UpdateProfileValidator().Validate(request);
 
         if (!result.IsValid)
         {

@@ -1,19 +1,19 @@
 ﻿using CommonTestUtilities.Commands;
 using FluentValidation.TestHelper;
-using Gafel.Application.UseCases.Person.Update;
+using Gafel.Application.UseCases.Account.UpdateProfile;
 using Gafel.Domain.Resources;
 using Shouldly;
 
-namespace Validators.Test.Person.Update;
+namespace Validators.Test.Account.UpdateProfile;
 
-public class UpdatePersonValidatorTest
+public class UpdateProfileValidatorTest
 {
     [Fact]
     public void Success()
     {
         // Arrange
-        var request = UpdatePersonCommandBuilder.Build();
-        var validator = new UpdatePersonValidator();
+        var request = UpdateProfileCommandBuilder.Build();
+        var validator = new UpdateProfileValidator();
 
         // Act
         var result = validator.TestValidate(request);
@@ -25,9 +25,9 @@ public class UpdatePersonValidatorTest
     [Fact]
     public void Error_FullName_Empty()
     {
-        var request = UpdatePersonCommandBuilder.Build();
+        var request = UpdateProfileCommandBuilder.Build();
         request.FullName = string.Empty;
-        var validator = new UpdatePersonValidator();
+        var validator = new UpdateProfileValidator();
 
         var result = validator.TestValidate(request);
 
@@ -39,9 +39,9 @@ public class UpdatePersonValidatorTest
     [Fact]
     public void Error_Uf_Invalid()
     {
-        var request = UpdatePersonCommandBuilder.Build();
+        var request = UpdateProfileCommandBuilder.Build();
         request.Uf = "XX";
-        var validator = new UpdatePersonValidator();
+        var validator = new UpdateProfileValidator();
 
         var result = validator.TestValidate(request);
 
@@ -53,9 +53,9 @@ public class UpdatePersonValidatorTest
     [Fact]
     public void Error_CPF_Length_Invalid()
     {
-        var request = UpdatePersonCommandBuilder.Build();
+        var request = UpdateProfileCommandBuilder.Build();
         request.Cpf = "123456789123456";
-        var validator = new UpdatePersonValidator();
+        var validator = new UpdateProfileValidator();
 
         var result = validator.TestValidate(request);
 
@@ -67,9 +67,9 @@ public class UpdatePersonValidatorTest
     [Fact]
     public void Error_City_Length_Equal_To_2()
     {
-        var request = UpdatePersonCommandBuilder.Build();
+        var request = UpdateProfileCommandBuilder.Build();
         request.City = "Vi";
-        var validator = new UpdatePersonValidator();
+        var validator = new UpdateProfileValidator();
 
         var result = validator.TestValidate(request);
 
