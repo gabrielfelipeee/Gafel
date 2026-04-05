@@ -3,17 +3,24 @@ using Gafel.Application.UseCases.Auth.Login.DoLogin;
 using Gafel.Domain.Resources;
 using Shouldly;
 using System.Net;
-using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace WebAPI.Test.Auth.Login.DoLogin;
 
-public class DoLoginTest(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
+public class DoLoginTest : GafelClassFixture
 {
-    private readonly HttpClient _httpClient = factory.CreateClient();
-    private readonly string _personFullName = factory.GetPersonFullName();
-    private readonly string _userEmail = factory.GetUserEmail();
-    private readonly string _userPassword = factory.GetUserPassword();
+    private const string METHOD = "auth/login";
+
+    private readonly string _personFullName;
+    private readonly string _userEmail;
+    private readonly string _userPassword;
+
+    public DoLoginTest(CustomWebApplicationFactory factory) : base(factory)
+    {
+        _personFullName = factory.GetPersonFullName();
+        _userEmail = factory.GetUserEmail();
+        _userPassword = factory.GetUserPassword();
+    }
 
     [Fact]
     public async Task Success()
@@ -26,7 +33,7 @@ public class DoLoginTest(CustomWebApplicationFactory factory) : IClassFixture<Cu
         };
 
         // Act
-        var response = await _httpClient.PostAsJsonAsync("auth/login", request);
+        var response = await DoPost(method: METHOD, request: request);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -50,7 +57,7 @@ public class DoLoginTest(CustomWebApplicationFactory factory) : IClassFixture<Cu
         var request = DoLoginCommandBuilder.Build();
 
 
-        var response = await _httpClient.PostAsJsonAsync("auth/login", request);
+        var response = await DoPost(method: METHOD, request: request);
 
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);

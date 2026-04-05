@@ -2,22 +2,19 @@
 using CommonTestUtilities.Tokens;
 using Shouldly;
 using System.Net;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
 
 namespace WebAPI.Test.Account.UpdateProfile;
 
-public class UpdateProfileInvalidToken(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
+public class UpdateProfileInvalidToken(CustomWebApplicationFactory factory) : GafelClassFixture(factory)
 {
-    private readonly HttpClient _httpClient = factory.CreateClient();
+    private const string METHOD = "me";
 
     [Fact]
     public async Task Error_Token_Invalid()
     {
         var request = UpdateProfileCommandBuilder.Build();
 
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "invalidToken");
-        var response = await _httpClient.PutAsJsonAsync("me", request);
+        var response = await DoPut(method: METHOD, request: request, token: "invalidToken");
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
@@ -27,8 +24,7 @@ public class UpdateProfileInvalidToken(CustomWebApplicationFactory factory) : IC
     {
         var request = UpdateProfileCommandBuilder.Build();
 
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", string.Empty);
-        var response = await _httpClient.PutAsJsonAsync("me", request);
+        var response = await DoPut(method: METHOD, request: request, token: string.Empty);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
@@ -39,8 +35,7 @@ public class UpdateProfileInvalidToken(CustomWebApplicationFactory factory) : IC
         var request = UpdateProfileCommandBuilder.Build();
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: 10);
 
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        var response = await _httpClient.PutAsJsonAsync("me", request);
+        var response = await DoPut(method: METHOD, request: request, token: token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }

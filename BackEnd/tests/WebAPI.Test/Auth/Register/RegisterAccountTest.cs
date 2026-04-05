@@ -2,14 +2,13 @@
 using Gafel.Domain.Resources;
 using Shouldly;
 using System.Net;
-using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace WebAPI.Test.Auth.Register;
 
-public class RegisterAccountTest(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
+public class RegisterAccountTest(CustomWebApplicationFactory factory) : GafelClassFixture(factory)
 {
-    private readonly HttpClient _httpClient = factory.CreateClient();
+    private const string METHOD = "auth/register";
 
     [Fact]
     public async Task Success()
@@ -18,7 +17,7 @@ public class RegisterAccountTest(CustomWebApplicationFactory factory) : IClassFi
         var request = RegisterAccountCommandBuilder.Build();
 
         // Act
-        var response = await _httpClient.PostAsJsonAsync("auth/register", request);
+        var response = await DoPost(method: METHOD, request: request);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
@@ -43,7 +42,7 @@ public class RegisterAccountTest(CustomWebApplicationFactory factory) : IClassFi
         request.FullName = string.Empty;
 
 
-        var response = await _httpClient.PostAsJsonAsync("auth/register", request);
+        var response = await DoPost(method: METHOD, request: request);
 
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);

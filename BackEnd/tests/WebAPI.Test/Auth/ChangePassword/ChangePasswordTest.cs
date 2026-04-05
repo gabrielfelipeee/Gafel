@@ -4,20 +4,24 @@ using Gafel.Application.UseCases.Auth.Login.DoLogin;
 using Gafel.Domain.Resources;
 using Shouldly;
 using System.Net;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text.Json;
 using Gafel.Application.UseCases.Auth.ChangePassword;
 
 namespace WebAPI.Test.Auth.ChangePassword;
 
-public class ChangePasswordTest(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
+public class ChangePasswordTest : GafelClassFixture
 {
-    private readonly HttpClient _httpClient = factory.CreateClient();
+    private const string METHOD = "auth/change-password";
 
-    private readonly string _userEmail = factory.GetUserEmail();
-    private readonly string _userPassword = factory.GetUserPassword();
-    private readonly long _userId = factory.GetUserId();
+    private readonly string _userEmail;
+    private readonly string _userPassword;
+    private readonly long _userId;
+    public ChangePasswordTest(CustomWebApplicationFactory factory) : base(factory)
+    {
+        _userEmail = factory.GetUserEmail();
+        _userPassword = factory.GetUserPassword();
+        _userId = factory.GetUserId();
+    }
 
     [Fact]
     public async Task Success()
@@ -28,8 +32,7 @@ public class ChangePasswordTest(CustomWebApplicationFactory factory) : IClassFix
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
         // Act
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        var response = await _httpClient.PutAsJsonAsync("auth/change-password", request);
+        var response = await DoPut(method: METHOD, request: request, token: token);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
@@ -40,11 +43,11 @@ public class ChangePasswordTest(CustomWebApplicationFactory factory) : IClassFix
             Password = _userPassword,
         };
 
-        response = await _httpClient.PostAsJsonAsync("auth/login", loginRequest);
+        response = await DoPost(method: "auth/login", request: loginRequest);
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized); // Senha Antiga
 
         loginRequest.Password = request.NewPassword; // Senha Atual
-        response = await _httpClient.PostAsJsonAsync("auth/login", loginRequest);
+        response = await DoPost(method: "auth/login", request: loginRequest);
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
@@ -58,8 +61,7 @@ public class ChangePasswordTest(CustomWebApplicationFactory factory) : IClassFix
         };
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        var response = await _httpClient.PutAsJsonAsync("auth/change-password", request);
+        var response = await DoPut(method: METHOD, request: request, token: token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 

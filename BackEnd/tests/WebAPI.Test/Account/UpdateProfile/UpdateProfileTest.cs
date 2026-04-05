@@ -4,18 +4,23 @@ using Gafel.Application.UseCases.Auth.SharedResponses;
 using Gafel.Domain.Resources;
 using Shouldly;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace WebAPI.Test.Account.UpdateProfile;
 
-public class UpdateProfileTest(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
+public class UpdateProfileTest : GafelClassFixture
 {
-    private readonly HttpClient _httpClient = factory.CreateClient();
+    private const string METHOD = "me";
 
-    private readonly string _personCpf = factory.GetPersonCpf();
-    private readonly long _userId = factory.GetUserId();
+    private readonly string _personCpf;
+    private readonly long _userId;
+
+    public UpdateProfileTest(CustomWebApplicationFactory factory) : base(factory)
+    {
+        _personCpf = factory.GetPersonCpf();
+        _userId = factory.GetUserId();
+    }
 
     [Fact]
     public async Task Success()
@@ -25,8 +30,7 @@ public class UpdateProfileTest(CustomWebApplicationFactory factory) : IClassFixt
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
         // Act
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        var response = await _httpClient.PutAsJsonAsync("me", request);
+        var response = await DoPut(method: METHOD, request: request, token: token);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
@@ -40,8 +44,7 @@ public class UpdateProfileTest(CustomWebApplicationFactory factory) : IClassFixt
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
 
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        var response = await _httpClient.PutAsJsonAsync("me", request);
+        var response = await DoPut(method: METHOD, request: request, token: token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
@@ -69,8 +72,7 @@ public class UpdateProfileTest(CustomWebApplicationFactory factory) : IClassFixt
         // Cria nova conta
         var requestRegister = RegisterAccountCommandBuilder.Build();
 
-        var responseRegister = await _httpClient.PostAsJsonAsync("auth/register", requestRegister);
-        responseRegister.StatusCode.ShouldBe(HttpStatusCode.Created);
+        var responseRegister = await DoPost(method: "auth/register", request: requestRegister);
 
         var authResponse = await responseRegister.Content.ReadFromJsonAsync<AuthResponse>();
 
@@ -81,8 +83,7 @@ public class UpdateProfileTest(CustomWebApplicationFactory factory) : IClassFixt
         var request = UpdateProfileCommandBuilder.Build();
         request.Cpf = _personCpf;
 
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        var response = await _httpClient.PutAsJsonAsync("me", request);
+        var response = await DoPut(method: METHOD, request: request, token: token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
@@ -110,8 +111,7 @@ public class UpdateProfileTest(CustomWebApplicationFactory factory) : IClassFixt
         var request = UpdateProfileCommandBuilder.Build(withCpf: true);
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        var response = await _httpClient.PutAsJsonAsync("me", request);
+        var response = await DoPut(method: METHOD, request: request, token: token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
@@ -140,8 +140,7 @@ public class UpdateProfileTest(CustomWebApplicationFactory factory) : IClassFixt
         request.DateOfBirth = DateOnly.FromDateTime(DateTime.UtcNow);
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        var response = await _httpClient.PutAsJsonAsync("me", request);
+        var response = await DoPut(method: METHOD, request: request, token: token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
@@ -170,8 +169,7 @@ public class UpdateProfileTest(CustomWebApplicationFactory factory) : IClassFixt
         request.DateOfBirth = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(5));
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        var response = await _httpClient.PutAsJsonAsync("me", request);
+        var response = await DoPut(method: METHOD, request: request, token: token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
@@ -200,8 +198,7 @@ public class UpdateProfileTest(CustomWebApplicationFactory factory) : IClassFixt
         request.Uf = "XX";
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        var response = await _httpClient.PutAsJsonAsync("me", request);
+        var response = await DoPut(method: METHOD, request: request, token: token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
@@ -230,8 +227,7 @@ public class UpdateProfileTest(CustomWebApplicationFactory factory) : IClassFixt
         request.FullName = string.Empty;
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        var response = await _httpClient.PutAsJsonAsync("me", request);
+        var response = await DoPut(method: METHOD, request: request, token: token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
@@ -260,8 +256,7 @@ public class UpdateProfileTest(CustomWebApplicationFactory factory) : IClassFixt
         request.City = "Sp";
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
 
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        var response = await _httpClient.PutAsJsonAsync("me", request);
+        var response = await DoPut(method: METHOD, request: request, token: token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
