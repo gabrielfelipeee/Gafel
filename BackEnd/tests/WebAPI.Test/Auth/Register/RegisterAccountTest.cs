@@ -3,6 +3,7 @@ using Gafel.Domain.Resources;
 using Shouldly;
 using System.Net;
 using System.Text.Json;
+using WebAPI.Test.Assertions;
 
 namespace WebAPI.Test.Auth.Register;
 
@@ -41,27 +42,8 @@ public class RegisterAccountTest(CustomWebApplicationFactory factory) : GafelCla
         var request = RegisterAccountCommandBuilder.Build();
         request.FullName = string.Empty;
 
-
         var response = await DoPost(method: METHOD, request: request);
 
-
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-
-        await using var responseBody = await response.Content.ReadAsStreamAsync();
-        var responseData = await JsonDocument.ParseAsync(responseBody);
-
-        var title = responseData.RootElement.GetProperty("title").GetString();
-        title.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_TITLE);
-
-        var detail = responseData.RootElement.GetProperty("detail").GetString();
-        detail.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_DETAIL);
-
-        var errors = responseData.RootElement.GetProperty("errors").EnumerateObject().ToList();
-        var error = errors.ShouldHaveSingleItem();
-        error.Name.ShouldBe("fullName");
-
-        var errorMessages = error.Value.EnumerateArray().ToList();
-        var message = errorMessages.ShouldHaveSingleItem().GetString();
-        message.ShouldBe(ResourceMessagesException.PERSON_FULL_NAME_EMPTY);
+        await response.ShouldHaveSingleValidationError(field: "fullName", expectedMessage: ResourceMessagesException.PERSON_FULL_NAME_EMPTY);
     }
 }

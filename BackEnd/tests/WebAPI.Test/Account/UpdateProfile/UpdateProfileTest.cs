@@ -5,7 +5,7 @@ using Gafel.Domain.Resources;
 using Shouldly;
 using System.Net;
 using System.Net.Http.Json;
-using System.Text.Json;
+using WebAPI.Test.Assertions;
 
 namespace WebAPI.Test.Account.UpdateProfile;
 
@@ -46,24 +46,7 @@ public class UpdateProfileTest : GafelClassFixture
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-
-        await using var responseBody = await response.Content.ReadAsStreamAsync();
-        var responseData = await JsonDocument.ParseAsync(responseBody);
-
-        var title = responseData.RootElement.GetProperty("title").GetString();
-        title.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_TITLE);
-
-        var detail = responseData.RootElement.GetProperty("detail").GetString();
-        detail.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_DETAIL);
-
-        var errors = responseData.RootElement.GetProperty("errors").EnumerateObject().ToList();
-        var error = errors.ShouldHaveSingleItem();
-        error.Name.ShouldBe("cpf");
-
-        var errorMessages = error.Value.EnumerateArray().ToList();
-        var message = errorMessages.ShouldHaveSingleItem().GetString();
-        message.ShouldBe(ResourceMessagesException.CPF_INVALID);
+        await response.ShouldHaveSingleValidationError(field: "cpf", expectedMessage: ResourceMessagesException.CPF_INVALID);
     }
 
     [Fact]
@@ -85,24 +68,7 @@ public class UpdateProfileTest : GafelClassFixture
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-
-        await using var responseBody = await response.Content.ReadAsStreamAsync();
-        var responseData = await JsonDocument.ParseAsync(responseBody);
-
-        var title = responseData.RootElement.GetProperty("title").GetString();
-        title.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_TITLE);
-
-        var detail = responseData.RootElement.GetProperty("detail").GetString();
-        detail.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_DETAIL);
-
-        var errors = responseData.RootElement.GetProperty("errors").EnumerateObject().ToList();
-        var error = errors.ShouldHaveSingleItem();
-        error.Name.ShouldBe("cpf");
-
-        var errorMessages = error.Value.EnumerateArray().ToList();
-        var message = errorMessages.ShouldHaveSingleItem().GetString();
-        message.ShouldBe(ResourceMessagesException.CPF_ALREADY_REGISTERED);
+        await response.ShouldHaveSingleValidationError(field: "cpf", expectedMessage: ResourceMessagesException.CPF_ALREADY_REGISTERED);
     }
 
     [Fact]
@@ -113,24 +79,7 @@ public class UpdateProfileTest : GafelClassFixture
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-
-        await using var responseBody = await response.Content.ReadAsStreamAsync();
-        var responseData = await JsonDocument.ParseAsync(responseBody);
-
-        var title = responseData.RootElement.GetProperty("title").GetString();
-        title.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_TITLE);
-
-        var detail = responseData.RootElement.GetProperty("detail").GetString();
-        detail.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_DETAIL);
-
-        var errors = responseData.RootElement.GetProperty("errors").EnumerateObject().ToList();
-        var error = errors.ShouldHaveSingleItem();
-        error.Name.ShouldBe("cpf");
-
-        var errorMessages = error.Value.EnumerateArray().ToList();
-        var message = errorMessages.ShouldHaveSingleItem().GetString();
-        message.ShouldBe(ResourceMessagesException.CPF_UPDATE_NOT_ALLOWED);
+        await response.ShouldHaveSingleValidationError(field: "cpf", expectedMessage: ResourceMessagesException.CPF_UPDATE_NOT_ALLOWED);
     }
 
     [Fact]
@@ -142,24 +91,7 @@ public class UpdateProfileTest : GafelClassFixture
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-
-        await using var responseBody = await response.Content.ReadAsStreamAsync();
-        var responseData = await JsonDocument.ParseAsync(responseBody);
-
-        var title = responseData.RootElement.GetProperty("title").GetString();
-        title.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_TITLE);
-
-        var detail = responseData.RootElement.GetProperty("detail").GetString();
-        detail.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_DETAIL);
-
-        var errors = responseData.RootElement.GetProperty("errors").EnumerateObject().ToList();
-        var error = errors.ShouldHaveSingleItem();
-        error.Name.ShouldBe("dateOfBirth");
-
-        var errorMessages = error.Value.EnumerateArray().ToList();
-        var message = errorMessages.ShouldHaveSingleItem().GetString();
-        message.ShouldBe(ResourceMessagesException.PERSON_DATE_OF_BIRTH_INVALID);
+        await response.ShouldHaveSingleValidationError(field: "dateOfBirth", expectedMessage: ResourceMessagesException.PERSON_DATE_OF_BIRTH_INVALID);
     }
 
     [Fact]
@@ -171,24 +103,7 @@ public class UpdateProfileTest : GafelClassFixture
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-
-        await using var responseBody = await response.Content.ReadAsStreamAsync();
-        var responseData = await JsonDocument.ParseAsync(responseBody);
-
-        var title = responseData.RootElement.GetProperty("title").GetString();
-        title.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_TITLE);
-
-        var detail = responseData.RootElement.GetProperty("detail").GetString();
-        detail.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_DETAIL);
-
-        var errors = responseData.RootElement.GetProperty("errors").EnumerateObject().ToList();
-        var error = errors.ShouldHaveSingleItem();
-        error.Name.ShouldBe("dateOfBirth");
-
-        var errorMessages = error.Value.EnumerateArray().ToList();
-        var message = errorMessages.ShouldHaveSingleItem().GetString();
-        message.ShouldBe(ResourceMessagesException.PERSON_DATE_OF_BIRTH_FUTURE);
+        await response.ShouldHaveSingleValidationError(field: "dateOfBirth", expectedMessage: ResourceMessagesException.PERSON_DATE_OF_BIRTH_FUTURE);
     }
 
     [Fact]
@@ -200,24 +115,7 @@ public class UpdateProfileTest : GafelClassFixture
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-
-        await using var responseBody = await response.Content.ReadAsStreamAsync();
-        var responseData = await JsonDocument.ParseAsync(responseBody);
-
-        var title = responseData.RootElement.GetProperty("title").GetString();
-        title.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_TITLE);
-
-        var detail = responseData.RootElement.GetProperty("detail").GetString();
-        detail.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_DETAIL);
-
-        var errors = responseData.RootElement.GetProperty("errors").EnumerateObject().ToList();
-        var error = errors.ShouldHaveSingleItem();
-        error.Name.ShouldBe("uf");
-
-        var errorMessages = error.Value.EnumerateArray().ToList();
-        var message = errorMessages.ShouldHaveSingleItem().GetString();
-        message.ShouldBe(ResourceMessagesException.PERSON_UF_INVALID);
+        await response.ShouldHaveSingleValidationError(field: "uf", expectedMessage: ResourceMessagesException.PERSON_UF_INVALID);
     }
 
     [Fact]
@@ -229,24 +127,7 @@ public class UpdateProfileTest : GafelClassFixture
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-
-        await using var responseBody = await response.Content.ReadAsStreamAsync();
-        var responseData = await JsonDocument.ParseAsync(responseBody);
-
-        var title = responseData.RootElement.GetProperty("title").GetString();
-        title.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_TITLE);
-
-        var detail = responseData.RootElement.GetProperty("detail").GetString();
-        detail.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_DETAIL);
-
-        var errors = responseData.RootElement.GetProperty("errors").EnumerateObject().ToList();
-        var error = errors.ShouldHaveSingleItem();
-        error.Name.ShouldBe("fullName");
-
-        var errorMessages = error.Value.EnumerateArray().ToList();
-        var message = errorMessages.ShouldHaveSingleItem().GetString();
-        message.ShouldBe(ResourceMessagesException.PERSON_FULL_NAME_EMPTY);
+        await response.ShouldHaveSingleValidationError(field: "fullName", expectedMessage: ResourceMessagesException.PERSON_FULL_NAME_EMPTY);
     }
 
     [Fact]
@@ -258,23 +139,6 @@ public class UpdateProfileTest : GafelClassFixture
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-
-        await using var responseBody = await response.Content.ReadAsStreamAsync();
-        var responseData = await JsonDocument.ParseAsync(responseBody);
-
-        var title = responseData.RootElement.GetProperty("title").GetString();
-        title.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_TITLE);
-
-        var detail = responseData.RootElement.GetProperty("detail").GetString();
-        detail.ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_DETAIL);
-
-        var errors = responseData.RootElement.GetProperty("errors").EnumerateObject().ToList();
-        var error = errors.ShouldHaveSingleItem();
-        error.Name.ShouldBe("city");
-
-        var errorMessages = error.Value.EnumerateArray().ToList();
-        var message = errorMessages.ShouldHaveSingleItem().GetString();
-        message.ShouldBe(ResourceMessagesException.PERSON_CITY_INVALID);
+        await response.ShouldHaveSingleValidationError(field: "city", expectedMessage: ResourceMessagesException.PERSON_CITY_INVALID);
     }
 }
