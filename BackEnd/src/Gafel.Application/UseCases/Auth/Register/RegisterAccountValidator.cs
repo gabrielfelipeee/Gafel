@@ -12,22 +12,16 @@ public class RegisterAccountValidator : AbstractValidator<RegisterAccountCommand
             .NotEmpty()
             .WithMessage(ResourceMessagesException.PERSON_FULL_NAME_EMPTY);
 
-
         RuleFor(user => user.Email)
+            .Cascade(CascadeMode.Stop)
             .NotEmpty()
-            .WithMessage(ResourceMessagesException.USER_EMAIL_EMPTY);
-
-        RuleFor(user => user.Email)
+            .WithMessage(ResourceMessagesException.USER_EMAIL_EMPTY)
             .EmailAddress()
-            .WithMessage(ResourceMessagesException.USER_EMAIL_INVALID)
-            .When(user => !string.IsNullOrEmpty(user.Email));
-
+            .WithMessage(ResourceMessagesException.USER_EMAIL_INVALID);
 
         RuleFor(x => x.Password)
             .NotEmpty()
-            .WithMessage(ResourceMessagesException.USER_PASSWORD_EMPTY);
-        RuleFor(x => x.Password)
-            .PasswordPolicy()
-            .When(x => !string.IsNullOrEmpty(x.Password));
+            .WithMessage(ResourceMessagesException.USER_PASSWORD_EMPTY)
+            .DependentRules(() => RuleFor(x => x.Password).PasswordPolicy());
     }
 }

@@ -2,11 +2,9 @@
 using Gafel.Domain.Enums;
 using Gafel.Domain.Resources;
 using Gafel.Domain.ValueObjects;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gafel.Domain.Entities;
 
-[Table("people")]
 public class Person : EntityBase
 {
     public string FullName { get; set; } = string.Empty;

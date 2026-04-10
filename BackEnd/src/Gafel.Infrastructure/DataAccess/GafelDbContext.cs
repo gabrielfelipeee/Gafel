@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Gafel.Domain.Entities;
+using Gafel.Infrastructure.Migrations;
+using Gafel.Infrastructure.Services.Identity.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Gafel.Domain.Entities;
-using Gafel.Infrastructure.Services.Identity.Entities;
-using Gafel.Domain.ValueObjects;
 
 namespace Gafel.Infrastructure.DataAccess;
 
@@ -12,20 +12,21 @@ public class GafelDbContext(DbContextOptions<GafelDbContext> options) : Identity
 
     public DbSet<Person> People { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(builder);
 
-        modelBuilder.Entity<ApplicationUser>().ToTable("users");
-        modelBuilder.Entity<IdentityRole<long>>().ToTable("roles");
-        modelBuilder.Entity<IdentityUserRole<long>>().ToTable("user_roles");
-        modelBuilder.Entity<IdentityUserClaim<long>>().ToTable("user_claims");
-        modelBuilder.Entity<IdentityUserLogin<long>>().ToTable("user_logins");
-        modelBuilder.Entity<IdentityUserToken<long>>().ToTable("user_tokens");
-        modelBuilder.Entity<IdentityRoleClaim<long>>().ToTable("role_claims");
+        builder.Entity<ApplicationUser>().ToTable(DatabaseTables.USERS);
+        builder.Entity<IdentityRole<long>>().ToTable(DatabaseTables.ROLES);
+        builder.Entity<IdentityUserRole<long>>().ToTable(DatabaseTables.USER_ROLES);
+        builder.Entity<IdentityUserClaim<long>>().ToTable(DatabaseTables.USER_CLAIMS);
+        builder.Entity<IdentityUserLogin<long>>().ToTable(DatabaseTables.USER_LOGINS);
+        builder.Entity<IdentityUserToken<long>>().ToTable(DatabaseTables.USER_TOKENS);
+        builder.Entity<IdentityRoleClaim<long>>().ToTable(DatabaseTables.ROLE_CLAIMS);
+
+        builder.Entity<Person>().ToTable(DatabaseTables.PEOPLE);
 
         // Aplica todas as configurações de mapeamento de entidades para o modelo de dados, que estão no mesmo assembly.
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(GafelDbContext).Assembly);
+        builder.ApplyConfigurationsFromAssembly(typeof(GafelDbContext).Assembly);
     }
 }
-
