@@ -46,7 +46,6 @@ jobs:
       - name: Test with coverage
         run: |
           dotnet test Gafel.sln \
-            --no-build \
             --configuration Release \
             /p:CollectCoverage=true \
             /p:CoverletOutput=./coverage/ \
