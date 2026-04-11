@@ -37,15 +37,21 @@ jobs:
             /o:"${{ secrets.SONAR_ORGANIZATION }}" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.sources="src" \
-            /d:sonar.cs.cobertura.reportsPaths="**/TestResults/**/coverage.cobertura.xml"
+            /d:sonar.tests="tests" \
+            /d:sonar.cs.cobertura.reportsPaths="TestResults/**/coverage.cobertura.xml"
 
       - name: Build
         run: dotnet build Gafel.sln
 
       - name: Test with coverage
-        run: dotnet test Gafel.sln --collect:"XPlat Code Coverage"
+        run: |
+          dotnet test Gafel.sln \
+            --collect:"XPlat Code Coverage" \
+            --results-directory ./TestResults \
+            /p:CollectCoverage=true \
+            /p:CoverletOutputFormat=cobertura \
+            /p:CoverletOutput=./TestResults/coverage/
 
-      # Finaliza análise
       - name: End analysis
         run: |
           dotnet sonarscanner end \
