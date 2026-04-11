@@ -1,5 +1,6 @@
 ﻿using Gafel.Application.Exceptions;
 using Gafel.Application.Extensions;
+using Gafel.Domain.Entities;
 using Gafel.Domain.Enums;
 using Gafel.Domain.Repositories;
 using Gafel.Domain.Repositories.Person;
@@ -38,44 +39,10 @@ public class UpdateProfileUseCase : IUpdateProfileUseCase
         var errors = new Dictionary<string, string[]>();
 
         // CPF
-        if (!string.IsNullOrWhiteSpace(request.Cpf))
-        {
-            var cpfResult = Cpf.Create(request.Cpf);
-
-            if (!cpfResult.IsSuccess)
-                AddError(errors, nameof(request.Cpf), cpfResult.ErrorMessage!);
-            else
-            {
-                var newCpf = cpfResult.Value!;
-
-                // Só consulta o banco se a pessoa estiver tentando cadastrar um CPF e ainda não tiver um. (Unicidade)
-                if (person.Cpf is null && await _personReadOnlyRepository.ExistPersonWithCpf(cpf: newCpf, excludeId: person.Id))
-                    AddError(errors, nameof(request.Cpf), ResourceMessagesException.CPF_ALREADY_REGISTERED);
-                else
-                {
-                    // Entidade decide se aceita (Imutabilidade)
-                    var result = person.SetCpf(newCpf);
-                    if (!result.IsSuccess)
-                        AddError(errors, nameof(request.Cpf), result.ErrorMessage!);
-                }
-            }
-        }
+        await ProcessCpf(person: person, cpfRequest: request.Cpf, errors: errors);
 
         // Data de Nascimento
-        if (request.DateOfBirth.HasValue)
-        {
-            var dobResult = DateOfBirth.Create(request.DateOfBirth.Value);
-
-            if (!dobResult.IsSuccess)
-                AddError(errors, nameof(request.DateOfBirth), dobResult.ErrorMessage!);
-            else
-            {
-                // Entidade decide se aceita (Imutabilidade)
-                var result = person.SetDateOfBirth(dobResult.Value!);
-                if (!result.IsSuccess)
-                    AddError(errors, nameof(request.DateOfBirth), result.ErrorMessage!);
-            }
-        }
+        ProcessDateOfBirth(person: person, dobRequest: request.DateOfBirth, errors: errors);
 
         if (errors.Count > 0)
             throw new ErrorOnValidationException(errors);
@@ -100,6 +67,54 @@ public class UpdateProfileUseCase : IUpdateProfileUseCase
 
             throw new ErrorOnValidationException(errors);
         }
+    }
+
+    private async Task ProcessCpf(Person person, string? cpfRequest, Dictionary<string, string[]> errors)
+    {
+        if (string.IsNullOrWhiteSpace(cpfRequest))
+            return;
+
+        var cpfResult = Cpf.Create(cpfRequest);
+
+        if (!cpfResult.IsSuccess)
+        {
+            AddError(errors, nameof(UpdateProfileCommand.Cpf), cpfResult.ErrorMessage!);
+            return;
+        }
+
+        var newCpf = cpfResult.Value!;
+
+        // Verificação de Unicidade
+        if (person.Cpf is null && await _personReadOnlyRepository.ExistPersonWithCpf(cpf: newCpf, excludeId: person.Id))
+        {
+            AddError(errors, nameof(UpdateProfileCommand.Cpf), ResourceMessagesException.CPF_ALREADY_REGISTERED);
+            return;
+        }
+
+        // Entidade decide se aceita (Imutabilidade)
+        var updateResult = person.SetCpf(newCpf);
+        if (!updateResult.IsSuccess)
+            AddError(errors, nameof(UpdateProfileCommand.Cpf), updateResult.ErrorMessage!);
+    }
+
+    private static void ProcessDateOfBirth(Person person, DateOnly? dobRequest, Dictionary<string, string[]> errors)
+    {
+        if (!dobRequest.HasValue)
+            return;
+
+        var dobResult = DateOfBirth.Create(dobRequest.Value);
+
+        if (!dobResult.IsSuccess)
+        {
+            AddError(errors, nameof(UpdateProfileCommand.DateOfBirth), dobResult.ErrorMessage!);
+            return;
+        }
+
+        // Entidade decide se aceita (Imutabilidade)
+        var updateResult = person.SetDateOfBirth(dobResult.Value!);
+
+        if (!updateResult.IsSuccess)
+            AddError(errors, nameof(UpdateProfileCommand.DateOfBirth), updateResult.ErrorMessage!);
     }
 
     private static void AddError(Dictionary<string, string[]> errors, string key, string message)

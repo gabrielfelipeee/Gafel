@@ -39,7 +39,7 @@ public static class DatabaseMigration
         // Executa uma consulta SQL para verificar se o banco de dados já existe, consultando o esquema do banco de dados.
         var records = dbConnection.Query("SELECT * FROM sys.databases WHERE name = @dbName", parameters);
         if (!records.Any())
-            dbConnection.Execute($"CREATE DATABASE {databaseName}"); // Cria o banco de dados com o nome especificado na string de conexão.
+            dbConnection.Execute($"CREATE DATABASE [{databaseName}]"); // Cria o banco de dados com o nome especificado na string de conexão.
     }
 
     private static void MigrationDatabase(IServiceProvider serviceProvider)

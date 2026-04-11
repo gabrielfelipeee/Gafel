@@ -69,7 +69,7 @@ app.MapControllers();
 
 await app.UseDatabaseInitialization();
 
-app.Run();
+await app.RunAsync();
 
 public partial class Program
 {
