@@ -37,7 +37,8 @@ jobs:
             /o:"${{ secrets.SONAR_ORGANIZATION }}" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.cs.cobertura.reportsPaths="**/TestResults/**/coverage.cobertura.xml"
+            /d:sonar.cs.vstest.reportsPaths="**/*.trx" \
+            /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
 
       - name: Build
         run: dotnet build Gafel.sln
@@ -46,8 +47,7 @@ jobs:
         run: |
           dotnet test Gafel.sln \
             --configuration Release \
-            --collect:"XPlat Code Coverage" \
-            --results-directory ./TestResults
+            --collect "Code coverage"
 
       - name: End analysis
         run: |
