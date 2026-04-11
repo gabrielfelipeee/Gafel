@@ -51,6 +51,11 @@ jobs:
             /p:CollectCoverage=true \
             /p:CoverletOutputFormat=opencover
 
+      - name: Merge Coverage Reports
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator -reports:"**/coverage.opencover.xml" -targetdir:"coverage-report" -reporttypes:SonarQube
+
       - name: End analysis
         run: |
           dotnet sonarscanner end \
