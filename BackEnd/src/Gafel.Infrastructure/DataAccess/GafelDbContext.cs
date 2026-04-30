@@ -25,6 +25,7 @@ public class GafelDbContext(DbContextOptions<GafelDbContext> options) : Identity
         builder.Entity<IdentityRoleClaim<long>>().ToTable(DatabaseTables.ROLE_CLAIMS);
 
         builder.Entity<Person>().ToTable(DatabaseTables.PEOPLE);
+        builder.Entity<DefaultCategory>().ToTable(DatabaseTables.DEFAULT_CATEGORIES);
 
         // Aplica todas as configurações de mapeamento de entidades para o modelo de dados, que estão no mesmo assembly.
         builder.ApplyConfigurationsFromAssembly(typeof(GafelDbContext).Assembly);

@@ -11,5 +11,6 @@
         public const string ROLE_CLAIMS = "role_claims";
 
         public const string PEOPLE = "people";
+        public const string DEFAULT_CATEGORIES = "default_categories";
     }
 }
