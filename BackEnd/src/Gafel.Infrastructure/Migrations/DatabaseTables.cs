@@ -12,5 +12,6 @@
 
         public const string PEOPLE = "people";
         public const string DEFAULT_CATEGORIES = "default_categories";
+        public const string CATEGORIES = "categories";
     }
 }

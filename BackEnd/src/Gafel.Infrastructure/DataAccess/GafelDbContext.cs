@@ -11,6 +11,8 @@ public class GafelDbContext(DbContextOptions<GafelDbContext> options) : Identity
 {
 
     public DbSet<Person> People { get; set; }
+    public DbSet<DefaultCategory> DefaultCategories { get; set; }
+    public DbSet<Category> Categories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -26,6 +28,7 @@ public class GafelDbContext(DbContextOptions<GafelDbContext> options) : Identity
 
         builder.Entity<Person>().ToTable(DatabaseTables.PEOPLE);
         builder.Entity<DefaultCategory>().ToTable(DatabaseTables.DEFAULT_CATEGORIES);
+        builder.Entity<Category>().ToTable(DatabaseTables.CATEGORIES);
 
         // Aplica todas as configurações de mapeamento de entidades para o modelo de dados, que estão no mesmo assembly.
         builder.ApplyConfigurationsFromAssembly(typeof(GafelDbContext).Assembly);

@@ -14,7 +14,7 @@ public class Version0000002 : VersionBase
             .WithColumn("city").AsString(60).Nullable()
             .WithColumn("uf").AsFixedLengthString(2).Nullable()
             .WithColumn("user_id").AsInt64().NotNullable()
-                .ForeignKey("fk_people_users_id", "users", "id");
+                .ForeignKey("fk_people_users_id", DatabaseTables.USERS, "id");
 
         Create.Index("idx_people_cpf")
             .OnTable(DatabaseTables.PEOPLE)
