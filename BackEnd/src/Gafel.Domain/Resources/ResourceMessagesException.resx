@@ -231,4 +231,10 @@
   <data name="CATEGORY_TYPE_INVALID" xml:space="preserve">
     <value>Tipo inválido</value>
   </data>
+  <data name="EXCEPTION_NOT_FOUND_TITLE" xml:space="preserve">
+    <value>Recurso não encontrado</value>
+  </data>
+  <data name="CATEGORY_NOT_FOUND" xml:space="preserve">
+    <value>Não foi possível encontrar a categoria com o ID informado</value>
+  </data>
 </root>

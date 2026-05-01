@@ -160,6 +160,15 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi possível encontrar a categoria com o ID informado.
+        /// </summary>
+        public static string CATEGORY_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("CATEGORY_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Tipo inválido.
         /// </summary>
         public static string CATEGORY_TYPE_INVALID {
@@ -237,6 +246,15 @@ namespace Gafel.Domain.Resources {
         public static string EXCEPTION_INVALID_USER_TOKEN_DETAIL {
             get {
                 return ResourceManager.GetString("EXCEPTION_INVALID_USER_TOKEN_DETAIL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Recurso não encontrado.
+        /// </summary>
+        public static string EXCEPTION_NOT_FOUND_TITLE {
+            get {
+                return ResourceManager.GetString("EXCEPTION_NOT_FOUND_TITLE", resourceCulture);
             }
         }
         

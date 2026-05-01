@@ -1,5 +1,6 @@
 ﻿using Gafel.Application.UseCases.Category.Register;
 using Gafel.Application.UseCases.Category.Shared.Commands;
+using Gafel.Application.UseCases.Category.Update;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,5 +17,16 @@ public class CategoriesController : GafelController
         await useCase.Execute(request);
 
         return Created();
+    }
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Update([FromRoute] long id, [FromBody] CategoryCommand request, [FromServices] IUpdateCategoryUseCase useCase)
+    {
+        await useCase.Execute(categoryId: id, request: request);
+
+        return NoContent();
     }
 }
