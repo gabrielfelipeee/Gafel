@@ -1,6 +1,6 @@
 ﻿using Bogus;
 using CommonTestUtilities.Helpers;
-using Gafel.Application.UseCases.Category.Shared.Commands;
+using Gafel.Application.UseCases.Auth.Register;
 
 namespace CommonTestUtilities.Commands;
 
