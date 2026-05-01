@@ -12,6 +12,7 @@ using Gafel.Domain.Entities;
 using Gafel.Domain.Enums;
 using Gafel.Domain.Resources;
 using Shouldly;
+using System.Net;
 
 namespace UseCases.Test.Category.Register;
 
@@ -97,14 +98,29 @@ public class RegisterCategoryUseCaseTest
         value.ShouldBe(ResourceMessagesException.CATEGORY_TYPE_INVALID);
     }
 
+    [Fact]
+    public async Task Error_Person_NotFound()
+    {
+        var user = UserDtoBuilder.Build();
+        var request = CategoryCommandBuilder.Build();
+        var useCase = CreateUseCase(user: user);
 
-    private static RegisterCategoryUseCase CreateUseCase(UserDto user, Person person)
+        var exception = await Should.ThrowAsync<PersonNotFoundException>(useCase.Execute(request));
+
+        exception.GetErrorTitle().ShouldBe(ResourceMessagesException.EXCEPTION_PERSON_NOT_FOUND_TITLE);
+        exception.GetErrorDetail().ShouldBe(ResourceMessagesException.EXCEPTION_PERSON_NOT_FOUND_DETAIL);
+        exception.GetStatusCode().ShouldBe(HttpStatusCode.NotFound);
+    }
+
+
+    private static RegisterCategoryUseCase CreateUseCase(UserDto user, Person? person = null)
     {
         var unitOfWork = UnitOfWorkBuilder.Build();
         var currentUser = CurrentUserBuilder.Build(user);
 
         var personReadOnlyRepository = new PersonReadOnlyRepositoryBuilder();
-        personReadOnlyRepository.GetByUserId(person);
+        if (person is not null)
+            personReadOnlyRepository.GetByUserId(person);
 
         var categoryWriteOnlyRepository = CategoryWriteOnlyRepositoryBuilder.Build();
 
