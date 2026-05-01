@@ -1,6 +1,7 @@
 ﻿using CommonTestUtilities.Commands;
 using CommonTestUtilities.Tokens;
 using Gafel.Application.UseCases.Auth.SharedResponses;
+using Gafel.Domain.Dtos;
 using Gafel.Domain.Resources;
 using Shouldly;
 using System.Net;
@@ -13,13 +14,13 @@ public class UpdateProfileTest : GafelClassFixture
 {
     private const string METHOD = "me";
 
-    private readonly string _personCpf;
-    private readonly long _userId;
+    private readonly UserDto _user;
+    private readonly Gafel.Domain.Entities.Person _person;
 
     public UpdateProfileTest(CustomWebApplicationFactory factory) : base(factory)
     {
-        _personCpf = factory.GetPersonCpf();
-        _userId = factory.GetUserId();
+        _user = factory.GetUser();
+        _person = factory.GetPerson();
     }
 
     [Fact]
@@ -27,7 +28,7 @@ public class UpdateProfileTest : GafelClassFixture
     {
         // Arrange
         var request = UpdateProfileCommandBuilder.Build();
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
         // Act
         var response = await DoPut(method: METHOD, request: request, token: token);
@@ -41,7 +42,7 @@ public class UpdateProfileTest : GafelClassFixture
     {
         var request = UpdateProfileCommandBuilder.Build();
         request.Cpf = "00000000000";
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
 
         var response = await DoPut(method: METHOD, request: request, token: token);
@@ -64,7 +65,7 @@ public class UpdateProfileTest : GafelClassFixture
 
         // Tenta atualizar a nova pessoa com um CPF existente no banco
         var request = UpdateProfileCommandBuilder.Build();
-        request.Cpf = _personCpf;
+        request.Cpf = _person.Cpf!.Value;
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
@@ -75,7 +76,7 @@ public class UpdateProfileTest : GafelClassFixture
     public async Task Error_Cpf_Cannot_Be_Modified_After_Creation()
     {
         var request = UpdateProfileCommandBuilder.Build(withCpf: true);
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
@@ -87,7 +88,7 @@ public class UpdateProfileTest : GafelClassFixture
     {
         var request = UpdateProfileCommandBuilder.Build(withDateOfBirth: true);
         request.DateOfBirth = DateOnly.FromDateTime(DateTime.UtcNow);
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
@@ -99,7 +100,7 @@ public class UpdateProfileTest : GafelClassFixture
     {
         var request = UpdateProfileCommandBuilder.Build(withDateOfBirth: true);
         request.DateOfBirth = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(5));
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
@@ -111,7 +112,7 @@ public class UpdateProfileTest : GafelClassFixture
     {
         var request = UpdateProfileCommandBuilder.Build();
         request.Uf = "XX";
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
@@ -123,7 +124,7 @@ public class UpdateProfileTest : GafelClassFixture
     {
         var request = UpdateProfileCommandBuilder.Build();
         request.FullName = string.Empty;
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
@@ -135,7 +136,7 @@ public class UpdateProfileTest : GafelClassFixture
     {
         var request = UpdateProfileCommandBuilder.Build();
         request.City = "Sp";
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 

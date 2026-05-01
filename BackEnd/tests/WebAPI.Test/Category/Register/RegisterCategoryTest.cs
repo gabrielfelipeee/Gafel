@@ -1,5 +1,6 @@
 ﻿using CommonTestUtilities.Commands;
 using CommonTestUtilities.Tokens;
+using Gafel.Domain.Dtos;
 using Gafel.Domain.Enums;
 using Gafel.Domain.Resources;
 using Shouldly;
@@ -12,13 +13,13 @@ public class RegisterCategoryTest : GafelClassFixture
 {
     private const string METHOD = "categories";
 
-    private readonly string _personCpf;
-    private readonly long _userId;
+    private readonly UserDto _user;
+    private readonly Gafel.Domain.Entities.Person _person;
 
     public RegisterCategoryTest(CustomWebApplicationFactory factory) : base(factory)
     {
-        _personCpf = factory.GetPersonCpf();
-        _userId = factory.GetUserId();
+        _user = factory.GetUser();
+        _person = factory.GetPerson();
     }
 
     [Fact]
@@ -26,7 +27,7 @@ public class RegisterCategoryTest : GafelClassFixture
     {
         // Arrange
         var request = CategoryCommandBuilder.Build();
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
         // Act
         var response = await DoPost(method: METHOD, request: request, token: token);
@@ -40,7 +41,7 @@ public class RegisterCategoryTest : GafelClassFixture
     {
         var request = CategoryCommandBuilder.Build();
         request.Name = string.Empty;
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
         var response = await DoPost(method: METHOD, request: request, token: token);
 
@@ -52,7 +53,7 @@ public class RegisterCategoryTest : GafelClassFixture
     {
         var request = CategoryCommandBuilder.Build();
         request.Icon = string.Empty;
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
         var response = await DoPost(method: METHOD, request: request, token: token);
 
@@ -64,7 +65,7 @@ public class RegisterCategoryTest : GafelClassFixture
     {
         var request = CategoryCommandBuilder.Build();
         request.Type = (CategoryType)100;
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
         var response = await DoPost(method: METHOD, request: request, token: token);
 

@@ -1,5 +1,6 @@
 ﻿using CommonTestUtilities.Commands;
 using Gafel.Application.UseCases.Auth.Login.DoLogin;
+using Gafel.Domain.Dtos;
 using Gafel.Domain.Resources;
 using Shouldly;
 using System.Net;
@@ -11,15 +12,15 @@ public class DoLoginTest : GafelClassFixture
 {
     private const string METHOD = "auth/login";
 
-    private readonly string _personFullName;
-    private readonly string _userEmail;
+    private readonly UserDto _user;
     private readonly string _userPassword;
+    private readonly Gafel.Domain.Entities.Person _person;
 
     public DoLoginTest(CustomWebApplicationFactory factory) : base(factory)
     {
-        _personFullName = factory.GetPersonFullName();
-        _userEmail = factory.GetUserEmail();
+        _user = factory.GetUser();
         _userPassword = factory.GetUserPassword();
+        _person = factory.GetPerson();
     }
 
     [Fact]
@@ -28,7 +29,7 @@ public class DoLoginTest : GafelClassFixture
         // Arrange
         var request = new DoLoginCommand()
         {
-            Email = _userEmail,
+            Email = _user.Email,
             Password = _userPassword
         };
 
@@ -42,7 +43,7 @@ public class DoLoginTest : GafelClassFixture
         var responseData = await JsonDocument.ParseAsync(responseBody);
 
         var fullName = responseData.RootElement.GetProperty("fullName").GetString();
-        fullName.ShouldBe(_personFullName);
+        fullName.ShouldBe(_person.FullName);
 
         var tokens = responseData.RootElement.GetProperty("tokens");
         tokens.EnumerateObject().Count().ShouldBe(1);

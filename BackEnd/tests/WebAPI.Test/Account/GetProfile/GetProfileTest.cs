@@ -1,4 +1,6 @@
 ﻿using CommonTestUtilities.Tokens;
+using Gafel.Domain.Dtos;
+using Gafel.Domain.Entities;
 using Shouldly;
 using System.Net;
 using System.Text.Json;
@@ -9,23 +11,19 @@ public class GetProfileTest : GafelClassFixture
 {
     private const string METHOD = "me";
 
-    private readonly long _userId;
-    private readonly string _userEmail;
-    private readonly string _personFullName;
-    private readonly string _personCpf;
+    private readonly UserDto _user;
+    private readonly Person _person;
     public GetProfileTest(CustomWebApplicationFactory factory) : base(factory)
     {
-        _userId = factory.GetUserId();
-        _userEmail = factory.GetUserEmail();
-        _personFullName = factory.GetPersonFullName();
-        _personCpf = factory.GetPersonCpf();
+        _user = factory.GetUser();
+        _person = factory.GetPerson();
     }
 
     [Fact]
     public async Task Success()
     {
         // Arrange
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _userId);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
         // Act
         var response = await DoGet(method: METHOD, token: token);
@@ -36,8 +34,8 @@ public class GetProfileTest : GafelClassFixture
         await using var responseBody = await response.Content.ReadAsStreamAsync();
         var responseData = await JsonDocument.ParseAsync(responseBody);
 
-        responseData.RootElement.GetProperty("email").GetString().ShouldBe(_userEmail);
-        responseData.RootElement.GetProperty("fullName").GetString().ShouldBe(_personFullName);
-        responseData.RootElement.GetProperty("cpf").GetString().ShouldBe(_personCpf);
+        responseData.RootElement.GetProperty("email").GetString().ShouldBe(_user.Email);
+        responseData.RootElement.GetProperty("fullName").GetString().ShouldBe(_person.FullName);
+        responseData.RootElement.GetProperty("cpf").GetString().ShouldBe(_person.Cpf!.Value);
     }
 }

@@ -11,16 +11,24 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Bogus;
+using Gafel.Domain.Dtos;
 
 namespace WebAPI.Test;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
+    private UserDto _user = default!;
+    private string _userPassword = default!;
+
+    private Gafel.Domain.Entities.Person _person = default!;
+
+    /*
     private string _personFullName = default!;
     private string _personCpf = default!;
     private string _userEmail = default!;
     private string _userPassword = default!;
     private long _userId = default!;
+    */
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -52,12 +60,20 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             });
     }
 
+    /*
     public string GetPersonFullName() => _personFullName;
     public string GetPersonCpf() => _personCpf;
 
     public long GetUserId() => _userId;
     public string GetUserEmail() => _userEmail;
     public string GetUserPassword() => _userPassword;
+    */
+
+    public UserDto GetUser() => _user;
+    public string GetUserPassword() => _userPassword;
+
+    public Gafel.Domain.Entities.Person GetPerson() => _person;
+
 
 
     private async Task StartDatabase(GafelDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<long>> roleManager)
@@ -78,11 +94,20 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
         context.SaveChanges();
 
+
+        _user = new(applicationUser.Id, applicationUser.Email!, applicationUser.UserName!);
+        _userPassword = password;
+
+        _person = person;
+
+
+        /*
         _userId = applicationUser.Id;
         _userEmail = userDto.Email;
         _userPassword = password;
 
         _personFullName = person.FullName;
         _personCpf = person.Cpf!.Value;
+        */
     }
 }
