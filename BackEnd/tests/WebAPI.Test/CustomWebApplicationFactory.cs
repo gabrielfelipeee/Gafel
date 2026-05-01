@@ -21,14 +21,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     private string _userPassword = default!;
 
     private Gafel.Domain.Entities.Person _person = default!;
-
-    /*
-    private string _personFullName = default!;
-    private string _personCpf = default!;
-    private string _userEmail = default!;
-    private string _userPassword = default!;
-    private long _userId = default!;
-    */
+    private Gafel.Domain.Entities.Category _category = default!;
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -60,54 +53,46 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             });
     }
 
-    /*
-    public string GetPersonFullName() => _personFullName;
-    public string GetPersonCpf() => _personCpf;
-
-    public long GetUserId() => _userId;
-    public string GetUserEmail() => _userEmail;
-    public string GetUserPassword() => _userPassword;
-    */
-
     public UserDto GetUser() => _user;
     public string GetUserPassword() => _userPassword;
 
     public Gafel.Domain.Entities.Person GetPerson() => _person;
-
+    public Gafel.Domain.Entities.Category GetCategory() => _category;
 
 
     private async Task StartDatabase(GafelDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<long>> roleManager)
     {
+        // Roles
         foreach (var role in Roles.All)
             await roleManager.CreateAsync(new IdentityRole<long>(role));
 
+
+        // User
         var userDto = UserDtoBuilder.Build();
         var password = PasswordGenerator.Generate(new Faker());
 
         var applicationUser = new ApplicationUser(userDto.Email);
         await userManager.CreateAsync(applicationUser, password);
 
-
+        // Person
         var person = PersonBuilder.Build(withCpf: true, withDateOfBirth: true);
         person.UserId = userDto.Id;
         context.People.Add(person);
 
+        // Category
+        var category = CategoryBuilder.Build(person);
+        context.Categories.Add(category);
+
+
         context.SaveChanges();
 
 
+
+        // Set
         _user = new(applicationUser.Id, applicationUser.Email!, applicationUser.UserName!);
         _userPassword = password;
 
         _person = person;
-
-
-        /*
-        _userId = applicationUser.Id;
-        _userEmail = userDto.Email;
-        _userPassword = password;
-
-        _personFullName = person.FullName;
-        _personCpf = person.Cpf!.Value;
-        */
+        _category = category;
     }
 }
