@@ -86,6 +86,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IPersonUpdateOnlyRepository, PersonRepository>();
 
         services.AddScoped<ICategoryWriteOnlyRepository, CategoryRepository>();
+        services.AddScoped<ICategoryUpdateOnlyRepository, CategoryRepository>();
     }
 
 
