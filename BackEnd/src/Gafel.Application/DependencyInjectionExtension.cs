@@ -4,6 +4,7 @@ using Gafel.Application.UseCases.Account.UpdateProfile;
 using Gafel.Application.UseCases.Auth.ChangePassword;
 using Gafel.Application.UseCases.Auth.Login.DoLogin;
 using Gafel.Application.UseCases.Auth.Register;
+using Gafel.Application.UseCases.Category.GetById;
 using Gafel.Application.UseCases.Category.Register;
 using Gafel.Application.UseCases.Category.Update;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +30,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IUpdateProfileUseCase, UpdateProfileUseCase>();
         services.AddScoped<IGetProfileUseCase, GetProfileUseCase>();
 
+        services.AddScoped<IGetCategoryByIdUseCase, GetCategoryByIdUseCase>();
         services.AddScoped<IRegisterCategoryUseCase, RegisterCategoryUseCase>();
         services.AddScoped<IUpdateCategoryUseCase, UpdateCategoryUseCase>();
     }
