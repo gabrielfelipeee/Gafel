@@ -124,6 +124,51 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Ícone é obrigatório..
+        /// </summary>
+        public static string CATEGORY_ICON_EMPTY {
+            get {
+                return ResourceManager.GetString("CATEGORY_ICON_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O nome do ícone deve ter no máximo 50 caracteres..
+        /// </summary>
+        public static string CATEGORY_ICON_TOO_LONG {
+            get {
+                return ResourceManager.GetString("CATEGORY_ICON_TOO_LONG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O nome é obrigatório.
+        /// </summary>
+        public static string CATEGORY_NAME_EMPTY {
+            get {
+                return ResourceManager.GetString("CATEGORY_NAME_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O nome da categoria deve ter no máximo 100 caracteres.
+        /// </summary>
+        public static string CATEGORY_NAME_TOO_LONG {
+            get {
+                return ResourceManager.GetString("CATEGORY_NAME_TOO_LONG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Tipo inválido.
+        /// </summary>
+        public static string CATEGORY_TYPE_INVALID {
+            get {
+                return ResourceManager.GetString("CATEGORY_TYPE_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a CPF já cadastrado.
         /// </summary>
         public static string CPF_ALREADY_REGISTERED {

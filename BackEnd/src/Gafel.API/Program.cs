@@ -24,7 +24,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 // Configurações de Infraestrutura e Aplicação
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddApplication();
+builder.Services.AddApplication(builder.Configuration);
 
 
 // Segurança (Auth)

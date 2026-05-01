@@ -216,4 +216,19 @@
   <data name="CPF_EMPTY" xml:space="preserve">
     <value>CPF não pode ser vazio</value>
   </data>
+  <data name="CATEGORY_NAME_EMPTY" xml:space="preserve">
+    <value>O nome é obrigatório</value>
+  </data>
+  <data name="CATEGORY_NAME_TOO_LONG" xml:space="preserve">
+    <value>O nome da categoria deve ter no máximo 100 caracteres</value>
+  </data>
+  <data name="CATEGORY_ICON_TOO_LONG" xml:space="preserve">
+    <value>O nome do ícone deve ter no máximo 50 caracteres.</value>
+  </data>
+  <data name="CATEGORY_ICON_EMPTY" xml:space="preserve">
+    <value>Ícone é obrigatório.</value>
+  </data>
+  <data name="CATEGORY_TYPE_INVALID" xml:space="preserve">
+    <value>Tipo inválido</value>
+  </data>
 </root>
