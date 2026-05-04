@@ -1,4 +1,4 @@
-﻿namespace Gafel.Domain.Dtos;
+﻿namespace Gafel.Domain.Dtos.Responses;
 
 public record RegisterUserResponseDto(
     bool Success,

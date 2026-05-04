@@ -1,4 +1,5 @@
 ﻿using Gafel.Domain.Dtos;
+using Gafel.Domain.Dtos.Responses;
 using Gafel.Domain.Resources;
 using Gafel.Domain.Services.Identity;
 using Gafel.Infrastructure.Extensions;

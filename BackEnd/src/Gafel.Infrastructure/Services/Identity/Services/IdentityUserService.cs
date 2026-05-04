@@ -1,5 +1,6 @@
 ﻿using Gafel.Domain.Constants;
 using Gafel.Domain.Dtos;
+using Gafel.Domain.Dtos.Responses;
 using Gafel.Domain.Services.Identity;
 using Gafel.Infrastructure.Extensions;
 using Gafel.Infrastructure.Services.Identity.Entities;

@@ -1,6 +1,7 @@
 ﻿using Moq;
 using Gafel.Domain.Resources;
 using Gafel.Domain.Dtos;
+using Gafel.Domain.Dtos.Responses;
 using Gafel.Domain.Services.Identity;
 
 namespace CommonTestUtilities.Services.Identity;
