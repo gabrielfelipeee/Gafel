@@ -1,4 +1,5 @@
-﻿using Gafel.Domain.Entities;
+﻿using Gafel.Domain.Dtos.QueryParams;
+using Gafel.Domain.Entities;
 using Gafel.Domain.Repositories.Category;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,27 @@ public class CategoryRepository(GafelDbContext context) : ICategoryReadOnlyRepos
             .AsNoTracking()
             .FirstOrDefaultAsync(category => category.IsActive && category.PersonId == person.Id && category.Id == categoryId);
 
+    public async Task<(IList<Category> categories, int total)> Filter(Person person, FilterCategoryQueryParams filters)
+    {
+        IQueryable<Category> query = _context.Categories
+            .AsNoTracking()
+            .Where(category => category.IsActive && category.PersonId == person.Id)
+            .OrderBy(x => x.Id);
+
+        if (filters.Type.HasValue)
+            query = query.Where(category => category.Type == filters.Type.Value);
+
+        int total = await query.CountAsync();
+
+        if (filters.Offset.HasValue && filters.Limit.HasValue)
+        {
+            query = query
+                .Skip(filters.Offset.Value)
+                .Take(filters.Limit.Value);
+        }
+
+        return (await query.ToListAsync(), total);
+    }
 
     // Write
     public async Task Add(Category category) => await _context.Categories.AddAsync(category);
