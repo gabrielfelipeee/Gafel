@@ -277,6 +277,42 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Limit deve estar entre 1 e 100.
+        /// </summary>
+        public static string PAGINATION_LIMIT_RANGE {
+            get {
+                return ResourceManager.GetString("PAGINATION_LIMIT_RANGE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a &apos;Limit&apos; é obrigatório.
+        /// </summary>
+        public static string PAGINATION_LIMIT_REQUIRED {
+            get {
+                return ResourceManager.GetString("PAGINATION_LIMIT_REQUIRED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Offset deve ser maior ou igual a 0.
+        /// </summary>
+        public static string PAGINATION_OFFSET_MIN_VALUE {
+            get {
+                return ResourceManager.GetString("PAGINATION_OFFSET_MIN_VALUE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a &apos;Offset&apos; é obrigatório.
+        /// </summary>
+        public static string PAGINATION_OFFSET_REQUIRED {
+            get {
+                return ResourceManager.GetString("PAGINATION_OFFSET_REQUIRED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Cidade inválida.
         /// </summary>
         public static string PERSON_CITY_INVALID {

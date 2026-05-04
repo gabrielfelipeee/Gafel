@@ -237,4 +237,16 @@
   <data name="CATEGORY_NOT_FOUND" xml:space="preserve">
     <value>Não foi possível encontrar a categoria com o ID informado</value>
   </data>
+  <data name="PAGINATION_OFFSET_MIN_VALUE" xml:space="preserve">
+    <value>Offset deve ser maior ou igual a 0</value>
+  </data>
+  <data name="PAGINATION_LIMIT_RANGE" xml:space="preserve">
+    <value>Limit deve estar entre 1 e 100</value>
+  </data>
+  <data name="PAGINATION_LIMIT_REQUIRED" xml:space="preserve">
+    <value>'Limit' é obrigatório</value>
+  </data>
+  <data name="PAGINATION_OFFSET_REQUIRED" xml:space="preserve">
+    <value>'Offset' é obrigatório</value>
+  </data>
 </root>

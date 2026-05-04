@@ -1,8 +1,11 @@
-﻿using Gafel.Application.UseCases.Category.GetById;
+﻿using Gafel.Application.UseCases.Category.Filter;
+using Gafel.Application.UseCases.Category.GetById;
 using Gafel.Application.UseCases.Category.Register;
 using Gafel.Application.UseCases.Category.Shared.Commands;
 using Gafel.Application.UseCases.Category.Shared.Responses;
 using Gafel.Application.UseCases.Category.Update;
+using Gafel.Application.UseCases.Shared.Responses;
+using Gafel.Domain.Dtos.QueryParams;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,6 +41,16 @@ public class CategoriesController : GafelController
     public async Task<IActionResult> GetById([FromRoute] long id, [FromServices] IGetCategoryByIdUseCase useCase)
     {
         var result = await useCase.Execute(categoryId: id);
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(PaginationResponse<CategoryResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Filter([FromQuery] FilterCategoryQueryParams queryParams, [FromServices] IFilterCategoryUseCase useCase)
+    {
+        var result = await useCase.Execute(queryParams);
 
         return Ok(result);
     }
