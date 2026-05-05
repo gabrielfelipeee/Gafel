@@ -27,30 +27,30 @@ public class FilterCategoryUseCase : IFilterCategoryUseCase
         _categoryReadOnlyRepository = categoryReadOnlyRepository;
     }
 
-    public async Task<PaginationResponse<CategoryResponse>> Execute(FilterCategoryQueryParams queryParams)
+    public async Task<PaginationResponse<CategoryResponse>> Execute(FilterCategoryQueryParams query)
     {
-        Validate(queryParams);
+        Validate(query);
 
         var currentUser = _currentUser.CurrentUser();
         var person = await _personReadOnlyRepository.GetByUserId(currentUser.Id) ?? throw new PersonNotFoundException();
 
-        bool isPaged = queryParams.Offset.HasValue || queryParams.Limit.HasValue;
+        bool isPaged = query.Offset.HasValue || query.Limit.HasValue;
 
-        var (categories, total) = await _categoryReadOnlyRepository.Filter(person: person, filters: queryParams);
+        var (categories, total) = await _categoryReadOnlyRepository.Filter(person: person, filters: query);
 
         return new()
         {
             Items = categories.Adapt<IList<CategoryResponse>>(),
-            Offset = isPaged ? queryParams.Offset!.Value : 0,
-            Limit = isPaged ? queryParams.Limit!.Value : total,
+            Offset = isPaged ? query.Offset!.Value : 0,
+            Limit = isPaged ? query.Limit!.Value : total,
             Total = total
         };
     }
 
 
-    private static void Validate(FilterCategoryQueryParams queryParams)
+    private static void Validate(FilterCategoryQueryParams query)
     {
-        var result = new FilterCategoryQueryParamsValidator().Validate(queryParams);
+        var result = new FilterCategoryQueryParamsValidator().Validate(query);
 
         if (!result.IsValid)
         {

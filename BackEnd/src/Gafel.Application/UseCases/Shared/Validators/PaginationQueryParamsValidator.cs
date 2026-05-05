@@ -4,9 +4,9 @@ using Gafel.Domain.Resources;
 
 namespace Gafel.Application.UseCases.Shared.Validators;
 
-public abstract class PaginationQueryParamsValidator<T> : AbstractValidator<T> where T : PaginationQueryParams
+public class PaginationQueryParamsValidator<T> : AbstractValidator<T> where T : PaginationQueryParams
 {
-    public PaginationQueryParamsValidator()
+    protected PaginationQueryParamsValidator()
     {
         RuleFor(x => x.Offset)
             .NotNull()
