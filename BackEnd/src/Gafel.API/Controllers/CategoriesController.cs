@@ -1,4 +1,5 @@
-﻿using Gafel.Application.UseCases.Category.Filter;
+﻿using Gafel.Application.UseCases.Category.Delete;
+using Gafel.Application.UseCases.Category.Filter;
 using Gafel.Application.UseCases.Category.GetById;
 using Gafel.Application.UseCases.Category.Register;
 using Gafel.Application.UseCases.Category.Shared.Commands;
@@ -53,5 +54,15 @@ public class CategoriesController : GafelController
         var result = await useCase.Execute(queryParams);
 
         return Ok(result);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete([FromRoute] long id, [FromServices] IDeleteCategoryUseCase useCase)
+    {
+        await useCase.Execute(id);
+
+        return NoContent();
     }
 }

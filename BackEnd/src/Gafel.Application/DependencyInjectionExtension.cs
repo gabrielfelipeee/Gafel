@@ -4,6 +4,7 @@ using Gafel.Application.UseCases.Account.UpdateProfile;
 using Gafel.Application.UseCases.Auth.ChangePassword;
 using Gafel.Application.UseCases.Auth.Login.DoLogin;
 using Gafel.Application.UseCases.Auth.Register;
+using Gafel.Application.UseCases.Category.Delete;
 using Gafel.Application.UseCases.Category.Filter;
 using Gafel.Application.UseCases.Category.GetById;
 using Gafel.Application.UseCases.Category.Register;
@@ -35,6 +36,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IFilterCategoryUseCase, FilterCategoryUseCase>();
         services.AddScoped<IRegisterCategoryUseCase, RegisterCategoryUseCase>();
         services.AddScoped<IUpdateCategoryUseCase, UpdateCategoryUseCase>();
+        services.AddScoped<IDeleteCategoryUseCase, DeleteCategoryUseCase>();
     }
 
     private static void AddMapsterConfigurations()
