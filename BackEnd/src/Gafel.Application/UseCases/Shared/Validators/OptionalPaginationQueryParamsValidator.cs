@@ -12,10 +12,9 @@ public class OptionalPaginationQueryParamsValidator<T> : AbstractValidator<T> wh
             .GreaterThanOrEqualTo(0)
             .WithMessage(ResourceMessagesException.PAGINATION_OFFSET_MIN_VALUE)
             .When(x => x.Offset.HasValue);
-
+        
         RuleFor(x => x.Limit)
-            .GreaterThanOrEqualTo(1)
-            .LessThanOrEqualTo(100)
+            .InclusiveBetween(1, 100)
             .WithMessage(ResourceMessagesException.PAGINATION_LIMIT_RANGE)
             .When(x => x.Limit.HasValue);
 

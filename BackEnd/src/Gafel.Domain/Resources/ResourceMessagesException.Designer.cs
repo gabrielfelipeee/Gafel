@@ -286,7 +286,7 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a &apos;Limit&apos; é obrigatório.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Limit é obrigatório.
         /// </summary>
         public static string PAGINATION_LIMIT_REQUIRED {
             get {
@@ -304,7 +304,7 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a &apos;Offset&apos; é obrigatório.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Offset é obrigatório.
         /// </summary>
         public static string PAGINATION_OFFSET_REQUIRED {
             get {

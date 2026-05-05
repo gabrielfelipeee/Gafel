@@ -18,8 +18,7 @@ public abstract class PaginationQueryParamsValidator<T> : AbstractValidator<T> w
         RuleFor(x => x.Limit)
             .NotNull()
             .WithMessage(ResourceMessagesException.PAGINATION_LIMIT_REQUIRED)
-            .GreaterThanOrEqualTo(1)
-            .LessThanOrEqualTo(100)
+            .InclusiveBetween(1, 100)
             .WithMessage(ResourceMessagesException.PAGINATION_LIMIT_RANGE);
     }
 }
