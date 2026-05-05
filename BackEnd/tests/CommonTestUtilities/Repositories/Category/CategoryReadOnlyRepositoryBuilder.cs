@@ -22,4 +22,11 @@ public class CategoryReadOnlyRepositoryBuilder
 
         return _repository.Object;
     }
+
+    public void ExistActiveCategoryWithId(Gafel.Domain.Entities.Person person, long categoryId)
+    {
+        _repository
+            .Setup(repository => repository.ExistActiveCategoryWithId(person, categoryId))
+            .ReturnsAsync(true);
+    }
 }
