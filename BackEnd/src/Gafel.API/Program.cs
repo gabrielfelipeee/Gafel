@@ -44,6 +44,21 @@ builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200") 
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -68,6 +83,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 await app.UseDatabaseInitialization();
+
+app.UseCors("AllowSpecificOrigin");
 
 await app.RunAsync();
 
