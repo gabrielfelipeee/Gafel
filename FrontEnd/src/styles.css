@@ -1,0 +1,164 @@
+@import 'tailwindcss/theme';
+@import 'tailwindcss/utilities';
+
+/* ================= BASE ================= */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--color-background);
+    color: var(--color-text);
+
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease;
+  }
+
+  :where(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+
+  code,
+  pre,
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+}
+
+/* Ativa dark manual */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ===================== LIGHT THEME ===================== */
+@theme {
+  /* FONTS */
+  --font-body: 'DM Sans', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* BACKGROUND */
+  --color-background: hsl(150 20% 97%);
+  --color-background-muted: hsl(150 15% 94%);
+
+  /* TEXT */
+  --color-text: hsl(222 47% 8%);
+  --color-text-muted: hsl(222 10% 40%);
+  --color-text-inverse: #ffffff;
+
+  /* PRIMARY */
+  --color-primary: hsl(158 84% 42%);
+  --color-primary-hover: hsl(158 84% 52%);
+  --color-primary-foreground: #ffffff;
+
+  /* STATUS */
+  --color-success: hsl(158 84% 42%);
+  --color-danger: hsl(0 70% 50%);
+  --color-warning: hsl(38 92% 50%);
+
+  /* SURFACES */
+  --color-surface: #ffffff;
+  --color-surface-muted: hsl(150 15% 94%);
+  --color-border: hsl(222 20% 88%);
+
+  /* ===================== EFFECTS ===================== */
+  --shadow-glow: 0 0 60px hsl(158 84% 42% / 0.3);
+}
+
+/* ===================== DARK THEME ===================== */
+.dark {
+  /* BACKGROUND */
+  --color-background: hsl(222 47% 6%);
+  --color-background-muted: hsl(222 35% 12%);
+
+  /* TEXT */
+  --color-text: hsl(150 30% 96%);
+  --color-text-muted: hsl(150 8% 65%);
+  --color-text-inverse: hsl(222 47% 6%);
+
+  /* PRIMARY */
+  --color-primary: hsl(158 84% 52%);
+  --color-primary-hover: hsl(158 84% 62%);
+  --color-primary-foreground: hsl(222 47% 6%);
+
+  /* SURFACES */
+  --color-surface: hsl(222 40% 9%);
+  --color-surface-muted: hsl(222 35% 12%);
+  --color-border: hsl(222 30% 18%);
+
+  /* ===================== EFFECTS ===================== */
+  --shadow-glow: 0 0 60px hsl(158 84% 52% / 0.4);
+}
+
+/* ===================== COMPONENTS ===================== */
+@layer components {
+  .surface,
+  .surface-muted {
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    padding: 1rem;
+
+    transition:
+      background-color 0.25s ease,
+      border-color 0.25s ease,
+      color 0.25s ease;
+  }
+  .surface {
+    background-color: var(--color-surface);
+  }
+  .surface-muted {
+    background-color: var(--color-surface-muted);
+  }
+
+  .grid-pattern {
+    background-image:
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-border) 35%, transparent) 1px, transparent 1px),
+      linear-gradient(to right, color-mix(in srgb, var(--color-border) 35%, transparent) 1px, transparent 1px);
+
+    background-size: 4rem 4rem;
+  }
+}
+
+/* ===================== UTILITIES ===================== */
+@layer utilities {
+  /* TEXT */
+  .text-primary {
+    color: var(--color-primary);
+  }
+  .text-muted {
+    color: var(--color-text-muted);
+  }
+  .text-success {
+    color: var(--color-success);
+  }
+  .text-danger {
+    color: var(--color-danger);
+  }
+  .text-warning {
+    color: var(--color-warning);
+  }
+
+  /* BACKGROUNDS */
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+  .bg-surface {
+    background-color: var(--color-surface);
+  }
+
+  /* BORDERS */
+  .border-default {
+    border-color: var(--color-border);
+  }
+  .border-primary {
+    border-color: var(--color-primary);
+  }
+}
