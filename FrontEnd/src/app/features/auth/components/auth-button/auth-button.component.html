@@ -1,0 +1,13 @@
+<button type="submit" class="btn btn-primary gap-2 group w-full" (click)="onClick()">
+  <ng-icon [name]="prefixIcon()" size="20"></ng-icon>
+
+  <span class="text-base">
+    <ng-content></ng-content>
+  </span>
+
+  <ng-icon
+    [name]="suffixIcon()"
+    size="18"
+    class="transition-transform duration-200 group-hover:translate-x-2"
+  ></ng-icon>
+</button>
