@@ -1,0 +1,13 @@
+<section class="w-full max-w-132 lg:max-w-full flex flex-col pb-8 lg:pr-14 mx-auto">
+  <header class="h-36 flex items-center justify-center lg:justify-start">
+    <app-logo></app-logo>
+  </header>
+
+  <div [class.animate-fade-in-up]="animate()">
+    <ng-content select="[form]"></ng-content>
+  </div>
+</section>
+
+<aside class="hidden lg:block h-full border-l border-base pt-36 pb-8 lg:pl-14">
+  <ng-content select="[content]"></ng-content>
+</aside>
