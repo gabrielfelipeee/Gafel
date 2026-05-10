@@ -9,7 +9,12 @@ module.exports = defineConfig([
   {
     ignores: ['dist', 'node_modules', '**/app.config.ts', '**/main.ts'],
     files: ['**/*.ts'],
-    extends: [eslint.configs.recommended, ...tseslint.configs.recommended, ...tseslint.configs.stylistic, ...angular.configs.tsRecommended],
+    extends: [
+      eslint.configs.recommended,
+      ...tseslint.configs.recommended,
+      ...tseslint.configs.stylistic,
+      ...angular.configs.tsRecommended,
+    ],
     processor: angular.processInlineTemplates,
     rules: {
       '@angular-eslint/directive-selector': [

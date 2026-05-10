@@ -21,7 +21,7 @@
   --color-accent: hsl(158 84% 52%);
   --color-accent-content: #fff;
 
-  --color-neutral: hsl(222 20% 16%);
+  --color-neutral: hsl(222 15% 45%);
   --color-neutral-content: #fff;
 
   --color-info: oklch(97% 0.001 106.424);
@@ -69,7 +69,7 @@
   --color-accent: hsl(158 84% 62%);
   --color-accent-content: hsl(222 47% 6%);
 
-  --color-neutral: hsl(222 32% 14%);
+  --color-neutral: hsl(0 0% 65%);
   --color-neutral-content: hsl(150 30% 96%);
 
   --color-info: hsl(210 90% 60%);
@@ -102,6 +102,20 @@
   --font-mono: 'JetBrains Mono', monospace;
 
   --shadow-glow: 0 0 60px hsl(158 84% 52% / 0.4);
+
+  --animate-fade-in-up: fade-in-up 0.5s ease-out forwards;
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 /* BASE */
@@ -121,7 +135,7 @@
   body {
     font-family: var(--font-body);
     background-color: var(--color-base-100);
-    color: var(--color-base-content);
+    color: var(--color-neutral);
 
     transition:
       background-color 0.25s ease,
@@ -130,9 +144,23 @@
 
   :where(h1, h2, h3, h4, h5, h6) {
     font-family: var(--font-display);
-    font-weight: 700 !important;
     line-height: 1.1;
     color: var(--color-base-content);
+  }
+
+  input {
+    width: 100% !important;
+    outline: none !important;
+    padding-left: 3rem !important;
+
+    transition: border-color 0.5s ease;
+  }
+  input:focus {
+    border-color: var(--color-primary) !important;
+    border-width: 2px !important;
+  }
+  input.ng-invalid.ng-touched {
+    border-color: var(--color-error) !important;
   }
 
   p {
@@ -156,7 +184,7 @@
 /* ===================== COMPONENTS ===================== */
 @layer components {
   .surface {
-    background-color: var(--color-base-200);
+    background-color: var(--color-base-100);
     border: 1px solid var(--color-base-300);
     border-radius: 1rem;
     padding: 1rem;
@@ -164,13 +192,30 @@
     transition:
       background-color 0.25s ease,
       border-color 0.25s ease,
+      transform 0.5s ease,
+      box-shadow 0.5s ease,
       color 0.25s ease;
+  }
+  .surface:hover {
+    background-color: var(--color-base-200);
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+
+    box-shadow: 0 10px 25px color-mix(in srgb, var(--color-primary), transparent 90%);
   }
 
   .grid-pattern {
     background-image:
-      linear-gradient(to bottom, color-mix(in srgb, var(--color-base-300) 35%, transparent) 1px, transparent 1px),
-      linear-gradient(to right, color-mix(in srgb, var(--color-base-300) 35%, transparent) 1px, transparent 1px);
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--color-base-300) 20%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--color-base-300) 20%, transparent) 1px,
+        transparent 1px
+      );
 
     background-size: 4rem 4rem;
   }
@@ -203,17 +248,5 @@
   /* BORDERS */
   .border-base {
     border-color: var(--color-base-300);
-  }
-  .border-primary-soft {
-    border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-base-300));
-  }
-
-  /* EFFECTS */
-  .transition-default {
-    transition:
-      background-color 0.25s ease,
-      border-color 0.25s ease,
-      color 0.25s ease,
-      transform 0.25s ease;
   }
 }
