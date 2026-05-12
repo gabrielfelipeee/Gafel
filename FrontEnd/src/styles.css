@@ -148,20 +148,7 @@
     color: var(--color-base-content);
   }
 
-  input {
-    width: 100% !important;
-    outline: none !important;
-    padding-left: 3rem !important;
 
-    transition: border-color 0.5s ease;
-  }
-  input:focus {
-    border-color: var(--color-primary) !important;
-    border-width: 2px !important;
-  }
-  input.ng-invalid.ng-touched {
-    border-color: var(--color-error) !important;
-  }
 
   p {
     line-height: 1.7;

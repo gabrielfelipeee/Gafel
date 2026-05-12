@@ -1,0 +1,33 @@
+<!-- Nome -->
+<label class="floating-label relative">
+  <span class="capitalize">{{label()}}</span>
+
+  <ng-icon
+    [name]="icon()"
+    size="20"
+    class="absolute left-4 top-1/2 -translate-y-1/2 z-10 transition-colors duration-500 ease-in-out"
+    [ngClass]="errorMessage ? 'text-red-500!' : 'text-primary!'"
+  ></ng-icon>
+
+  @if (type() === 'password') {
+  <ng-icon
+    [name]="currentType() === 'password' ? 'heroEye' : 'heroEyeSlash'"
+    size="26"
+    (click)="onTogglePassword($event)"
+    class="absolute right-4 top-1/2 -translate-y-1/2 z-10 transition-colors duration-500 text-neutral! hover:text-primary! cursor-pointer"
+  />
+  }
+
+  <input
+    [type]="currentType()"
+    [placeholder]="placeholder()"
+    [value]="value"
+    (input)="handleInput($event)"
+    (blur)="handleTouched()"
+    [disabled]="isDisabled()"
+    class="input input-lg"
+  />
+</label>
+<span class="block h-5 text-error text-sm" [class.animate-fade-in-up]="errorMessage">
+  @if (errorMessage) { {{ errorMessage }} }
+</span>
