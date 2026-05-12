@@ -1,0 +1,83 @@
+<app-auth-layout>
+  <div form>
+    <span class="font-mono font-light text-[12px] tracking-widest uppercase">cadastro</span>
+    <h1 class="text-3xl font-semibold mt-4">Crie sua <span class="text-primary">conta</span></h1>
+    <p class="text-sm">Comece em menos de um minuto. Sem cartão de crédito.</p>
+
+    <form class="mt-8" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <fieldset class="fieldset grid gap-6 mb-8">
+        <legend class="fieldset-legend hidden">Cadastro de usuário</legend>
+
+        <app-custom-input
+          label="Nome"
+          icon="heroUser"
+          placeholder="Seu nome"
+          formControlName="name"
+          [errorMessages]="formErrorMessages.name"
+        />
+        <app-custom-input
+          label="Email"
+          type="email"
+          icon="heroEnvelope"
+          placeholder="exemplo@gmail.com"
+          formControlName="email"
+          [errorMessages]="formErrorMessages.email"
+        />
+        <app-custom-input
+          label="Senha"
+          type="password"
+          icon="heroLockClosed"
+          placeholder="Crie uma senha forte"
+          formControlName="password"
+          [errorMessages]="formErrorMessages.password"
+        />
+        <app-custom-input
+          label="Confirmar senha"
+          type="password"
+          icon="heroShieldCheck"
+          placeholder="Confirme sua senha"
+          formControlName="confirmPassword"
+          [errorMessages]="formErrorMessages.confirmPassword"
+        />
+      </fieldset>
+
+      <app-auth-button prefixIcon="heroUserPlus" suffixIcon="heroArrowRight">
+        Criar conta
+      </app-auth-button>
+    </form>
+
+    <span class="block mt-6 w-full text-center text-sm">
+      Já tem uma conta?
+      <a href="login" class="text-primary hover:underline">Fazer login</a>
+    </span>
+  </div>
+
+  <div content>
+    <span class="font-mono font-light text-[12px] tracking-widest uppercase">comece agora</span>
+    <h1 class="text-5xl font-semibold max-w-112.5 my-4">
+      A forma inteligente de <span class="text-primary">organizar</span> suas finanças
+    </h1>
+
+    <p class="text-sm mt-2 mb-8">
+      Organize gastos, acompanhe resultados e tenha mais controle da sua vida financeira em um só
+      lugar.
+    </p>
+
+    <div class="w-full mt-8 flex flex-col gap-8">
+      @for (feature of features; track $index) {
+      <div class="flex gap-4 items-center surface">
+        <div
+          class="flex items-center justify-center border border-primary rounded-full text-primary h-8 w-8"
+        >
+          <ng-icon [name]="feature.icon" size="20" />
+        </div>
+
+        <div>
+          <h3 class="font-semibold">{{ feature.title }}</h3>
+          <p class="text-sm">{{ feature.description }}</p>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</app-auth-layout>

@@ -1,5 +1,5 @@
 @import '../../../../../styles.css';
 
 :host {
-  @apply grid grid-cols-1 lg:grid-cols-2 w-[95%] max-w-360 mx-auto h-screen overflow-x-hidden;
+  @apply grid grid-cols-1 lg:grid-cols-2 w-[95%] max-w-360 min-h-screen mx-auto;
 }
