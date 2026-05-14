@@ -74,6 +74,10 @@ export class CustomInputComponent implements ControlValueAccessor, OnInit {
 
     if (!control || !control.touched || !control.errors) return null;
 
+    // erro vindo da API
+    if (control.errors['apiError']) return control.errors['apiError'];
+
+    // erros locais
     for (const key of Object.keys(control.errors)) {
       const message = this.errorMessages()?.[key];
 

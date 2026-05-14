@@ -27,6 +27,9 @@ import { CustomInputComponent } from '@shared/components/custom-input/custom-inp
 import { iFeatureCard } from '../../interfaces/feature-card.interface';
 import { iRegisterForm } from '../../interfaces/register-form.interface';
 import { AuthButtonComponent } from '../../components/auth-button/auth-button.component';
+import { RegisterUserFacade } from '@core/auth/facades/register-user.facade';
+import { iRegisterUserRequest } from '@core/auth/interfaces/register-user-request.interface';
+import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 
 @Component({
   selector: 'app-register-page',
@@ -47,10 +50,11 @@ import { AuthButtonComponent } from '../../components/auth-button/auth-button.co
   ],
 })
 export class RegisterPage {
-  private formBuilder = inject(NonNullableFormBuilder);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly registerUserFacade = inject(RegisterUserFacade);
 
   protected readonly formErrorMessages = {
-    name: FULLNAME_VALIDATION_MESSAGES,
+    fullName: FULLNAME_VALIDATION_MESSAGES,
     email: EMAIL_VALIDATION_MESSAGES,
     password: PASSWORD_VALIDATION_MESSAGES,
     confirmPassword: {
@@ -79,7 +83,7 @@ export class RegisterPage {
 
   form: FormGroup<iRegisterForm> = this.formBuilder.group(
     {
-      name: [
+      fullName: [
         '',
         [
           Validators.required,
@@ -112,5 +116,31 @@ export class RegisterPage {
       this.form.markAllAsTouched();
       return;
     }
+
+    const request: iRegisterUserRequest = this.form.getRawValue();
+
+    this.registerUserFacade.register(request).subscribe({
+      next: response => {
+        //  console.log(response);
+      },
+      error: (error: iErrorResponse) => {
+        const apiErrors = error.error?.errors;
+
+        if (!apiErrors) return;
+
+        Object.keys(apiErrors).forEach(field => {
+          const control = this.form.get(field);
+
+          if (!control) return;
+
+          control.setErrors({
+            apiError: apiErrors[field][0],
+            ...control.errors,
+          });
+
+          this.form.markAllAsTouched();
+        });
+      },
+    });
   }
 }
