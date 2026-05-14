@@ -1,10 +1,8 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
+import { provideAuth } from '@core/auth/provide-auth';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideRouter(routes)
-  ],
+  providers: [provideBrowserGlobalErrorListeners(), provideRouter(routes), provideAuth()],
 };
