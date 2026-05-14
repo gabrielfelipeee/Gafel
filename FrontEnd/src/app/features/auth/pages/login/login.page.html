@@ -1,0 +1,69 @@
+<app-auth-layout>
+  <div form>
+    <span class="font-mono font-light text-[12px] tracking-widest uppercase">entrar</span>
+    <h1 class="text-3xl font-semibold mt-4">
+      Entre na sua <span class="text-primary">conta</span>
+    </h1>
+    <p class="text-sm">Acesse seu painel e continue de onde parou.</p>
+
+    <form class="mt-8" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <fieldset class="fieldset grid gap-6 mb-8">
+        <legend class="fieldset-legend hidden">Cadastro de usuário</legend>
+
+        <app-custom-input
+          label="Email"
+          type="email"
+          icon="heroEnvelope"
+          placeholder="exemplo@gmail.com"
+          formControlName="email"
+          [errorMessages]="formErrorMessages.email"
+        />
+        <app-custom-input
+          label="Senha"
+          type="password"
+          icon="heroLockClosed"
+          placeholder="Digite sua senha"
+          formControlName="password"
+          [errorMessages]="formErrorMessages.password"
+        />
+      </fieldset>
+
+      <app-auth-button prefixIcon="heroArrowRightOnRectangle" suffixIcon="heroArrowRight">
+        Entrar
+      </app-auth-button>
+    </form>
+
+    <span class="block mt-6 w-full text-center text-sm">
+      Novo aqui?
+      <a href="cadastro" class="text-primary hover:underline">Criar conta gratuita</a>
+    </span>
+  </div>
+
+  <div content>
+    <span class="font-mono font-light text-[12px] tracking-widest uppercase"
+      >bem-vindo de volta</span
+    >
+    <h1 class="text-5xl font-semibold max-w-112.5 my-4">
+      Suas finanças, <span class="text-primary">organizadas</span> com clareza
+    </h1>
+
+    <p class="text-sm mt-2 mb-8">
+      Acompanhe lançamentos, contas e metas em uma única plataforma. Decisões melhores começam com
+      dados claros.
+    </p>
+
+    <ul class="w-full mt-8 flex flex-col gap-8">
+      @for (feature of features; track $index) {
+
+      <li class="flex gap-4 items-center surface">
+        <div
+          class="flex items-center justify-center border border-primary rounded-full text-primary h-8 w-8"
+        >
+          <ng-icon [name]="feature.icon" size="20" />
+        </div>
+        <h3>{{ feature.title }}</h3>
+      </li>
+      }
+    </ul>
+  </div>
+</app-auth-layout>
