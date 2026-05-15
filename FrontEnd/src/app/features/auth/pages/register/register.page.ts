@@ -31,6 +31,7 @@ import { RegisterUserFacade } from '@core/auth/facades/register-user.facade';
 import { iRegisterUserRequest } from '@core/auth/interfaces/register-user-request.interface';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 import { Router } from '@angular/router';
+import { applyApiValidationErrors } from '@shared/validation/utils/apply-api-validation.utils';
 
 @Component({
   selector: 'app-register-page',
@@ -123,24 +124,7 @@ export class RegisterPage {
 
     this.registerUserFacade.register(request).subscribe({
       next: () => this.router.navigate(['/dashboard']),
-      error: (error: iErrorResponse) => {
-        const apiErrors = error.error?.errors;
-
-        if (!apiErrors) return;
-
-        Object.keys(apiErrors).forEach(field => {
-          const control = this.form.get(field);
-
-          if (!control) return;
-
-          control.setErrors({
-            apiError: apiErrors[field][0],
-            ...control.errors,
-          });
-
-          this.form.markAllAsTouched();
-        });
-      },
+      error: (error: iErrorResponse) => applyApiValidationErrors(this.form, error),
     });
   }
 }

@@ -24,6 +24,7 @@ import { iUserCredentials } from '@core/auth/interfaces/user-credentials.interfa
 import { LoginFacade } from '@core/auth/facades/login.facade';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 import { Router } from '@angular/router';
+import { applyApiValidationErrors } from '@shared/validation/utils/apply-api-validation.utils';
 
 @Component({
   selector: 'app-login-page',
@@ -92,24 +93,7 @@ export class LoginPage {
 
     this.loginFacade.login(request).subscribe({
       next: () => this.router.navigate(['/dashboard']),
-      error: (error: iErrorResponse) => {
-        const apiErrors = error.error?.errors;
-
-        if (!apiErrors) return;
-
-        Object.keys(apiErrors).forEach(field => {
-          const control = this.form.get(field);
-
-          if (!control) return;
-
-          control.setErrors({
-            apiError: apiErrors[field][0],
-            ...control.errors,
-          });
-
-          this.form.markAllAsTouched();
-        });
-      },
+      error: (error: iErrorResponse) => applyApiValidationErrors(this.form, error),
     });
   }
 }
