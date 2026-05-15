@@ -9,12 +9,6 @@ export class UserStorageService {
   private readonly storageKey = 'auth-user';
   private readonly storage = inject(STORAGE);
 
-  set(user: iUser): void {
-    const json = JSON.stringify(user);
-
-    this.storage.setItem(this.storageKey, json);
-  }
-
   get(): iUser | null {
     const string = this.storage.getItem(this.storageKey);
     if (!string) return null;
@@ -22,7 +16,13 @@ export class UserStorageService {
     return JSON.parse(string) as iUser;
   }
 
-  has(): boolean {
-    return Boolean(this.storage.getItem(this.storageKey));
+  set(user: iUser): void {
+    const json = JSON.stringify(user);
+
+    this.storage.setItem(this.storageKey, json);
+  }
+
+  remove(): void {
+    this.storage.removeItem(this.storageKey);
   }
 }

@@ -10,10 +10,16 @@ export function provideSetCurrentUser() {
     const userStorageService = inject(UserStorageService);
     const currentUserStore = inject(CurrentUserStore);
 
-    if (!authTokenStorageService.has()) return of();
-
     const user = userStorageService.get();
-    if (!user) return of();
+    const authTokenIsValid = authTokenStorageService.isValid();
+
+    if (!user || !authTokenIsValid) {
+      authTokenStorageService.remove();
+      userStorageService.remove();
+      currentUserStore.logout();
+
+      return of();
+    }
 
     currentUserStore.set(user);
 
