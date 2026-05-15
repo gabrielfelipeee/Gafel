@@ -30,6 +30,7 @@ import { AuthButtonComponent } from '../../components/auth-button/auth-button.co
 import { RegisterUserFacade } from '@core/auth/facades/register-user.facade';
 import { iRegisterUserRequest } from '@core/auth/interfaces/register-user-request.interface';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-page',
@@ -52,6 +53,7 @@ import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 export class RegisterPage {
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly registerUserFacade = inject(RegisterUserFacade);
+  private readonly router = inject(Router);
 
   protected readonly formErrorMessages = {
     fullName: FULLNAME_VALIDATION_MESSAGES,
@@ -120,9 +122,7 @@ export class RegisterPage {
     const request: iRegisterUserRequest = this.form.getRawValue();
 
     this.registerUserFacade.register(request).subscribe({
-      next: response => {
-        //  console.log(response);
-      },
+      next: () => this.router.navigate(['/dashboard']),
       error: (error: iErrorResponse) => {
         const apiErrors = error.error?.errors;
 

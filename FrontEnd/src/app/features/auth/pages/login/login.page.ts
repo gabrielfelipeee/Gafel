@@ -19,8 +19,11 @@ import { EMAIL_RULES, PASSWORD_RULES } from '@shared/validation/rules/auth-valid
 import { CustomInputComponent } from '@shared/components/custom-input/custom-input.component';
 import { iFeatureCard } from '../../interfaces/feature-card.interface';
 import { AuthButtonComponent } from '../../components/auth-button/auth-button.component';
-
 import { iLoginForm } from '@features/auth/interfaces/login-form.interface';
+import { iUserCredentials } from '@core/auth/interfaces/user-credentials.interface';
+import { LoginFacade } from '@core/auth/facades/login.facade';
+import { iErrorResponse } from '@shared/interfaces/error-response.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -40,6 +43,8 @@ import { iLoginForm } from '@features/auth/interfaces/login-form.interface';
 })
 export class LoginPage {
   private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly loginFacade = inject(LoginFacade);
+  private readonly router = inject(Router);
 
   protected readonly formErrorMessages = {
     email: EMAIL_VALIDATION_MESSAGES,
@@ -82,5 +87,29 @@ export class LoginPage {
       this.form.markAllAsTouched();
       return;
     }
+
+    const request: iUserCredentials = this.form.getRawValue();
+
+    this.loginFacade.login(request).subscribe({
+      next: () => this.router.navigate(['/dashboard']),
+      error: (error: iErrorResponse) => {
+        const apiErrors = error.error?.errors;
+
+        if (!apiErrors) return;
+
+        Object.keys(apiErrors).forEach(field => {
+          const control = this.form.get(field);
+
+          if (!control) return;
+
+          control.setErrors({
+            apiError: apiErrors[field][0],
+            ...control.errors,
+          });
+
+          this.form.markAllAsTouched();
+        });
+      },
+    });
   }
 }
