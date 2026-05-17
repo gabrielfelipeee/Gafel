@@ -193,3 +193,9 @@ FakesAssemblies/
 
 /.sonarqube
 coverage.opencover.xml
+
+# FrontEnd
+/FrontEnd/node_modules/
+/FrontEnd/.angular/
+/FrontEnd/dist/
+/FrontEnd/.vscode/
