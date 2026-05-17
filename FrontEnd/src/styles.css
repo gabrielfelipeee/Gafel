@@ -7,6 +7,7 @@
   default: true;
   prefersdark: false;
   color-scheme: 'light';
+
   --color-base-100: hsl(150 20% 97%);
   --color-base-200: hsl(150 15% 94%);
   --color-base-300: hsl(222 20% 88%);
@@ -46,6 +47,10 @@
   --border: 1px;
   --depth: 1;
   --noise: 0;
+
+  --toast-bg: hsl(150 15% 94%);
+  --toast-text: hsl(222 47% 8%);
+  --toast-border: hsl(222 20% 88%);
 }
 
 /* DARK THEME */
@@ -94,6 +99,10 @@
   --border: 1px;
   --depth: 1;
   --noise: 0;
+
+  --toast-bg: hsl(222 40% 9%);
+  --toast-text: hsl(150 30% 96%);
+  --toast-border: hsl(222 30% 18%);
 }
 
 @theme {
@@ -147,8 +156,6 @@
     line-height: 1.1;
     color: var(--color-base-content);
   }
-
-
 
   p {
     line-height: 1.7;
@@ -210,30 +217,15 @@
 
 /* UTILITIES */
 @layer utilities {
-  /* TEXT */
-  .text-success {
-    color: var(--color-success);
-  }
-  .text-error {
-    color: var(--color-error);
-  }
-  .text-warning {
-    color: var(--color-warning);
-  }
-
-  /* BACKGROUNDS */
-  .bg-primary {
-    background-color: var(--color-primary);
-  }
-  .bg-secondary {
-    background-color: var(--color-secondary);
-  }
-  .bg-accent {
-    background-color: var(--color-accent);
-  }
-
   /* BORDERS */
   .border-base {
     border-color: var(--color-base-300);
+  }
+
+  /* TOAST */
+  .toast-custom {
+    background: var(--toast-bg) !important;
+    color: var(--toast-text) !important;
+    border: 1px solid var(--toast-border) !important;
   }
 }

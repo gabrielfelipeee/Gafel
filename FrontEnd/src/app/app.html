@@ -1,1 +1,12 @@
 <router-outlet></router-outlet>
+<ngx-sonner-toaster
+  [visibleToasts]="3"
+  position="top-right"
+  richColors="false"
+  [toastOptions]="{
+		unstyled: true,
+		classes: {
+			toast: 'w-full',
+		}
+	}"
+/>
