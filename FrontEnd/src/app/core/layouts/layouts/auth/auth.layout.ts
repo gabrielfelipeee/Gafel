@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { LogoComponent } from '../../components/logo/logo.component';
+import { ThemeService } from '@core/layouts/services/theme.service';
 
 @Component({
   selector: 'app-auth-layout',
@@ -20,6 +21,7 @@ export class AuthLayout implements OnInit, OnDestroy {
   private readonly DESKTOP_BREAKPOINT = 1024;
   private readonly document = inject(DOCUMENT);
   private readonly renderer = inject(Renderer2);
+  private readonly themeService = inject(ThemeService);
 
   animate = signal(true);
   isMobileOrTablet = this.checkViewport();
@@ -28,6 +30,7 @@ export class AuthLayout implements OnInit, OnDestroy {
     this.renderer.removeClass(this.document.body, 'grid-pattern');
   }
   ngOnInit(): void {
+    this.themeService.getInitialTheme();
     this.renderer.addClass(this.document.body, 'grid-pattern');
   }
 
