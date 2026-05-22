@@ -18,6 +18,11 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/dashboard/dashboard.routes').then(m => m.DASHBOARD_ROUTES),
       },
+      {
+        path: '',
+        loadChildren: () =>
+          import('./features/category/category.routes').then(m => m.CATEGORY_ROUTES),
+      },
     ],
   },
 ];
