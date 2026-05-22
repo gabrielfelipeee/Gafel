@@ -1,0 +1,6 @@
+<dialog #modal class="modal" (close)="onModalClose()">
+  <div class="modal-box relative w-[95%] max-w-175 max-h-[70%]">
+    <app-icon-button icon="heroXMark" class="absolute top-1 right-1 z-1000" (clicked)="close()" />
+    <ng-content />
+  </div>
+</dialog>
