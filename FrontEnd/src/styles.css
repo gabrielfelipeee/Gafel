@@ -180,7 +180,7 @@
   .surface {
     background-color: var(--color-base-100);
     border: 1px solid var(--color-base-300);
-    border-radius: 1rem;
+    border-radius: 12px;
     padding: 1rem;
 
     transition:
@@ -220,6 +220,45 @@
   /* BORDERS */
   .border-base {
     border-color: var(--color-base-300);
+  }
+
+  /* ICON CONTAINER */
+  .icon-container {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--color-base-300);
+    border-radius: 12px;
+
+    background-color: transparent;
+
+    transition:
+      background-color 0.5s ease-in-out,
+      border-color 0.5s ease-in-out,
+      color 0.5s ease-in-out;
+  }
+
+  /* Hover */
+  .icon-container.icon-container-hover:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  }
+
+  /* Ícone */
+  .icon-container ng-icon {
+    transition: color 0.5s ease-in-out;
+  }
+
+  /* Estado ativo/selecionado */
+  .icon-container--active {
+    border: none;
+    background-color: var(--color-primary);
+    color: var(--color-success-content);
   }
 
   /* TOAST */

@@ -5,7 +5,7 @@
     Crie categorias para organizar suas movimentações.
   </p>
 
-  <div class="grid grid-cols-2 gap-4 font-mono text-sm font-semibold my-8">
+  <div class="grid grid-cols-2 gap-4 font-mono text-sm font-semibold mt-8 mb-4">
     @for (categoryType of categories; track categoryType.type) {
     <button
       type="button"
@@ -30,7 +30,7 @@
     }
   </div>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid gap-6">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid gap-4">
     <app-custom-input
       label="Nome"
       icon="heroHashtag"
@@ -47,18 +47,21 @@
           <button
             type="button"
             (click)="onSelectIcon(icon)"
-            class="group w-12 h-12 flex items-center justify-center border border-base rounded-xl cursor-pointer transition-all duration-500 hover:border-success hover:bg-primary/10"
-            [ngClass]="{'border-none bg-primary text-success-content': selectedIcon() === icon}"
+            class="icon-container icon-container-hover cursor-pointer"
+            [class.icon-container--active]="selectedIcon() === icon"
           >
-            <ng-icon
-              [name]="icon"
-              size="32"
-              class="transition-all duration-500 group-hover:text-primary!"
-            />
+            <ng-icon [name]="icon" size="32" />
           </button>
         </li>
         }
       </ul>
+      <div class="h-5">
+        @if (form.controls.icon.hasError('required') && form.controls.icon.touched) {
+        <span class="text-error text-sm animate-fade-in-up">
+          {{formErrorMessages.icon.required}}
+        </span>
+        }
+      </div>
     </div>
 
     <app-button icon="heroPlus" class="justify-self-end">adicionar</app-button>

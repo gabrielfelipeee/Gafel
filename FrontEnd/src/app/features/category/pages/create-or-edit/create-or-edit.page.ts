@@ -58,6 +58,11 @@ import { ButtonComponent } from '@shared/components/button/button.component';
 import { tFormValidationMessages } from '@shared/types/form-validation-messages.type';
 import { CATEGORY_RULES } from '@features/category/rules/category.rules';
 import { icons } from '@features/category/data/icons.data';
+import { CategoryApi } from '@features/category/apis/category.api';
+import { ToastService } from '@shared/services/toast.service';
+import { iCreateOrEditCategoryRequest } from '@features/category/interfaces/create-or-edit-category-request.interface';
+import { iErrorResponse } from '@shared/interfaces/error-response.interface';
+import { applyApiValidationErrors } from '@shared/validation/utils/apply-api-validation.utils';
 
 @Component({
   selector: 'app-create-or-edit-category',
@@ -125,11 +130,16 @@ export class CreateOrEditPage implements OnInit {
   icons = icons;
   private readonly router = inject(Router);
   private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly toastService = inject(ToastService);
+  private readonly categoryApi = inject(CategoryApi);
 
   protected readonly formErrorMessages = {
     name: {
       required: 'Nome é obrigatório',
       maxlength: `Nome deve ter no máximo ${CATEGORY_RULES.NAME.MAX_LENGTH} caracteres`,
+    },
+    icon: {
+      required: 'Ícone é obrigatório',
     },
   } satisfies tFormValidationMessages;
 
@@ -162,7 +172,25 @@ export class CreateOrEditPage implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.form.value);
+    if (this.form.invalid) {
+      this.toastService.show(
+        'warning',
+        'Ainda faltam informações',
+        'Verifique os campos destacados.',
+      );
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    const request: iCreateOrEditCategoryRequest = this.form.getRawValue();
+
+    this.categoryApi.create(request).subscribe({
+      next: () => {
+        this.router.navigate(['/categorias']);
+        this.toastService.show('success', 'Categoria adicionada com sucesso');
+      },
+      error: (error: iErrorResponse) => applyApiValidationErrors(this.form, error),
+    });
   }
 
   onSelectCategory(type: eCategoryType): void {
