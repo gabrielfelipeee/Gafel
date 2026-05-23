@@ -190,10 +190,10 @@
       box-shadow 0.5s ease,
       color 0.25s ease;
   }
+
   .surface:hover {
     background-color: var(--color-base-200);
     border-color: var(--color-primary);
-    transform: translateY(-2px);
 
     box-shadow: 0 10px 25px color-mix(in srgb, var(--color-primary), transparent 90%);
   }

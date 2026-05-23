@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
+import { getCategoriesResolver } from './resolvers/get-categories.resolver';
 
 export const CATEGORY_ROUTES: Routes = [
   {
     path: 'categorias',
     loadComponent: () => import('./pages/list/list.page').then(m => m.ListPage),
+    resolve: { categories: getCategoriesResolver },
     children: [
       {
         path: 'nova',
