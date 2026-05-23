@@ -40,9 +40,9 @@
   </div>
 
   <div content>
-    <span class="font-mono font-light text-[12px] tracking-widest uppercase"
-      >bem-vindo de volta</span
-    >
+    <span class="font-mono font-light text-[12px] tracking-widest uppercase">
+      bem-vindo de volta
+    </span>
     <h1 class="text-5xl font-semibold max-w-112.5 my-4">
       Suas finanças, <span class="text-primary">organizadas</span> com clareza
     </h1>
@@ -55,12 +55,12 @@
     <ul class="w-full mt-8 flex flex-col gap-8">
       @for (feature of features; track $index) {
 
-      <li class="flex gap-4 items-center surface">
-        <div
-          class="flex items-center justify-center border border-primary rounded-full text-primary h-8 w-8"
-        >
-          <ng-icon [name]="feature.icon" size="20" />
-        </div>
+      <li
+        class="group flex gap-4 items-center surface transition-all duration-500 hover:-translate-y-0.5"
+      >
+        <span class="icon-container group-hover:text-primary!">
+          <ng-icon [name]="feature.icon" size="32" />
+        </span>
         <h3>{{ feature.title }}</h3>
       </li>
       }

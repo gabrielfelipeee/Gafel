@@ -63,21 +63,21 @@
       lugar.
     </p>
 
-    <div class="w-full mt-8 flex flex-col gap-8">
+    <ul class="w-full mt-8 flex flex-col gap-8">
       @for (feature of features; track $index) {
-      <div class="flex gap-4 items-center surface">
-        <div
-          class="flex items-center justify-center border border-primary rounded-full text-primary h-8 w-8"
-        >
-          <ng-icon [name]="feature.icon" size="20" />
-        </div>
+      <li
+        class="group flex gap-4 items-center surface transition-all duration-500 hover:-translate-y-0.5"
+      >
+        <span class="icon-container group-hover:text-primary!">
+          <ng-icon [name]="feature.icon" size="32" />
+        </span>
 
         <div>
           <h3 class="font-semibold">{{ feature.title }}</h3>
           <p class="text-sm">{{ feature.description }}</p>
         </div>
-      </div>
+      </li>
       }
-    </div>
+    </ul>
   </div>
 </app-auth-layout>
