@@ -1,4 +1,5 @@
 ﻿using FluentMigrator;
+using FluentMigrator.SqlServer;
 
 namespace Gafel.Infrastructure.Migrations.Versions;
 
@@ -18,7 +19,8 @@ public class Version0000002 : VersionBase
 
         Create.Index("idx_people_cpf")
             .OnTable(DatabaseTables.PEOPLE)
-            .OnColumn("cpf")
+            .OnColumn("cpf").Ascending()
+            .WithOptions().Filter("[cpf] IS NOT NULL")
             .Unique();
     }
 }
