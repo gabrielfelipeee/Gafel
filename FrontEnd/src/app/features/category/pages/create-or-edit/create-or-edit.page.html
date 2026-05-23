@@ -5,32 +5,13 @@
     Crie categorias para organizar suas movimentações.
   </p>
 
-  <div class="grid grid-cols-2 gap-4 font-mono text-sm font-semibold mt-8 mb-4">
-    @for (categoryType of categories; track categoryType.type) {
-    <button
-      type="button"
-      (click)="onSelectCategory(categoryType.type)"
-      class="group flex items-center justify-center gap-2 uppercase outline-none border border-base rounded-xl p-3 cursor-pointer transition-all duration-500"
-      [ngClass]="{
-        'hover:border-success hover:text-success': categoryType.type === eCategoryType.Income && selectedCategory() !== eCategoryType.Income,
-        'hover:border-error hover:text-error': categoryType.type === eCategoryType.Expense && selectedCategory() !== eCategoryType.Expense,
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid gap-4 mt-6">
+    <app-custom-radio-group
+      [options]="categoryTypeOptions"
+      [value]="form.controls.type.value"
+      (valueChange)="onSelectCategoryType($event)"
+    />
 
-        'border-none bg-success text-success-content': selectedCategory() === categoryType.type && categoryType.type === eCategoryType.Income,
-        'border-none bg-error text-error-content':selectedCategory() === categoryType.type && categoryType.type === eCategoryType.Expense
-      }"
-    >
-      <ng-icon
-        [name]="categoryType.icon"
-        size="18"
-        class="transition-transform duration-500 group-hover:scale-110"
-      />
-
-      <span class="tracking-widest"> {{ categoryType.label }} </span>
-    </button>
-    }
-  </div>
-
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid gap-4">
     <app-custom-input
       label="Nome"
       icon="heroHashtag"

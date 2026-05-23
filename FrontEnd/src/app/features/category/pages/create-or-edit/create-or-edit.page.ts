@@ -1,5 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { NgClass } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { provideIcons, NgIcon } from '@ng-icons/core';
 import {
@@ -60,9 +59,11 @@ import { CATEGORY_RULES } from '@features/category/rules/category.rules';
 import { icons } from '@features/category/data/icons.data';
 import { CategoryApi } from '@features/category/apis/category.api';
 import { ToastService } from '@shared/services/toast.service';
-import { iCreateOrEditCategoryRequest } from '@features/category/interfaces/create-or-edit-category-request.interface';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 import { applyApiValidationErrors } from '@shared/validation/utils/apply-api-validation.utils';
+import { CustomRadioGroupComponent } from '@shared/components/custom-radio-group/custom-radio-group.component';
+import { iCustomRadioOption } from '@shared/interfaces/custom-radio-option.interface';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-create-or-edit-category',
@@ -71,9 +72,9 @@ import { applyApiValidationErrors } from '@shared/validation/utils/apply-api-val
     ReactiveFormsModule,
     ModalComponent,
     NgIcon,
-    NgClass,
     CustomInputComponent,
     ButtonComponent,
+    CustomRadioGroupComponent,
   ],
   providers: [
     provideIcons({
@@ -125,15 +126,16 @@ import { applyApiValidationErrors } from '@shared/validation/utils/apply-api-val
     }),
   ],
 })
-export class CreateOrEditPage implements OnInit {
-  eCategoryType = eCategoryType;
-  icons = icons;
+export class CreateOrEditPage {
+  readonly eCategoryType = eCategoryType;
+  readonly icons = icons;
+
   private readonly router = inject(Router);
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly toastService = inject(ToastService);
   private readonly categoryApi = inject(CategoryApi);
 
-  protected readonly formErrorMessages = {
+  readonly formErrorMessages = {
     name: {
       required: 'Nome é obrigatório',
       maxlength: `Nome deve ter no máximo ${CATEGORY_RULES.NAME.MAX_LENGTH} caracteres`,
@@ -143,64 +145,60 @@ export class CreateOrEditPage implements OnInit {
     },
   } satisfies tFormValidationMessages;
 
-  readonly categories = [
+  readonly categoryTypeOptions: iCustomRadioOption<eCategoryType>[] = [
     {
-      type: eCategoryType.Income,
+      value: eCategoryType.Income,
       label: 'receita',
       icon: 'heroArrowUp',
     },
     {
-      type: eCategoryType.Expense,
+      value: eCategoryType.Expense,
       label: 'despesa',
       icon: 'heroArrowDown',
+      activeClass: 'border-transparent bg-error text-error-content',
+      hoverClass: 'hover:border-error hover:text-error',
     },
   ];
 
-  form!: FormGroup<iCreateOrEditCategoryForm>;
-  selectedCategory = signal<eCategoryType>(eCategoryType.Income);
-  selectedIcon = signal<string>('');
+  readonly form: FormGroup<iCreateOrEditCategoryForm> = this.formBuilder.group({
+    name: ['', [Validators.required, Validators.maxLength(CATEGORY_RULES.NAME.MAX_LENGTH)]],
+    icon: ['', [Validators.required]],
+    type: [eCategoryType.Income, [Validators.required]],
+  });
 
-  ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.maxLength(CATEGORY_RULES.NAME.MAX_LENGTH)]],
-      icon: ['', [Validators.required]],
-      type: [eCategoryType.Income, [Validators.required]],
-    });
-
-    this.form.controls.type.valueChanges.subscribe(value => this.selectedCategory.set(value));
-    this.form.controls.icon.valueChanges.subscribe(value => this.selectedIcon.set(value));
-  }
+  readonly selectedIcon = toSignal(this.form.controls.icon.valueChanges, {
+    initialValue: this.form.controls.icon.value,
+  });
 
   onSubmit() {
     if (this.form.invalid) {
+      this.form.markAllAsTouched();
+
       this.toastService.show(
         'warning',
         'Ainda faltam informações',
         'Verifique os campos destacados.',
       );
-      this.form.markAllAsTouched();
+
       return;
     }
 
-    const request: iCreateOrEditCategoryRequest = this.form.getRawValue();
-
-    this.categoryApi.create(request).subscribe({
+    this.categoryApi.create(this.form.getRawValue()).subscribe({
       next: () => {
-        this.router.navigate(['/categorias']);
         this.toastService.show('success', 'Categoria adicionada com sucesso');
+        this.router.navigate(['/categorias']);
       },
       error: (error: iErrorResponse) => applyApiValidationErrors(this.form, error),
     });
   }
 
-  onSelectCategory(type: eCategoryType): void {
+  onSelectCategoryType(type: eCategoryType): void {
     const control = this.form.controls.type;
 
     if (control.value === type) return;
 
     control.setValue(type);
   }
-
   onSelectIcon(icon: string): void {
     const control = this.form.controls.icon;
 
