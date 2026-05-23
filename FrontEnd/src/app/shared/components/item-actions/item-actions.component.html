@@ -1,0 +1,27 @@
+<div class="dropdown dropdown-end">
+  <app-icon-button #trigger icon="heroEllipsisVertical" />
+
+  <div
+    tabindex="-1"
+    class="dropdown-content mt-2 min-w-40 rounded-xl border border-base bg-base-200 pt-3 pb-2 px-2 shadow-md"
+  >
+    <span
+      class="absolute -top-2 right-3 h-4 w-4 rotate-45 border-t border-l border-base bg-base-200"
+    ></span>
+
+    <div class="flex flex-col gap-1">
+      @for (action of actions(); track $index) {
+      <button
+        type="button"
+        (click)="onClick(action.callback)"
+        class="flex items-center justify-start gap-4 rounded-md py-1 px-2 cursor-pointer transition-all duration-300"
+        [ngClass]="[action.hoverClass ? action.hoverClass : 'hover:bg-primary/10 hover:text-primary']"
+      >
+        <ng-icon [name]="action.icon" size="20" />
+
+        <span class="font-semibold"> {{ action.label }} </span>
+      </button>
+      }
+    </div>
+  </div>
+</div>
