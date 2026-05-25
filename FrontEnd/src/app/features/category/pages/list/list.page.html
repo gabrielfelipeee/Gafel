@@ -2,11 +2,13 @@
 
 <div class="flex items-center justify-between">
   <div>Filtros</div>
-  <app-button icon="heroPlus" (clicked)="onNewCategory()">nova categoria</app-button>
+  <app-button icon="heroPlus" (clicked)="onCreateCategory()">nova categoria</app-button>
 </div>
 
-<ul class="list-none mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-  @for (category of categories().items; track $index) {
+<ul
+  class="list-none mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-16"
+>
+  @for (category of categories(); track $index) {
   <li class="group relative surface flex items-center justify-start gap-4">
     <span class="icon-container shrink-0 group-hover:text-primary">
       <ng-icon
@@ -21,9 +23,18 @@
       <span class="text-sm">{{'5'}} lançamentos</span>
     </div>
 
-    <app-item-actions class="absolute top-1 right-1" [actions]="actions" />
+    <app-item-actions class="absolute top-1 right-1" [actions]="categoryActions" />
   </li>
   }
 </ul>
+
+<app-paginator
+  [limits]="limits"
+  [totalItems]="pagination().total"
+  [offset]="pagination().offset"
+  [limit]="pagination().limit"
+  (offsetChange)="onOffsetChange($event)"
+  (limitChange)="onLimitChange($event)"
+/>
 
 <router-outlet />

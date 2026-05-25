@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
-import { getCategoriesResolver } from './resolvers/get-categories.resolver';
+import { withPaginationQueryGuard } from '@core/auth/guards/with-pagination-query.guard';
+import { categoryListQueryParser } from './parsers/category-list-query.parser';
 
 export const CATEGORY_ROUTES: Routes = [
   {
     path: 'categorias',
     loadComponent: () => import('./pages/list/list.page').then(m => m.ListPage),
-    resolve: { categories: getCategoriesResolver },
+    canActivate: [withPaginationQueryGuard({ parser: categoryListQueryParser })],
     children: [
       {
         path: 'nova',

@@ -1,4 +1,4 @@
-export interface PagedResponse<T> {
+export interface iPagedResponse<T> {
   items: T[];
   offset: number;
   limit: number;
