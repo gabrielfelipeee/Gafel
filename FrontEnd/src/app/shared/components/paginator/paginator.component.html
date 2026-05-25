@@ -1,0 +1,69 @@
+<div class="w-[95vw] max-w-360 mx-auto py-4 flex items-center justify-end gap-6 font-mono text-sm">
+  <!-- Info -->
+  <span class="hidden md:grid whitespace-nowrap">
+    {{ startItem() }}-{{ endItem() }} de {{ totalItems() }}
+  </span>
+
+  <!-- Page size -->
+  <div class="hidden sm:flex items-center gap-2">
+    <span class="whitespace-nowrap">Por página</span>
+
+    <select
+      [ngModel]="limit()"
+      (ngModelChange)="changeLimit($event)"
+      class="select select-md min-w-18 border-base outline-none cursor-pointer transition-colors duration-500 hover:border-primary"
+    >
+      @for (limit of limits(); track $index) {
+      <option [ngValue]="limit">{{limit}}</option>
+      }
+    </select>
+  </div>
+  <!-- Navegação -->
+  <div class="flex items-center justify-center gap-2 text-[12px]">
+    <app-icon-button
+      icon="heroChevronDoubleLeft"
+      [disabled]="isFirstPage()"
+      (clicked)="onPageChange(1)"
+    />
+    <app-icon-button
+      icon="heroChevronLeft"
+      [disabled]="isFirstPage()"
+      (clicked)="onPageChange(currentPage() - 1)"
+    />
+
+    <!-- Ellipsis início -->
+    @if (visiblePages[0] > 1) {
+    <ng-icon name="heroEllipsisHorizontal" size="18" class="mb-0.5 self-end" />
+    }
+
+    <!-- Páginas -->
+    @for (page of visiblePages; track $index) {
+    <button
+      (click)="onPageChange(page)"
+      class="group w-8 h-8 flex items-center justify-center rounded-full font-semibold text-base transition-all duration-300 border cursor-pointer"
+      [ngClass]="{
+        'bg-primary text-success-content border-primary': page === currentPage(),
+        'border-transparent hover:text-primary hover:border-primary': !(page === currentPage()),
+      }"
+    >
+      {{ page }}
+    </button>
+    }
+
+    <!-- Ellipsis fim -->
+    @if (visiblePages[visiblePages.length - 1] < totalPages()) {
+    <ng-icon name="heroEllipsisHorizontal" size="18" class="mb-0.5 self-end"></ng-icon>
+    }
+
+    <app-icon-button
+      icon="heroChevronRight"
+      [disabled]="isLastPage()"
+      (clicked)="onPageChange(currentPage() + 1)"
+    />
+    <app-icon-button
+      icon="heroChevronDoubleRight"
+      [disabled]="isLastPage()"
+      (clicked)="onPageChange(totalPages())"
+    />
+  </div>
+</div>

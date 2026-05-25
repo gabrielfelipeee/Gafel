@@ -10,6 +10,7 @@ import { NgIcon } from '@ng-icons/core';
 export class IconButtonComponent {
   clicked = output<void>();
   icon = input.required<string>();
+  disabled = input<boolean>(false);
 
   onClick() {
     this.clicked.emit();
