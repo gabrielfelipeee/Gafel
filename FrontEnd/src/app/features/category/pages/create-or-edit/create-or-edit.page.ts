@@ -1,69 +1,26 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideIcons, NgIcon } from '@ng-icons/core';
-import {
-  heroArrowDown,
-  heroArrowUp,
-  heroHashtag,
-  heroPlus,
-  heroXMark,
-  heroAcademicCap,
-  heroArchiveBox,
-  heroArrowTrendingDown,
-  heroArrowTrendingUp,
-  heroBanknotes,
-  heroBeaker,
-  heroBolt,
-  heroBookOpen,
-  heroBriefcase,
-  heroBuildingOffice,
-  heroCake,
-  heroCalendar,
-  heroCamera,
-  heroChartBar,
-  heroChartPie,
-  heroClock,
-  heroCreditCard,
-  heroCurrencyDollar,
-  heroEllipsisHorizontalCircle,
-  heroFilm,
-  heroFire,
-  heroGift,
-  heroGlobeAmericas,
-  heroHeart,
-  heroHome,
-  heroLockClosed,
-  heroMap,
-  heroMusicalNote,
-  heroPresentationChartLine,
-  heroReceiptPercent,
-  heroReceiptRefund,
-  heroScale,
-  heroShieldCheck,
-  heroShoppingBag,
-  heroShoppingCart,
-  heroTruck,
-  heroTv,
-  heroWallet,
-  heroWifi,
-  heroTag,
-} from '@ng-icons/heroicons/outline';
+import { heroHashtag } from '@ng-icons/heroicons/outline';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { eCategoryType } from '@features/category/enums/category-type.enum';
 import { iCreateOrEditCategoryForm } from '@features/category/interfaces/create-or-edit-category-form.interface';
-import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomInputComponent } from '@shared/components/custom-input/custom-input.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { tFormValidationMessages } from '@shared/types/form-validation-messages.type';
 import { CATEGORY_RULES } from '@features/category/rules/category.rules';
-import { icons } from '@features/category/data/icons.data';
 import { CategoryApi } from '@features/category/apis/category.api';
 import { ToastService } from '@shared/services/toast.service';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 import { applyApiValidationErrors } from '@shared/validation/utils/apply-api-validation.utils';
 import { CustomRadioGroupComponent } from '@shared/components/custom-radio-group/custom-radio-group.component';
 import { iCustomRadioOption } from '@shared/interfaces/custom-radio-option.interface';
-import { toSignal } from '@angular/core/rxjs-interop';
+import {
+  CATEGORY_ICON_NAMES,
+  CATEGORY_ICONS,
+} from '@features/category/contants/category-icons.constant';
 
 @Component({
   selector: 'app-create-or-edit-category',
@@ -76,59 +33,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
     ButtonComponent,
     CustomRadioGroupComponent,
   ],
-  providers: [
-    provideIcons({
-      heroPlus,
-      heroXMark,
-      heroArrowDown,
-      heroArrowUp,
-      heroHashtag,
-      heroAcademicCap,
-      heroArchiveBox,
-      heroArrowTrendingDown,
-      heroArrowTrendingUp,
-      heroBanknotes,
-      heroBeaker,
-      heroBolt,
-      heroBookOpen,
-      heroBriefcase,
-      heroBuildingOffice,
-      heroCake,
-      heroCalendar,
-      heroCamera,
-      heroChartBar,
-      heroChartPie,
-      heroClock,
-      heroCreditCard,
-      heroCurrencyDollar,
-      heroEllipsisHorizontalCircle,
-      heroFilm,
-      heroFire,
-      heroGift,
-      heroGlobeAmericas,
-      heroHeart,
-      heroHome,
-      heroLockClosed,
-      heroMap,
-      heroMusicalNote,
-      heroPresentationChartLine,
-      heroReceiptPercent,
-      heroReceiptRefund,
-      heroScale,
-      heroShieldCheck,
-      heroShoppingBag,
-      heroShoppingCart,
-      heroTruck,
-      heroTv,
-      heroWallet,
-      heroWifi,
-      heroTag,
-    }),
-  ],
+  providers: [provideIcons({ ...CATEGORY_ICONS, heroHashtag })],
 })
 export class CreateOrEditPage {
   readonly eCategoryType = eCategoryType;
-  readonly icons = icons;
+  readonly CATEGORY_ICON_NAMES = CATEGORY_ICON_NAMES;
 
   private readonly router = inject(Router);
   private readonly formBuilder = inject(NonNullableFormBuilder);

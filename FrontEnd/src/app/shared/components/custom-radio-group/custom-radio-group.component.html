@@ -1,12 +1,12 @@
 <div
-  class="grid gap-4 font-mono text-sm font-semibold"
+  class="grid gap-2 font-mono font-semibold md:gap-4 text-xs md:text-sm"
   [style.grid-template-columns]="'repeat(' + options().length + ', minmax(0, 1fr))'"
 >
   @for (option of options(); track $index) {
   <button
     type="button"
     (click)="onClick(option.value)"
-    class="group flex items-center justify-center gap-2 uppercase outline-none border border-base rounded-xl p-3 cursor-pointer transition-all duration-500"
+    class="group flex items-center justify-center gap-2 uppercase outline-none border border-base rounded-xl py-2.5 px-2 cursor-pointer transition-all duration-500"
     [ngClass]="[option.value === value() 
       ? option.activeClass ? option.activeClass : 'border-transparent bg-success text-success-content' 
       : option.hoverClass ? option.hoverClass : 'hover:border-success hover:text-success'
@@ -16,11 +16,11 @@
     <ng-icon
       [name]="option.icon"
       size="18"
-      class="transition-transform duration-500 group-hover:scale-110"
+      class="hidden! sm:flex! sm:shrink-0 transition-transform duration-500 group-hover:scale-110"
     />
     }
 
-    <span class="tracking-widest"> {{ option.label }} </span>
+    <span class="sm:tracking-widest"> {{ option.label }} </span>
   </button>
   }
 </div>

@@ -1,38 +1,95 @@
-<h1 class="font-semibold text-3xl my-8 capitalize">categorias</h1>
+<h1 class="font-semibold text-3xl mb-4 capitalize">categorias</h1>
 
-<div class="flex items-center justify-between">
-  <div>Filtros</div>
-  <app-button icon="heroPlus" (clicked)="onCreateCategory()">nova categoria</app-button>
-</div>
-
-<ul
-  class="list-none mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-16"
+<div
+  class="flex flex-col justify-center gap-8 border-b border-base pb-4 pt-4 sticky top-20.25 z-10 bg-base-100"
 >
-  @for (category of categories(); track $index) {
-  <li class="group relative surface flex items-center justify-start gap-4">
-    <span class="icon-container shrink-0 group-hover:text-primary">
-      <ng-icon
-        [name]="category.icon"
-        size="32"
-        class="transition-transform! duration-500 group-hover:scale-[1.2]"
-      />
-    </span>
-
-    <div class="flex flex-col min-w-0 pr-6">
-      <span class="font-mono font-semibold text-xl text-primary truncate">{{category.name}}</span>
-      <span class="text-sm">{{'5'}} lançamentos</span>
+  <div class="flex items-center justify-between gap-4">
+    <div class="flex items-center justify-center gap-2">
+      <ng-icon name="heroFunnel" size="26" />
+      <span> {{response().total}} categorias </span>
     </div>
 
+    <app-button icon="heroPlus" (clicked)="onCreateCategory()">nova categoria</app-button>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 items-center gap-4">
+    <input
+      type="text"
+      placeholder="Pesquisar..."
+      class="input input-md outline-none border-primary w-full sm:max-w-100"
+      [formControl]="searchControl"
+    />
+
+    <app-custom-radio-group
+      [options]="categoryTypeOptions"
+      [value]="filters().type"
+      (valueChange)="onSelectCategoryType($event)"
+      class="sm:justify-self-end"
+    />
+  </div>
+</div>
+
+<ul class="list-none mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-16">
+  @for (category of response().items; track category.id) {
+  <li class="group relative surface flex flex-col gap-4">
     <app-item-actions class="absolute top-1 right-1" [actions]="categoryActions" />
+
+    <div class="flex items-center justify-start gap-4">
+      <span class="icon-container shrink-0 group-hover:text-primary">
+        <ng-icon
+          [name]="category.icon"
+          size="32"
+          class="transition-transform! duration-500 group-hover:scale-[1.2]"
+        />
+      </span>
+
+      <div class="min-w-0 flex items-center gap-2 flex-wrap pr-6">
+        <h3 class="font-mono text-xl font-bold text-neutral truncate">{{ category.name }}</h3>
+
+        @if (filters().type === undefined) {
+        <div
+          class="badge badge-soft uppercase badge-sm"
+          [class.badge-error]="category.type === eCategoryType.Expense"
+          [class.badge-primary]="category.type === eCategoryType.Income"
+        >
+          {{ category.type === eCategoryType.Income ? 'receita' : 'despesa' }}
+        </div>
+        }
+      </div>
+    </div>
+
+    <div>
+      <span class="font-mono text-xs uppercase tracking-wider text-base-content/60">
+        total mensal
+      </span>
+
+      <p class="mt-1 text-2xl font-bold">{{'1000' | currency:'BRL'}}</p>
+    </div>
+
+    <div class="divider my-0"></div>
+
+    <div class="flex items-center justify-between">
+      <div>
+        <span class="font-mono text-xs uppercase text-base-content/60"> volume </span>
+
+        <p class="mt-1 font-semibold">{{'12'}} transações</p>
+      </div>
+
+      <div class="text-right">
+        <span class="font-mono text-xs uppercase text-base-content/60"> média </span>
+
+        <p class="mt-1 font-semibold">{{'83.33' | currency:'BRL'}}</p>
+      </div>
+    </div>
   </li>
   }
 </ul>
 
 <app-paginator
-  [limits]="limits"
-  [totalItems]="pagination().total"
-  [offset]="pagination().offset"
-  [limit]="pagination().limit"
+  [limits]="CATEGORY_LIMIT_OPTIONS"
+  [totalItems]="response().total"
+  [offset]="response().offset"
+  [limit]="response().limit"
   (offsetChange)="onOffsetChange($event)"
   (limitChange)="onLimitChange($event)"
 />

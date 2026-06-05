@@ -23,7 +23,7 @@
     <div class="grid gap-2 border-b border-base pb-6">
       <span class="text-base font-semibold">Escolha o ícone</span>
       <ul class="list-none flex justify-center items-center flex-wrap gap-4">
-        @for (icon of icons; track $index) {
+        @for (icon of CATEGORY_ICON_NAMES; track $index) {
         <li>
           <button
             type="button"

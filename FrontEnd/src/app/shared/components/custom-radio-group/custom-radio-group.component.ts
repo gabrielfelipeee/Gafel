@@ -4,6 +4,7 @@ import { NgIcon } from '@ng-icons/core';
 import { iCustomRadioOption } from '@shared/interfaces/custom-radio-option.interface';
 
 @Component({
+  host: { class: 'block' },
   selector: 'app-custom-radio-group',
   templateUrl: './custom-radio-group.component.html',
   imports: [NgClass, NgIcon],

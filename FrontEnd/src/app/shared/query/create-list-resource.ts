@@ -4,32 +4,45 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map, switchMap, Observable } from 'rxjs';
 import { iPagedResponse } from '../interfaces/paged-response.interface';
 import { PAGINATION_CONFIG } from './constants/pagination-config.constant';
+import { iPaginationQuery } from '@shared/interfaces/pagination-query.interface';
 
-interface iPagination {
-  offset: number;
-  limit: number;
-}
-
-export function createListResource<TFilters, TItem>(config: {
-  parser: (params: Params) => TFilters & iPagination;
-  fetch: (query: TFilters & iPagination) => Observable<iPagedResponse<TItem>>;
+export function createListResource<TFilters extends object, TItem>(config: {
+  parser: (params: Params) => iPaginationQuery<Partial<TFilters>>;
+  fetch: (query: iPaginationQuery<Partial<TFilters>>) => Observable<iPagedResponse<TItem>>;
 }) {
   const route = inject(ActivatedRoute);
   const router = inject(Router);
 
   const query$ = route.queryParams.pipe(map(config.parser));
 
-  const response = toSignal(query$.pipe(switchMap(query => config.fetch(query))), {
-    initialValue: {
-      items: [],
-      offset: 0,
-      limit: PAGINATION_CONFIG.DEFAULT_LIMIT,
-      total: 0,
-    },
+  const filters = toSignal(query$.pipe(map(query => query.filters)), {
+    initialValue: config.parser(route.snapshot.queryParams).filters,
   });
 
+  const DEFAULT_RESPONSE: iPagedResponse<TItem> = {
+    items: [],
+    offset: 0,
+    limit: PAGINATION_CONFIG.DEFAULT_LIMIT,
+    total: 0,
+  };
+  const response = toSignal(query$.pipe(switchMap(query => config.fetch(query))), {
+    initialValue: DEFAULT_RESPONSE,
+  });
+
+  function setFilters(filters: Partial<TFilters>) {
+    router.navigate([], {
+      relativeTo: route,
+      queryParams: {
+        ...filters,
+        offset: 0,
+      },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+  }
+
   // helpers de paginação
-  function patch(partial: Partial<iPagination>) {
+  function patch(partial: Partial<iPaginationQuery<TFilters>>) {
     router.navigate([], {
       relativeTo: route,
       queryParams: partial,
@@ -37,7 +50,6 @@ export function createListResource<TFilters, TItem>(config: {
       replaceUrl: true,
     });
   }
-
   function setOffset(offset: number) {
     patch({ offset });
   }
@@ -48,8 +60,9 @@ export function createListResource<TFilters, TItem>(config: {
 
   return {
     response,
-    query: query$,
+    filters,
     setOffset,
     setLimit,
+    setFilters,
   };
 }
