@@ -28,6 +28,9 @@ public class CategoryRepository(GafelDbContext context) : ICategoryReadOnlyRepos
         if (filters.Type.HasValue)
             query = query.Where(category => category.Type == filters.Type.Value);
 
+        if (!string.IsNullOrWhiteSpace(filters.CategoryName))
+            query = query.Where(category => EF.Functions.Collate(category.Name, "SQL_Latin1_General_CP1_CI_AI").Contains(filters.CategoryName));
+
         int total = await query.CountAsync();
 
         if (filters.Offset.HasValue && filters.Limit.HasValue)
