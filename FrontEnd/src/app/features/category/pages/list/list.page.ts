@@ -11,7 +11,7 @@ import {
 } from '@ng-icons/heroicons/outline';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, NgClass } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ItemActionsComponent } from '@shared/components/item-actions/item-actions.component';
 import { PaginatorComponent } from '@shared/components/paginator/paginator.component';
@@ -29,9 +29,10 @@ import { iCustomRadioOption } from '@shared/interfaces/custom-radio-option.inter
 import { eCategoryType } from '@features/category/enums/category-type.enum';
 import { CATEGORY_ICONS } from '@features/category/contants/category-icons.constant';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { EmptyListComponent } from '@shared/components/empty-list/empty-list.component';
+import { CardSkeletonListComponent } from '@shared/components/card-skeleton-list/card-skeleton-list.component';
 
 @Component({
-  host: { class: 'block relative' },
   selector: 'app-list-category',
   templateUrl: './list.page.html',
   imports: [
@@ -44,6 +45,9 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
     CurrencyPipe,
     FormsModule,
     ReactiveFormsModule,
+    EmptyListComponent,
+    CardSkeletonListComponent,
+    NgClass,
   ],
   providers: [
     provideIcons({
@@ -111,6 +115,7 @@ export class ListPage implements OnInit {
   readonly onOffsetChange = this.categoryList.setOffset;
   readonly onLimitChange = this.categoryList.setLimit;
   readonly filters = this.categoryList.filters;
+  readonly isLoading = this.categoryList.isLoading;
 
   constructor() {
     effect(() => {
@@ -133,7 +138,7 @@ export class ListPage implements OnInit {
   }
 
   onCreateCategory(): void {
-    this.router.navigate(['nova'], { relativeTo: this.route });
+    this.router.navigate(['nova'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
   }
 
   onSelectCategoryType(type?: eCategoryType): void {

@@ -1,7 +1,7 @@
-import { inject } from '@angular/core';
+import { computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map, switchMap, Observable } from 'rxjs';
+import { map, switchMap, Observable, tap, finalize } from 'rxjs';
 import { iPagedResponse } from '../interfaces/paged-response.interface';
 import { PAGINATION_CONFIG } from './constants/pagination-config.constant';
 import { iPaginationQuery } from '@shared/interfaces/pagination-query.interface';
@@ -19,15 +19,27 @@ export function createListResource<TFilters extends object, TItem>(config: {
     initialValue: config.parser(route.snapshot.queryParams).filters,
   });
 
+  const pendingRequests = signal(0);
+  const isLoading = computed(() => pendingRequests() > 0);
+
   const DEFAULT_RESPONSE: iPagedResponse<TItem> = {
     items: [],
     offset: 0,
     limit: PAGINATION_CONFIG.DEFAULT_LIMIT,
     total: 0,
   };
-  const response = toSignal(query$.pipe(switchMap(query => config.fetch(query))), {
-    initialValue: DEFAULT_RESPONSE,
-  });
+
+  const response = toSignal(
+    query$.pipe(
+      tap(() => pendingRequests.update(v => v + 1)),
+      switchMap(query =>
+        config.fetch(query).pipe(finalize(() => pendingRequests.update(v => v - 1))),
+      ),
+    ),
+    {
+      initialValue: DEFAULT_RESPONSE,
+    },
+  );
 
   function setFilters(filters: Partial<TFilters>) {
     router.navigate([], {
@@ -61,6 +73,7 @@ export function createListResource<TFilters extends object, TItem>(config: {
   return {
     response,
     filters,
+    isLoading,
     setOffset,
     setLimit,
     setFilters,

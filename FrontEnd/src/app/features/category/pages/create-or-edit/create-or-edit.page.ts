@@ -95,7 +95,7 @@ export class CreateOrEditPage {
     this.categoryApi.create(this.form.getRawValue()).subscribe({
       next: () => {
         this.toastService.show('success', 'Categoria adicionada com sucesso');
-        this.router.navigate(['/categorias']);
+        this.router.navigate(['/categorias'], { queryParamsHandling: 'preserve' });
       },
       error: (error: iErrorResponse) => applyApiValidationErrors(this.form, error),
     });
@@ -117,6 +117,6 @@ export class CreateOrEditPage {
   }
 
   onModalClose(): void {
-    this.router.navigate(['/categorias']);
+    this.router.navigate(['/categorias'], { queryParamsHandling: 'preserve' });
   }
 }

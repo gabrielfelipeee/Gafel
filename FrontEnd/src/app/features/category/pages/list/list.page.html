@@ -28,8 +28,11 @@
     />
   </div>
 </div>
-
-<ul class="list-none mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-16">
+@if(response().items.length) {
+<ul
+  class="list-none mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-16 pointer-events-none"
+  [ngClass]="{ 'opacity-50 pointer-events-none': isLoading() }"
+>
   @for (category of response().items; track category.id) {
   <li class="group relative surface flex flex-col gap-4">
     <app-item-actions class="absolute top-1 right-1" [actions]="categoryActions" />
@@ -84,6 +87,14 @@
   </li>
   }
 </ul>
+} @else if(isLoading()) {
+<app-card-skeleton-list [count]="response().limit" />
+} @else {
+<app-empty-list
+  title="Nenhuma categoria encontrada"
+  description="Tente ajustar os filtros ou o termo de pesquisa para encontrar o que procura."
+/>
+}
 
 <app-paginator
   [limits]="CATEGORY_LIMIT_OPTIONS"
