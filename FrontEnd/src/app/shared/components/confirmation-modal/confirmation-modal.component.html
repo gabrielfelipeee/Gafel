@@ -1,0 +1,32 @@
+<div class="relative w-[95vw] max-w-lg rounded-2xl bg-base-200 shadow-xl">
+  <app-icon-button icon="heroXMark" class="absolute right-3 top-3" (clicked)="close(false)" />
+
+  <div class="p-6">
+    <div class="flex items-start gap-4">
+      <span
+        class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl"
+        [class]="config.iconClass"
+      >
+        <ng-icon [name]="config.icon" size="36" />
+      </span>
+
+      <div class="flex-1">
+        <h3 cdkDialogTitle class="text-lg font-semibold mb-1">{{ data.title }}</h3>
+
+        <p class="text-sm">{{ data.message }}</p>
+      </div>
+    </div>
+
+    <div class="mt-8 flex items-center justify-end gap-3 pt-2 border-t border-base">
+      @if(data.type === 'danger' || data.type === 'warning') {
+      <button class="btn btn-ghost min-w-28 text-base" (click)="close(false)">
+        {{ data.cancelText || 'Cancelar' }}
+      </button>
+      }
+
+      <button class="btn min-w-28 text-base" [class]="config.buttonClass" (click)="close(true)">
+        {{ data.confirmText || config.defaultText }}
+      </button>
+    </div>
+  </div>
+</div>
