@@ -13,7 +13,7 @@
       @for (action of actions(); track $index) {
       <button
         type="button"
-        (click)="onClick(action.callback)"
+        (click)="onClick(action)"
         class="flex items-center justify-start gap-4 rounded-md py-1 px-2 cursor-pointer transition-all duration-300"
         [ngClass]="[action.hoverClass ? action.hoverClass : 'hover:bg-primary/10 hover:text-primary']"
       >

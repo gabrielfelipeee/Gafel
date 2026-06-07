@@ -1,19 +1,27 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
 import { IconButtonComponent } from '../icon-button/icon-button.component';
-import { iItemAction } from '@shared/interfaces/item-action.interface';
+import { iItemActionData } from '@shared/interfaces/item-action-data.interface';
+import { iItemActionEvent } from '@shared/interfaces/item-action-event.interface';
 
 @Component({
   selector: 'app-item-actions',
   templateUrl: './item-actions.component.html',
   imports: [NgIcon, IconButtonComponent, NgClass],
 })
-export class ItemActionsComponent {
-  readonly actions = input.required<iItemAction[]>();
+export class ItemActionsComponent<TItem, TAction extends string> {
+  readonly actions = input.required<iItemActionData<TAction>[]>();
+  readonly item = input.required<TItem>();
 
-  onClick(callback: VoidFunction) {
+  readonly clicked = output<iItemActionEvent<TAction, TItem>>();
+
+  onClick(action: iItemActionData<TAction>) {
     (document.activeElement as HTMLElement)?.blur();
-    callback();
+
+    this.clicked.emit({
+      action: action.key,
+      item: this.item(),
+    });
   }
 }

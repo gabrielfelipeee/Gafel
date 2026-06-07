@@ -18,7 +18,7 @@ import { PaginatorComponent } from '@shared/components/paginator/paginator.compo
 import { CategoryApi } from '@features/category/apis/category.api';
 import { iCategory } from '@features/category/interfaces/category.interface';
 import { iCategoryListFilters } from '@features/category/interfaces/category-list-filters.interface';
-import { iItemAction } from '@shared/interfaces/item-action.interface';
+import { iItemActionData } from '@shared/interfaces/item-action-data.interface';
 import {
   CATEGORY_LIMIT_OPTIONS,
   categoryListQueryParser,
@@ -31,6 +31,14 @@ import { CATEGORY_ICONS } from '@features/category/contants/category-icons.const
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { EmptyListComponent } from '@shared/components/empty-list/empty-list.component';
 import { CardSkeletonListComponent } from '@shared/components/card-skeleton-list/card-skeleton-list.component';
+import { ConfirmationModalService } from '@shared/services/confirmation-modal.service';
+import { iItemActionEvent } from '@shared/interfaces/item-action-event.interface';
+import { ToastService } from '@shared/services/toast.service';
+import { iErrorResponse } from '@shared/interfaces/error-response.interface';
+import { RefreshService } from '@shared/services/refresh.service';
+import { REFRESH_KEYS } from '@shared/constants/refresh-keys.constant';
+
+type tCategoryAction = 'edit' | 'delete';
 
 @Component({
   selector: 'app-list-category',
@@ -69,19 +77,22 @@ export class ListPage implements OnInit {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly categoryApi = inject(CategoryApi);
+  private readonly confirmationModalService = inject(ConfirmationModalService);
+  private readonly toastService = inject(ToastService);
+  private readonly refreshService = inject(RefreshService);
 
   readonly searchControl = new FormControl('', { nonNullable: true });
 
-  readonly categoryActions: iItemAction[] = [
+  readonly categoryActions: iItemActionData<tCategoryAction>[] = [
     {
+      key: 'edit',
       label: 'Editar',
       icon: 'heroPencilSquare',
-      callback: () => this.editCategory(),
     },
     {
+      key: 'delete',
       label: 'Excluir',
       icon: 'heroTrash',
-      callback: () => this.deleteCategory(),
       hoverClass: 'hover:bg-error/10 hover:text-error',
     },
   ];
@@ -110,6 +121,7 @@ export class ListPage implements OnInit {
     parser: categoryListQueryParser,
     fetch: ({ offset, limit, filters }) =>
       this.categoryApi.getAll(offset, limit, filters.type, filters.categoryName),
+    refresh$: this.refreshService.on(REFRESH_KEYS.CATEGORIES),
   });
   readonly response = this.categoryList.response;
   readonly onOffsetChange = this.categoryList.setOffset;
@@ -145,10 +157,47 @@ export class ListPage implements OnInit {
     this.categoryList.setFilters({ type });
   }
 
-  private deleteCategory(): void {
-    alert('Delete');
+  async onCategoryAction(event: iItemActionEvent<tCategoryAction, iCategory>) {
+    switch (event.action) {
+      case 'edit':
+        this.editCategory(event.item);
+        break;
+
+      case 'delete':
+        await this.deleteCategory(event.item);
+        break;
+    }
   }
-  private editCategory(): void {
-    alert('Edit');
+
+  private async deleteCategory(category: iCategory) {
+    const confirm = await this.confirmationModalService.show({
+      title: 'Excluir categoria',
+      message: `Tem certeza de que deseja excluir a categoria "${category.name}"? Esta ação não poderá ser desfeita.`,
+      type: 'danger',
+    });
+    if (!confirm) return;
+
+    this.categoryApi.delete(category.id).subscribe({
+      next: () => {
+        this.toastService.show(
+          'success',
+          'Categoria excluída',
+          'A categoria foi excluída com sucesso.',
+        );
+        this.refreshService.trigger(REFRESH_KEYS.CATEGORIES);
+      },
+      error: (error: iErrorResponse) => {
+        const title = error.error?.title || 'Falha ao excluir categoria';
+        const message =
+          error.error?.status !== 500 && error.error?.detail
+            ? error.error.detail
+            : 'Não foi possível excluir a categoria no momento. Tente novamente em alguns instantes.';
+
+        this.toastService.show('error', title, message);
+      },
+    });
+  }
+  private editCategory(category: iCategory): void {
+    alert(category.name);
   }
 }

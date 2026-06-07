@@ -21,6 +21,8 @@ import {
   CATEGORY_ICON_NAMES,
   CATEGORY_ICONS,
 } from '@features/category/contants/category-icons.constant';
+import { RefreshService } from '@shared/services/refresh.service';
+import { REFRESH_KEYS } from '@shared/constants/refresh-keys.constant';
 
 @Component({
   selector: 'app-create-or-edit-category',
@@ -43,6 +45,7 @@ export class CreateOrEditPage {
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly toastService = inject(ToastService);
   private readonly categoryApi = inject(CategoryApi);
+  private readonly refreshService = inject(RefreshService);
 
   readonly formErrorMessages = {
     name: {
@@ -94,7 +97,12 @@ export class CreateOrEditPage {
 
     this.categoryApi.create(this.form.getRawValue()).subscribe({
       next: () => {
-        this.toastService.show('success', 'Categoria adicionada com sucesso');
+        this.toastService.show(
+          'success',
+          'Categoria adicionada',
+          'Categoria criada com sucesso e já está disponível para uso.',
+        );
+        this.refreshService.trigger(REFRESH_KEYS.CATEGORIES);
         this.router.navigate(['/categorias'], { queryParamsHandling: 'preserve' });
       },
       error: (error: iErrorResponse) => applyApiValidationErrors(this.form, error),

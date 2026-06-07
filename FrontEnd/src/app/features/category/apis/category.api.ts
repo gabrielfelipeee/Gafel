@@ -32,4 +32,8 @@ export class CategoryApi {
 
     return this.http.get<iPagedResponse<iCategory>>(this.baseUrl, { params });
   }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }

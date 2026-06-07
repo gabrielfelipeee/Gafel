@@ -35,7 +35,12 @@
 >
   @for (category of response().items; track category.id) {
   <li class="group relative surface flex flex-col gap-4">
-    <app-item-actions class="absolute top-1 right-1" [actions]="categoryActions" />
+    <app-item-actions
+      class="absolute top-1 right-1"
+      [actions]="categoryActions"
+      [item]="category"
+      (clicked)="onCategoryAction($event)"
+    />
 
     <div class="flex items-center justify-start gap-4">
       <span class="icon-container shrink-0 group-hover:text-primary">
