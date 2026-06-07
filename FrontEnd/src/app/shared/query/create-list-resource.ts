@@ -1,7 +1,7 @@
 import { computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map, switchMap, Observable, tap, finalize } from 'rxjs';
+import { map, switchMap, Observable, tap, finalize, merge, EMPTY } from 'rxjs';
 import { iPagedResponse } from '../interfaces/paged-response.interface';
 import { PAGINATION_CONFIG } from './constants/pagination-config.constant';
 import { iPaginationQuery } from '@shared/interfaces/pagination-query.interface';
@@ -9,6 +9,7 @@ import { iPaginationQuery } from '@shared/interfaces/pagination-query.interface'
 export function createListResource<TFilters extends object, TItem>(config: {
   parser: (params: Params) => iPaginationQuery<Partial<TFilters>>;
   fetch: (query: iPaginationQuery<Partial<TFilters>>) => Observable<iPagedResponse<TItem>>;
+  refresh$?: Observable<void>;
 }) {
   const route = inject(ActivatedRoute);
   const router = inject(Router);
@@ -28,9 +29,11 @@ export function createListResource<TFilters extends object, TItem>(config: {
     limit: PAGINATION_CONFIG.DEFAULT_LIMIT,
     total: 0,
   };
-
   const response = toSignal(
-    query$.pipe(
+    merge(
+      query$,
+      config.refresh$?.pipe(map(() => config.parser(route.snapshot.queryParams))) ?? EMPTY,
+    ).pipe(
       tap(() => pendingRequests.update(v => v + 1)),
       switchMap(query =>
         config.fetch(query).pipe(finalize(() => pendingRequests.update(v => v - 1))),
