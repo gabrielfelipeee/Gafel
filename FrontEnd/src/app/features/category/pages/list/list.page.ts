@@ -198,6 +198,9 @@ export class ListPage implements OnInit {
     });
   }
   private editCategory(category: iCategory): void {
-    alert(category.name);
+    this.router.navigate([category.id], {
+      relativeTo: this.route,
+      queryParamsHandling: 'preserve',
+    });
   }
 }

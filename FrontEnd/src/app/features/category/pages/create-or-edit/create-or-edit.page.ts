@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideIcons, NgIcon } from '@ng-icons/core';
-import { heroHashtag } from '@ng-icons/heroicons/outline';
+import { heroArrowPath, heroHashtag } from '@ng-icons/heroicons/outline';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { eCategoryType } from '@features/category/enums/category-type.enum';
 import { iCreateOrEditCategoryForm } from '@features/category/interfaces/create-or-edit-category-form.interface';
@@ -23,6 +23,8 @@ import {
 } from '@features/category/contants/category-icons.constant';
 import { RefreshService } from '@shared/services/refresh.service';
 import { REFRESH_KEYS } from '@shared/constants/refresh-keys.constant';
+import { iCategory } from '@features/category/interfaces/category.interface';
+import { iCreateOrEditCategoryRequest } from '@features/category/interfaces/create-or-edit-category-request.interface';
 
 @Component({
   selector: 'app-create-or-edit-category',
@@ -35,17 +37,20 @@ import { REFRESH_KEYS } from '@shared/constants/refresh-keys.constant';
     ButtonComponent,
     CustomRadioGroupComponent,
   ],
-  providers: [provideIcons({ ...CATEGORY_ICONS, heroHashtag })],
+  providers: [provideIcons({ ...CATEGORY_ICONS, heroHashtag, heroArrowPath })],
 })
 export class CreateOrEditPage {
   readonly eCategoryType = eCategoryType;
   readonly CATEGORY_ICON_NAMES = CATEGORY_ICON_NAMES;
 
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly toastService = inject(ToastService);
   private readonly categoryApi = inject(CategoryApi);
   private readonly refreshService = inject(RefreshService);
+
+  readonly category: iCategory | undefined = this.route.snapshot.data['category'];
 
   readonly formErrorMessages = {
     name: {
@@ -73,9 +78,12 @@ export class CreateOrEditPage {
   ];
 
   readonly form: FormGroup<iCreateOrEditCategoryForm> = this.formBuilder.group({
-    name: ['', [Validators.required, Validators.maxLength(CATEGORY_RULES.NAME.MAX_LENGTH)]],
-    icon: ['', [Validators.required]],
-    type: [eCategoryType.Income, [Validators.required]],
+    name: [
+      this.category?.name ?? '',
+      [Validators.required, Validators.maxLength(CATEGORY_RULES.NAME.MAX_LENGTH)],
+    ],
+    icon: [this.category?.icon ?? '', [Validators.required]],
+    type: [this.category?.type ?? eCategoryType.Income, [Validators.required]],
   });
 
   readonly selectedIcon = toSignal(this.form.controls.icon.valueChanges, {
@@ -95,13 +103,22 @@ export class CreateOrEditPage {
       return;
     }
 
-    this.categoryApi.create(this.form.getRawValue()).subscribe({
+    this.save(this.form.getRawValue());
+  }
+  private save(category: iCreateOrEditCategoryRequest) {
+    const request$ = this.category
+      ? this.categoryApi.update(this.category.id, category)
+      : this.categoryApi.create(category);
+
+    request$.subscribe({
       next: () => {
-        this.toastService.show(
-          'success',
-          'Categoria adicionada',
-          'Categoria criada com sucesso e já está disponível para uso.',
-        );
+        const title = this.category ? 'Categoria atualizada' : 'Categoria adicionada';
+        const message = this.category
+          ? 'Categoria atualizada com sucesso.'
+          : 'Categoria criada com sucesso e já está disponível para uso.';
+
+        this.toastService.show('success', title, message);
+
         this.refreshService.trigger(REFRESH_KEYS.CATEGORIES);
         this.router.navigate(['/categorias'], { queryParamsHandling: 'preserve' });
       },
@@ -110,18 +127,10 @@ export class CreateOrEditPage {
   }
 
   onSelectCategoryType(type: eCategoryType): void {
-    const control = this.form.controls.type;
-
-    if (control.value === type) return;
-
-    control.setValue(type);
+    this.form.controls.type.setValue(type);
   }
   onSelectIcon(icon: string): void {
-    const control = this.form.controls.icon;
-
-    if (control.value === icon) return;
-
-    control.setValue(icon);
+    this.form.controls.icon.setValue(icon);
   }
 
   onModalClose(): void {

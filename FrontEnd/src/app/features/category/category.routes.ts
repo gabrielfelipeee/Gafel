@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { withPaginationQueryGuard } from '@core/auth/guards/with-pagination-query.guard';
 import { categoryListQueryParser } from './parsers/category-list-query.parser';
+import { getCategoryResolver } from './resolvers/get-category.resolver';
 
 export const CATEGORY_ROUTES: Routes = [
   {
@@ -12,6 +13,12 @@ export const CATEGORY_ROUTES: Routes = [
         path: 'nova',
         loadComponent: () =>
           import('./pages/create-or-edit/create-or-edit.page').then(m => m.CreateOrEditPage),
+      },
+      {
+        path: ':categoryId',
+        loadComponent: () =>
+          import('./pages/create-or-edit/create-or-edit.page').then(m => m.CreateOrEditPage),
+        resolve: { category: getCategoryResolver },
       },
     ],
   },

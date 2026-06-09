@@ -1,8 +1,10 @@
 <app-modal (modalClose)="onModalClose()">
-  <h1 class="text-2xl font-bold tracking-tight">Nova Categoria</h1>
+  <h1 class="text-2xl font-bold tracking-tight capitalize">
+    {{ category ? 'atualizar categoria' : 'nova categoria' }}
+  </h1>
 
   <p class="text-sm text-base-content/70 mt-1 pb-2 border-b border-base">
-    Crie categorias para organizar suas movimentações.
+    {{ category ? 'Atualize as informações da categoria.' : 'Crie uma categoria para organizar suas movimentações.' }}
   </p>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid gap-4 mt-6">
@@ -15,13 +17,13 @@
     <app-custom-input
       label="Nome"
       icon="heroHashtag"
-      placeholder="Dê um nome à categoria"
+      placeholder="Ex.: Alimentação, Salário, Transporte..."
       formControlName="name"
       [errorMessages]="formErrorMessages.name"
     />
 
     <div class="grid gap-2 border-b border-base pb-6">
-      <span class="text-base font-semibold">Escolha o ícone</span>
+      <span class="text-base font-semibold"> Selecione um ícone para representar a categoria </span>
       <ul class="list-none flex justify-center items-center flex-wrap gap-4">
         @for (icon of CATEGORY_ICON_NAMES; track $index) {
         <li>
@@ -45,6 +47,8 @@
       </div>
     </div>
 
-    <app-button icon="heroPlus" class="justify-self-end">adicionar</app-button>
+    <app-button [icon]="category ? 'heroArrowPath' : 'heroPlus'" class="justify-self-end">
+      {{ category ? 'atualizar categoria' : 'criar categoria' }}
+    </app-button>
   </form>
 </app-modal>

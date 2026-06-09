@@ -19,6 +19,10 @@ export class CategoryApi {
     return this.http.post<void>(this.baseUrl, category);
   }
 
+  update(id: number, category: iCreateOrEditCategoryRequest) {
+    return this.http.put<void>(`${this.baseUrl}/${id}`, category);
+  }
+
   getAll(
     offset = 0,
     limit = 10,
@@ -31,6 +35,10 @@ export class CategoryApi {
     if (categoryName) params = params.set('categoryName', categoryName);
 
     return this.http.get<iPagedResponse<iCategory>>(this.baseUrl, { params });
+  }
+
+  getById(id: number): Observable<iCategory> {
+    return this.http.get<iCategory>(`${this.baseUrl}/${id}`);
   }
 
   delete(id: number): Observable<void> {
