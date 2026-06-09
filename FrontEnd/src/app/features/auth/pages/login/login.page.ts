@@ -23,13 +23,20 @@ import { iLoginForm } from '@features/auth/interfaces/login-form.interface';
 import { iUserCredentials } from '@core/auth/interfaces/user-credentials.interface';
 import { LoginFacade } from '@core/auth/facades/login.facade';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { applyApiValidationErrors } from '@shared/validation/utils/apply-api-validation.utils';
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login.page.html',
-  imports: [AuthLayout, NgIcon, ReactiveFormsModule, AuthButtonComponent, CustomInputComponent],
+  imports: [
+    AuthLayout,
+    NgIcon,
+    ReactiveFormsModule,
+    AuthButtonComponent,
+    CustomInputComponent,
+    RouterLink,
+  ],
   viewProviders: [
     provideIcons({
       heroArrowRightOnRectangle,

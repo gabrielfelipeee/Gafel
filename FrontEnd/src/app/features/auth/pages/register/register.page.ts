@@ -30,13 +30,20 @@ import { AuthButtonComponent } from '../../components/auth-button/auth-button.co
 import { RegisterUserFacade } from '@core/auth/facades/register-user.facade';
 import { iRegisterUserRequest } from '@core/auth/interfaces/register-user-request.interface';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { applyApiValidationErrors } from '@shared/validation/utils/apply-api-validation.utils';
 
 @Component({
   selector: 'app-register-page',
   templateUrl: './register.page.html',
-  imports: [AuthLayout, NgIcon, ReactiveFormsModule, AuthButtonComponent, CustomInputComponent],
+  imports: [
+    AuthLayout,
+    NgIcon,
+    ReactiveFormsModule,
+    AuthButtonComponent,
+    CustomInputComponent,
+    RouterLink,
+  ],
   viewProviders: [
     provideIcons({
       heroUserPlus,
