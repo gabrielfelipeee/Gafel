@@ -37,6 +37,7 @@ import { ToastService } from '@shared/services/toast.service';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 import { RefreshService } from '@shared/services/refresh.service';
 import { REFRESH_KEYS } from '@shared/constants/refresh-keys.constant';
+import { ApiErrorHandlerService } from '@shared/services/api-error-handler.service';
 
 type tCategoryAction = 'edit' | 'delete';
 
@@ -80,6 +81,7 @@ export class ListPage implements OnInit {
   private readonly confirmationModalService = inject(ConfirmationModalService);
   private readonly toastService = inject(ToastService);
   private readonly refreshService = inject(RefreshService);
+  private readonly apiErrorHandlerService = inject(ApiErrorHandlerService);
 
   readonly searchControl = new FormControl('', { nonNullable: true });
 
@@ -172,9 +174,10 @@ export class ListPage implements OnInit {
   private async deleteCategory(category: iCategory) {
     const confirm = await this.confirmationModalService.show({
       title: 'Excluir categoria',
-      message: `Tem certeza de que deseja excluir a categoria "${category.name}"? Esta ação não poderá ser desfeita.`,
+      message: `Deseja realmente excluir "${category.name}"? Essa ação não poderá ser desfeita.`,
       type: 'danger',
     });
+
     if (!confirm) return;
 
     this.categoryApi.delete(category.id).subscribe({
@@ -182,18 +185,16 @@ export class ListPage implements OnInit {
         this.toastService.show(
           'success',
           'Categoria excluída',
-          'A categoria foi excluída com sucesso.',
+          'Sua categoria foi excluída com sucesso.',
         );
         this.refreshService.trigger(REFRESH_KEYS.CATEGORIES);
       },
       error: (error: iErrorResponse) => {
-        const title = error.error?.title || 'Falha ao excluir categoria';
-        const message =
-          error.error?.status !== 500 && error.error?.detail
-            ? error.error.detail
-            : 'Não foi possível excluir a categoria no momento. Tente novamente em alguns instantes.';
-
-        this.toastService.show('error', title, message);
+        this.apiErrorHandlerService.show(
+          error,
+          'Não foi possível excluir a categoria',
+          'Tivemos um problema ao excluir sua categoria. Tente novamente em alguns instantes.',
+        );
       },
     });
   }

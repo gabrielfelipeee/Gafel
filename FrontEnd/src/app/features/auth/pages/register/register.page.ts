@@ -31,7 +31,9 @@ import { RegisterUserFacade } from '@core/auth/facades/register-user.facade';
 import { iRegisterUserRequest } from '@core/auth/interfaces/register-user-request.interface';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 import { Router, RouterLink } from '@angular/router';
-import { applyApiValidationErrors } from '@shared/validation/utils/apply-api-validation.utils';
+import { mapApiErrorsToForm } from '@shared/validation/utils/map-api-errors-to-form.utils';
+import { FormValidationService } from '@shared/services/form-validation.service';
+import { ApiErrorHandlerService } from '@shared/services/api-error-handler.service';
 
 @Component({
   selector: 'app-register-page',
@@ -62,6 +64,8 @@ export class RegisterPage {
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly registerUserFacade = inject(RegisterUserFacade);
   private readonly router = inject(Router);
+  private readonly formValidationService = inject(FormValidationService);
+  private readonly apiErrorHandlerService = inject(ApiErrorHandlerService);
 
   protected readonly formErrorMessages = {
     fullName: FULLNAME_VALIDATION_MESSAGES,
@@ -122,16 +126,21 @@ export class RegisterPage {
   );
 
   onSubmit() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
+    if (!this.formValidationService.validate(this.form)) return;
 
     const request: iRegisterUserRequest = this.form.getRawValue();
 
     this.registerUserFacade.register(request).subscribe({
       next: () => this.router.navigate(['/dashboard']),
-      error: (error: iErrorResponse) => applyApiValidationErrors(this.form, error),
+      error: (error: iErrorResponse) => {
+        mapApiErrorsToForm(this.form, error);
+
+        this.apiErrorHandlerService.show(
+          error,
+          'Não foi possível criar sua conta',
+          'Tivemos um problema ao concluir seu cadastro. Tente novamente em alguns instantes.',
+        );
+      },
     });
   }
 }

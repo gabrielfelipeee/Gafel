@@ -14,7 +14,7 @@ import { CATEGORY_RULES } from '@features/category/rules/category.rules';
 import { CategoryApi } from '@features/category/apis/category.api';
 import { ToastService } from '@shared/services/toast.service';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
-import { applyApiValidationErrors } from '@shared/validation/utils/apply-api-validation.utils';
+import { mapApiErrorsToForm } from '@shared/validation/utils/map-api-errors-to-form.utils';
 import { CustomRadioGroupComponent } from '@shared/components/custom-radio-group/custom-radio-group.component';
 import { iCustomRadioOption } from '@shared/interfaces/custom-radio-option.interface';
 import {
@@ -25,6 +25,8 @@ import { RefreshService } from '@shared/services/refresh.service';
 import { REFRESH_KEYS } from '@shared/constants/refresh-keys.constant';
 import { iCategory } from '@features/category/interfaces/category.interface';
 import { iCreateOrEditCategoryRequest } from '@features/category/interfaces/create-or-edit-category-request.interface';
+import { FormValidationService } from '@shared/services/form-validation.service';
+import { ApiErrorHandlerService } from '@shared/services/api-error-handler.service';
 
 @Component({
   selector: 'app-create-or-edit-category',
@@ -49,6 +51,8 @@ export class CreateOrEditPage {
   private readonly toastService = inject(ToastService);
   private readonly categoryApi = inject(CategoryApi);
   private readonly refreshService = inject(RefreshService);
+  private readonly formValidationService = inject(FormValidationService);
+  private readonly apiErrorHandlerService = inject(ApiErrorHandlerService);
 
   readonly category: iCategory | undefined = this.route.snapshot.data['category'];
 
@@ -91,17 +95,7 @@ export class CreateOrEditPage {
   });
 
   onSubmit() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-
-      this.toastService.show(
-        'warning',
-        'Ainda faltam informações',
-        'Verifique os campos destacados.',
-      );
-
-      return;
-    }
+    if (!this.formValidationService.validate(this.form)) return;
 
     this.save(this.form.getRawValue());
   }
@@ -112,17 +106,25 @@ export class CreateOrEditPage {
 
     request$.subscribe({
       next: () => {
-        const title = this.category ? 'Categoria atualizada' : 'Categoria adicionada';
+        const title = this.category ? 'Categoria atualizada' : 'Categoria criada';
         const message = this.category
-          ? 'Categoria atualizada com sucesso.'
-          : 'Categoria criada com sucesso e já está disponível para uso.';
+          ? 'As alterações foram salvas com sucesso.'
+          : 'Sua categoria foi criada com sucesso e já está pronta para uso.';
 
         this.toastService.show('success', title, message);
 
         this.refreshService.trigger(REFRESH_KEYS.CATEGORIES);
         this.router.navigate(['/categorias'], { queryParamsHandling: 'preserve' });
       },
-      error: (error: iErrorResponse) => applyApiValidationErrors(this.form, error),
+      error: (error: iErrorResponse) => {
+        mapApiErrorsToForm(this.form, error);
+
+        this.apiErrorHandlerService.show(
+          error,
+          'Não foi possível criar a categoria',
+          'Tivemos um problema ao criar sua categoria. Tente novamente em alguns instantes.',
+        );
+      },
     });
   }
 

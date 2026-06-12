@@ -24,7 +24,9 @@ import { iUserCredentials } from '@core/auth/interfaces/user-credentials.interfa
 import { LoginFacade } from '@core/auth/facades/login.facade';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 import { Router, RouterLink } from '@angular/router';
-import { applyApiValidationErrors } from '@shared/validation/utils/apply-api-validation.utils';
+import { mapApiErrorsToForm } from '@shared/validation/utils/map-api-errors-to-form.utils';
+import { FormValidationService } from '@shared/services/form-validation.service';
+import { ApiErrorHandlerService } from '@shared/services/api-error-handler.service';
 
 @Component({
   selector: 'app-login-page',
@@ -53,6 +55,8 @@ export class LoginPage {
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly loginFacade = inject(LoginFacade);
   private readonly router = inject(Router);
+  private readonly formValidationService = inject(FormValidationService);
+  private readonly apiErrorHandlerService = inject(ApiErrorHandlerService);
 
   protected readonly formErrorMessages = {
     email: EMAIL_VALIDATION_MESSAGES,
@@ -91,16 +95,21 @@ export class LoginPage {
   });
 
   onSubmit() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
+    if (!this.formValidationService.validate(this.form)) return;
 
     const request: iUserCredentials = this.form.getRawValue();
 
     this.loginFacade.login(request).subscribe({
       next: () => this.router.navigate(['/dashboard']),
-      error: (error: iErrorResponse) => applyApiValidationErrors(this.form, error),
+      error: (error: iErrorResponse) => {
+        mapApiErrorsToForm(this.form, error);
+
+        this.apiErrorHandlerService.show(
+          error,
+          'Não foi possível fazer login',
+          'Tivemos um problema ao realizar seu login. Tente novamente em alguns instantes.',
+        );
+      },
     });
   }
 }
