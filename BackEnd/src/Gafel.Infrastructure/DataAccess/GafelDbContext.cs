@@ -29,6 +29,7 @@ public class GafelDbContext(DbContextOptions<GafelDbContext> options) : Identity
         builder.Entity<Person>().ToTable(DatabaseTables.PEOPLE);
         builder.Entity<DefaultCategory>().ToTable(DatabaseTables.DEFAULT_CATEGORIES);
         builder.Entity<Category>().ToTable(DatabaseTables.CATEGORIES);
+        builder.Entity<BankAccount>().ToTable(DatabaseTables.BANK_ACCOUNTS);
 
         // Aplica todas as configurações de mapeamento de entidades para o modelo de dados, que estão no mesmo assembly.
         builder.ApplyConfigurationsFromAssembly(typeof(GafelDbContext).Assembly);

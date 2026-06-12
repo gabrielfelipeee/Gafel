@@ -13,5 +13,6 @@
         public const string PEOPLE = "people";
         public const string DEFAULT_CATEGORIES = "default_categories";
         public const string CATEGORIES = "categories";
+        public const string BANK_ACCOUNTS = "bank_accounts";
     }
 }
