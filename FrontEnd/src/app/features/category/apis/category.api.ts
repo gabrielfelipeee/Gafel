@@ -19,7 +19,7 @@ export class CategoryApi {
     return this.http.post<void>(this.baseUrl, category);
   }
 
-  update(id: number, category: iCreateOrEditCategoryRequest) {
+  update(id: string, category: iCreateOrEditCategoryRequest) {
     return this.http.put<void>(`${this.baseUrl}/${id}`, category);
   }
 
@@ -37,11 +37,11 @@ export class CategoryApi {
     return this.http.get<iPagedResponse<iCategory>>(this.baseUrl, { params });
   }
 
-  getById(id: number): Observable<iCategory> {
+  getById(id: string): Observable<iCategory> {
     return this.http.get<iCategory>(`${this.baseUrl}/${id}`);
   }
 
-  delete(id: number): Observable<void> {
+  delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }
