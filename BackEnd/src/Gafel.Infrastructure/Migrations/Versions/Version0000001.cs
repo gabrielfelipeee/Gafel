@@ -43,7 +43,7 @@ public class Version0000001 : ForwardOnlyMigration
 
             .WithColumn("two_factor_enabled").AsBoolean().NotNullable().WithDefaultValue(false)
 
-            .WithColumn("lockout_end").AsDateTime().Nullable()
+            .WithColumn("lockout_end").AsDateTimeOffset().Nullable()
             .WithColumn("lockout_enabled").AsBoolean().NotNullable().WithDefaultValue(false)
 
             .WithColumn("access_failed_count").AsInt32().NotNullable().WithDefaultValue(0);
