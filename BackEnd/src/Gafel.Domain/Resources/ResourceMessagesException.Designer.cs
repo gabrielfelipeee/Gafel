@@ -277,6 +277,15 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O identificador informado é inválido..
+        /// </summary>
+        public static string INVALID_IDENTIFIER {
+            get {
+                return ResourceManager.GetString("INVALID_IDENTIFIER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Limit deve estar entre 1 e 100.
         /// </summary>
         public static string PAGINATION_LIMIT_RANGE {

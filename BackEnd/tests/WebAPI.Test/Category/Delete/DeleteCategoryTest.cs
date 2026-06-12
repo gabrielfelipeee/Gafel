@@ -12,7 +12,7 @@ public class DeleteCategoryTest : GafelClassFixture
     private const string METHOD = "categories";
 
     private readonly UserDto _user;
-    private readonly Gafel.Domain.Entities.Category _category;
+    private readonly (Gafel.Domain.Entities.Category entity, string obfuscatedId) _category;
     public DeleteCategoryTest(CustomWebApplicationFactory factory) : base(factory)
     {
         _user = factory.GetUser();
@@ -26,12 +26,12 @@ public class DeleteCategoryTest : GafelClassFixture
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
         // Act
-        var response = await DoDelete(method: $"{METHOD}/{_category.Id}", token: token);
+        var response = await DoDelete(method: $"{METHOD}/{_category.obfuscatedId}", token: token);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
 
-        response = await DoGet($"{METHOD}/{_category.Id}", token: token);
+        response = await DoGet($"{METHOD}/{_category.obfuscatedId}", token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 

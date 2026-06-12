@@ -12,11 +12,15 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Bogus;
 using Gafel.Domain.Dtos;
+using CommonTestUtilities.IdObfuscation;
+using Sqids;
 
 namespace WebAPI.Test;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
+    private readonly SqidsEncoder<long> _sqids = IdObfuscationBuilder.Build();
+
     private UserDto _user = default!;
     private string _userPassword = default!;
 
@@ -57,7 +61,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     public string GetUserPassword() => _userPassword;
 
     public Gafel.Domain.Entities.Person GetPerson() => _person;
-    public Gafel.Domain.Entities.Category GetCategory() => _category;
+    public (Gafel.Domain.Entities.Category entity, string obfuscatedId) GetCategory() => (_category, _sqids.Encode(_category.Id));
 
 
     private async Task StartDatabase(GafelDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<long>> roleManager)

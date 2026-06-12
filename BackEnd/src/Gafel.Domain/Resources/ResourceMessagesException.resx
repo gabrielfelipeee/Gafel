@@ -249,4 +249,7 @@
   <data name="PAGINATION_OFFSET_REQUIRED" xml:space="preserve">
     <value>Offset é obrigatório</value>
   </data>
+  <data name="INVALID_IDENTIFIER" xml:space="preserve">
+    <value>O identificador informado é inválido.</value>
+  </data>
 </root>

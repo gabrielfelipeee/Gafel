@@ -12,7 +12,7 @@ public class GetCategoryByIdTest : GafelClassFixture
     private const string METHOD = "categories";
 
     private readonly UserDto _user;
-    private readonly Gafel.Domain.Entities.Category _category;
+    private readonly (Gafel.Domain.Entities.Category entity, string obfuscatedId) _category;
     public GetCategoryByIdTest(CustomWebApplicationFactory factory) : base(factory)
     {
         _user = factory.GetUser();
@@ -27,7 +27,7 @@ public class GetCategoryByIdTest : GafelClassFixture
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
         // Act
-        var response = await DoGet(method: $"{METHOD}/{_category.Id}", token: token);
+        var response = await DoGet(method: $"{METHOD}/{_category.obfuscatedId}", token: token);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -35,10 +35,10 @@ public class GetCategoryByIdTest : GafelClassFixture
         await using var stream = await response.Content.ReadAsStreamAsync();
         var json = await JsonDocument.ParseAsync(stream);
 
-        json.RootElement.GetProperty("id").GetInt64().ShouldBe(_category.Id);
-        json.RootElement.GetProperty("name").GetString().ShouldBe(_category.Name);
-        json.RootElement.GetProperty("icon").GetString().ShouldBe(_category.Icon);
-        json.RootElement.GetProperty("type").GetInt32().ShouldBe((int)_category.Type);
+        json.RootElement.GetProperty("id").GetString().ShouldBe(_category.obfuscatedId);
+        json.RootElement.GetProperty("name").GetString().ShouldBe(_category.entity.Name);
+        json.RootElement.GetProperty("icon").GetString().ShouldBe(_category.entity.Icon);
+        json.RootElement.GetProperty("type").GetInt32().ShouldBe((int)_category.entity.Type);
     }
 
     [Fact]
