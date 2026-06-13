@@ -124,6 +124,33 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O nome da conta é obrigatório.
+        /// </summary>
+        public static string BANK_ACCOUNT_NAME_EMPTY {
+            get {
+                return ResourceManager.GetString("BANK_ACCOUNT_NAME_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O nome da conta deve ter no máximo 100 caracteres.
+        /// </summary>
+        public static string BANK_ACCOUNT_NAME_TOO_LONG {
+            get {
+                return ResourceManager.GetString("BANK_ACCOUNT_NAME_TOO_LONG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Tipo de conta inválido.
+        /// </summary>
+        public static string BANK_ACCOUNT_TYPE_INVALID {
+            get {
+                return ResourceManager.GetString("BANK_ACCOUNT_TYPE_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Ícone é obrigatório..
         /// </summary>
         public static string CATEGORY_ICON_EMPTY {
@@ -282,6 +309,15 @@ namespace Gafel.Domain.Resources {
         public static string INVALID_IDENTIFIER {
             get {
                 return ResourceManager.GetString("INVALID_IDENTIFIER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O saldo inicial deve ser maior ou igual a zero.
+        /// </summary>
+        public static string INVALID_INITIAL_BALANCE {
+            get {
+                return ResourceManager.GetString("INVALID_INITIAL_BALANCE", resourceCulture);
             }
         }
         

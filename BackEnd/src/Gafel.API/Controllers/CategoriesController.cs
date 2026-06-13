@@ -1,4 +1,5 @@
 ﻿using Gafel.API.Binders;
+using Gafel.Application.UseCases.BankAccount.Create;
 using Gafel.Application.UseCases.Category.Delete;
 using Gafel.Application.UseCases.Category.Filter;
 using Gafel.Application.UseCases.Category.GetById;
