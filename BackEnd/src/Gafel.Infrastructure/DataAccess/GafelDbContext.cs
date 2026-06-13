@@ -13,6 +13,7 @@ public class GafelDbContext(DbContextOptions<GafelDbContext> options) : Identity
     public DbSet<Person> People { get; set; }
     public DbSet<DefaultCategory> DefaultCategories { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<BankAccount> BankAccounts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

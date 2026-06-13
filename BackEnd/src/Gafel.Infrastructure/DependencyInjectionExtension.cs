@@ -1,5 +1,6 @@
 ﻿using FluentMigrator.Runner;
 using Gafel.Domain.Repositories;
+using Gafel.Domain.Repositories.BankAccount;
 using Gafel.Domain.Repositories.Category;
 using Gafel.Domain.Repositories.Person;
 using Gafel.Domain.Security.Tokens;
@@ -88,6 +89,8 @@ public static class DependencyInjectionExtension
         services.AddScoped<ICategoryReadOnlyRepository, CategoryRepository>();
         services.AddScoped<ICategoryWriteOnlyRepository, CategoryRepository>();
         services.AddScoped<ICategoryUpdateOnlyRepository, CategoryRepository>();
+
+        services.AddScoped<IBankAccountWriteOnlyRepository, BankAccountRepository>();
     }
 
 
