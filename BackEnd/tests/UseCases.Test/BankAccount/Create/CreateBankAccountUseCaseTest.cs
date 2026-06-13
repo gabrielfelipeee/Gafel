@@ -3,11 +3,10 @@ using CommonTestUtilities.Dtos;
 using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Repositories.BankAccount;
-using CommonTestUtilities.Repositories.Category;
 using CommonTestUtilities.Repositories.Person;
 using CommonTestUtilities.Services.CurrentUser;
 using Gafel.Application.Exceptions;
-using Gafel.Application.UseCases.Category.Register;
+using Gafel.Application.UseCases.BankAccount.Create;
 using Gafel.Domain.Dtos;
 using Gafel.Domain.Entities;
 using Gafel.Domain.Enums;
@@ -15,9 +14,9 @@ using Gafel.Domain.Resources;
 using Shouldly;
 using System.Net;
 
-namespace UseCases.Test.Category.Register;
+namespace UseCases.Test.BankAccount.Create;
 
-public class RegisterCategoryUseCaseTest
+public class CreateBankAccountUseCaseTest
 {
     [Fact]
     public async Task Success()
@@ -25,7 +24,7 @@ public class RegisterCategoryUseCaseTest
         // Arrange 
         var user = UserDtoBuilder.Build();
         var person = PersonBuilder.Build();
-        var request = CategoryCommandBuilder.Build();
+        var request = BankAccountCommandBuilder.Build();
 
         var useCase = CreateUseCase(user: user, person: person);
 
@@ -41,7 +40,7 @@ public class RegisterCategoryUseCaseTest
     {
         var user = UserDtoBuilder.Build();
         var person = PersonBuilder.Build();
-        var request = CategoryCommandBuilder.Build();
+        var request = BankAccountCommandBuilder.Build();
         request.Name = string.Empty;
         var useCase = CreateUseCase(user: user, person: person);
 
@@ -54,16 +53,16 @@ public class RegisterCategoryUseCaseTest
         error.Key.ShouldBe(nameof(request.Name));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.CATEGORY_NAME_EMPTY);
+        value.ShouldBe(ResourceMessagesException.BANK_ACCOUNT_NAME_EMPTY);
     }
 
     [Fact]
-    public async Task Error_Icon_Empty()
+    public async Task Error_InitialBalance_Negative()
     {
         var user = UserDtoBuilder.Build();
         var person = PersonBuilder.Build();
-        var request = CategoryCommandBuilder.Build();
-        request.Icon = string.Empty;
+        var request = BankAccountCommandBuilder.Build();
+        request.InitialBalance = -100;
         var useCase = CreateUseCase(user: user, person: person);
 
         var exception = await Should.ThrowAsync<ErrorOnValidationException>(() => useCase.Execute(request));
@@ -72,10 +71,10 @@ public class RegisterCategoryUseCaseTest
         exception.GetErrorDetail().ShouldBe(ResourceMessagesException.EXCEPTION_ERROR_ON_VALIDATION_DETAIL);
 
         var error = exception.GetErrors().ShouldHaveSingleItem();
-        error.Key.ShouldBe(nameof(request.Icon));
+        error.Key.ShouldBe(nameof(request.InitialBalance));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.CATEGORY_ICON_EMPTY);
+        value.ShouldBe(ResourceMessagesException.INVALID_INITIAL_BALANCE);
     }
 
     [Fact]
@@ -83,8 +82,8 @@ public class RegisterCategoryUseCaseTest
     {
         var user = UserDtoBuilder.Build();
         var person = PersonBuilder.Build();
-        var request = CategoryCommandBuilder.Build();
-        request.Type = (CategoryType)100;
+        var request = BankAccountCommandBuilder.Build();
+        request.Type = (BankAccountType)100;
         var useCase = CreateUseCase(user: user, person: person);
 
         var exception = await Should.ThrowAsync<ErrorOnValidationException>(() => useCase.Execute(request));
@@ -96,14 +95,14 @@ public class RegisterCategoryUseCaseTest
         error.Key.ShouldBe(nameof(request.Type));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.CATEGORY_TYPE_INVALID);
+        value.ShouldBe(ResourceMessagesException.BANK_ACCOUNT_TYPE_INVALID);
     }
 
     [Fact]
     public async Task Error_Person_NotFound()
     {
         var user = UserDtoBuilder.Build();
-        var request = CategoryCommandBuilder.Build();
+        var request = BankAccountCommandBuilder.Build();
         var useCase = CreateUseCase(user: user);
 
         var exception = await Should.ThrowAsync<PersonNotFoundException>(useCase.Execute(request));
@@ -114,7 +113,7 @@ public class RegisterCategoryUseCaseTest
     }
 
 
-    private static RegisterCategoryUseCase CreateUseCase(UserDto user, Person? person = null)
+    private static CreateBankAccountUseCase CreateUseCase(UserDto user, Person? person = null)
     {
         var unitOfWork = UnitOfWorkBuilder.Build();
         var currentUser = CurrentUserBuilder.Build(user);
@@ -123,11 +122,11 @@ public class RegisterCategoryUseCaseTest
         if (person is not null)
             personReadOnlyRepository.GetByUserId(person);
 
-        var categoryWriteOnlyRepository = CategoryWriteOnlyRepositoryBuilder.Build();
+        var bankAccountWriteOnlyRepository = BankAccountWriteOnlyRepositoryBuilder.Build();
 
         return new(
             currentUser,
-            categoryWriteOnlyRepository,
+            bankAccountWriteOnlyRepository,
             personReadOnlyRepository.Build(),
             unitOfWork
         );

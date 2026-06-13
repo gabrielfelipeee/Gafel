@@ -1,6 +1,7 @@
 ﻿using CommonTestUtilities.Dtos;
 using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
+using CommonTestUtilities.Repositories.BankAccount;
 using CommonTestUtilities.Repositories.Category;
 using CommonTestUtilities.Repositories.Person;
 using CommonTestUtilities.Services.CurrentUser;
