@@ -2,6 +2,7 @@
 using Gafel.Application.Exceptions;
 using Sqids;
 using Gafel.Domain.Resources;
+using Gafel.API.Models;
 
 namespace Gafel.API.Binders;
 public class GafelIdBinder(SqidsEncoder<long> sqids) : IModelBinder
@@ -27,7 +28,7 @@ public class GafelIdBinder(SqidsEncoder<long> sqids) : IModelBinder
         if (decoded.Length != 1)
             ThrowValidationException(modelName);
 
-        bindingContext.Result = ModelBindingResult.Success(decoded[0]);
+        bindingContext.Result = ModelBindingResult.Success(new GafelId(decoded[0]));
 
         return Task.CompletedTask;
     }
