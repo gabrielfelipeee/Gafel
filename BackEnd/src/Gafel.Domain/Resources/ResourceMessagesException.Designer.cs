@@ -142,6 +142,15 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi possível encontrar a conta bancária com o ID informado.
+        /// </summary>
+        public static string BANK_ACCOUNT_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("BANK_ACCOUNT_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Tipo de conta inválido.
         /// </summary>
         public static string BANK_ACCOUNT_TYPE_INVALID {

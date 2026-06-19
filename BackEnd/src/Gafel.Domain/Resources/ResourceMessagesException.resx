@@ -264,4 +264,7 @@
   <data name="BANK_ACCOUNT_TYPE_INVALID" xml:space="preserve">
     <value>Tipo de conta inválido</value>
   </data>
+  <data name="BANK_ACCOUNT_NOT_FOUND" xml:space="preserve">
+    <value>Não foi possível encontrar a conta bancária com o ID informado</value>
+  </data>
 </root>

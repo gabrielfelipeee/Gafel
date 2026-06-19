@@ -1,4 +1,5 @@
 ﻿using Gafel.Application.UseCases.Account.GetProfile;
+using Gafel.Application.UseCases.BankAccount.Shared.Responses;
 using Gafel.Application.UseCases.Category.Shared.Responses;
 using Gafel.Domain.Entities;
 using Mapster;
@@ -23,6 +24,9 @@ public static class MapsterConfigurations
 
 
         config.NewConfig<Category, CategoryResponse>()
+            .Map(dest => dest.Id, src => sqids.Encode(src.Id));
+
+        config.NewConfig<BankAccount, BankAccountResponse>()
             .Map(dest => dest.Id, src => sqids.Encode(src.Id));
     }
 }

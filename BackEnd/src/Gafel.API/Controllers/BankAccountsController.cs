@@ -1,5 +1,9 @@
-﻿using Gafel.Application.UseCases.BankAccount.Create;
+﻿using Gafel.API.Binders;
+using Gafel.API.Models;
+using Gafel.Application.UseCases.BankAccount.Create;
+using Gafel.Application.UseCases.BankAccount.GetById;
 using Gafel.Application.UseCases.BankAccount.Shared.Commands;
+using Gafel.Application.UseCases.BankAccount.Shared.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,5 +20,15 @@ public class BankAccountsController : GafelController
         await useCase.Execute(request);
 
         return Created();
+    }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(BankAccountResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById([FromRoute][ModelBinder(typeof(GafelIdBinder))] GafelId id, [FromServices] IGetBankAccountByIdUseCase useCase)
+    {
+        var result = await useCase.Execute(bankAccountId: id.Value);
+
+        return Ok(result);
     }
 }
