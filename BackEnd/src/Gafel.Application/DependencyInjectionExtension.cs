@@ -5,6 +5,7 @@ using Gafel.Application.UseCases.Auth.ChangePassword;
 using Gafel.Application.UseCases.Auth.Login.DoLogin;
 using Gafel.Application.UseCases.Auth.Register;
 using Gafel.Application.UseCases.BankAccount.Create;
+using Gafel.Application.UseCases.BankAccount.Delete;
 using Gafel.Application.UseCases.BankAccount.GetById;
 using Gafel.Application.UseCases.Category.Delete;
 using Gafel.Application.UseCases.Category.Filter;
@@ -43,8 +44,9 @@ public static class DependencyInjectionExtension
         services.AddScoped<IUpdateCategoryUseCase, UpdateCategoryUseCase>();
         services.AddScoped<IDeleteCategoryUseCase, DeleteCategoryUseCase>();
 
-        services.AddScoped<ICreateBankAccountUseCase, CreateBankAccountUseCase>();
         services.AddScoped<IGetBankAccountByIdUseCase, GetBankAccountByIdUseCase>();
+        services.AddScoped<ICreateBankAccountUseCase, CreateBankAccountUseCase>();
+        services.AddScoped<IDeleteBankAccountUseCase, DeleteBankAccountUseCase>();
     }
 
     private static void AddIdObfuscation(IServiceCollection services, IConfiguration configuration, out SqidsEncoder<long> sqids)

@@ -1,6 +1,7 @@
 ﻿using Gafel.API.Binders;
 using Gafel.API.Models;
 using Gafel.Application.UseCases.BankAccount.Create;
+using Gafel.Application.UseCases.BankAccount.Delete;
 using Gafel.Application.UseCases.BankAccount.GetById;
 using Gafel.Application.UseCases.BankAccount.Shared.Commands;
 using Gafel.Application.UseCases.BankAccount.Shared.Responses;
@@ -30,5 +31,15 @@ public class BankAccountsController : GafelController
         var result = await useCase.Execute(bankAccountId: id.Value);
 
         return Ok(result);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete([FromRoute][ModelBinder(typeof(GafelIdBinder))] GafelId id, [FromServices] IDeleteBankAccountUseCase useCase)
+    {
+        await useCase.Execute(id.Value);
+
+        return NoContent();
     }
 }

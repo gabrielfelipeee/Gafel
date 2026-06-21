@@ -5,6 +5,7 @@ using Gafel.Domain.Resources;
 using Gafel.API.Models;
 
 namespace Gafel.API.Binders;
+
 public class GafelIdBinder(SqidsEncoder<long> sqids) : IModelBinder
 {
     private readonly SqidsEncoder<long> _sqids = sqids;
@@ -16,7 +17,7 @@ public class GafelIdBinder(SqidsEncoder<long> sqids) : IModelBinder
         var valueProviderResult = bindingContext.ValueProvider.GetValue(modelName);
 
         if (valueProviderResult == ValueProviderResult.None)
-            return Task.CompletedTask;
+            ThrowValidationException(modelName);
 
         var value = valueProviderResult.FirstValue;
 
