@@ -6,6 +6,7 @@ using Gafel.Application.UseCases.Auth.Login.DoLogin;
 using Gafel.Application.UseCases.Auth.Register;
 using Gafel.Application.UseCases.BankAccount.Create;
 using Gafel.Application.UseCases.BankAccount.Delete;
+using Gafel.Application.UseCases.BankAccount.Filter;
 using Gafel.Application.UseCases.BankAccount.GetById;
 using Gafel.Application.UseCases.BankAccount.Update;
 using Gafel.Application.UseCases.Category.Delete;
@@ -46,6 +47,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IDeleteCategoryUseCase, DeleteCategoryUseCase>();
 
         services.AddScoped<IGetBankAccountByIdUseCase, GetBankAccountByIdUseCase>();
+        services.AddScoped<IFilterBankAccountUseCase, FilterBankAccountUseCase>();
         services.AddScoped<ICreateBankAccountUseCase, CreateBankAccountUseCase>();
         services.AddScoped<IUpdateBankAccountUseCase, UpdateBankAccountUseCase>();
         services.AddScoped<IDeleteBankAccountUseCase, DeleteBankAccountUseCase>();

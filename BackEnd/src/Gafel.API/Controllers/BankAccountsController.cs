@@ -2,10 +2,13 @@
 using Gafel.API.Models;
 using Gafel.Application.UseCases.BankAccount.Create;
 using Gafel.Application.UseCases.BankAccount.Delete;
+using Gafel.Application.UseCases.BankAccount.Filter;
 using Gafel.Application.UseCases.BankAccount.GetById;
 using Gafel.Application.UseCases.BankAccount.Shared.Commands;
 using Gafel.Application.UseCases.BankAccount.Shared.Responses;
 using Gafel.Application.UseCases.BankAccount.Update;
+using Gafel.Application.UseCases.Shared.Responses;
+using Gafel.Domain.Dtos.QueryParams;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,6 +44,16 @@ public class BankAccountsController : GafelController
     public async Task<IActionResult> GetById([FromRoute][ModelBinder(typeof(GafelIdBinder))] GafelId id, [FromServices] IGetBankAccountByIdUseCase useCase)
     {
         var result = await useCase.Execute(bankAccountId: id.Value);
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(PaginationResponse<BankAccountResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Filter([FromQuery] FilterBankAccountQueryParams queryParams, [FromServices] IFilterBankAccountUseCase useCase)
+    {
+        var result = await useCase.Execute(queryParams);
 
         return Ok(result);
     }

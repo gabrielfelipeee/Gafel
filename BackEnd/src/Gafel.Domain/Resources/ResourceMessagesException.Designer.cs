@@ -331,7 +331,7 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Limit deve estar entre 1 e 100.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Limit deve estar entre 1 e 100, inclusive.
         /// </summary>
         public static string PAGINATION_LIMIT_RANGE {
             get {
