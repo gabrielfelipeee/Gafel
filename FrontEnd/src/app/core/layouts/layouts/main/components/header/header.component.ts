@@ -4,6 +4,7 @@ import { LogoComponent } from '@core/layouts/components/logo/logo.component';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   heroAdjustmentsHorizontal,
+  heroBanknotes,
   heroBars3,
   heroChevronDown,
   heroMoon,
@@ -11,6 +12,7 @@ import {
   heroSun,
   heroTag,
   heroUser,
+  heroWallet,
   heroXMark,
 } from '@ng-icons/heroicons/outline';
 import { tTheme } from '@core/layouts/types/tTheme';
@@ -38,6 +40,8 @@ import { NavigationComponent } from './components/navigation/navigation.componen
       heroChevronDown,
       heroXMark,
       heroMoon,
+      heroBanknotes,
+      heroWallet,
     }),
   ],
 })
@@ -53,6 +57,18 @@ export class HeaderComponent {
       path: 'dashboard',
       icon: 'heroSquares2x2',
     } as iFeatureItem,
+
+    {
+      label: 'Financeiro',
+      icon: 'heroBanknotes',
+      features: [
+        {
+          label: 'Contas',
+          path: 'contas',
+          icon: 'heroWallet',
+        },
+      ],
+    } as iFeatureGroup,
 
     {
       label: 'Planejamento',

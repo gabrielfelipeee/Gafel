@@ -23,6 +23,11 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/category/category.routes').then(m => m.CATEGORY_ROUTES),
       },
+      {
+        path: '',
+        loadChildren: () =>
+          import('./features/bank-account/bank-account.routes').then(m => m.BANK_ACCOUNT_ROUTES),
+      },
     ],
   },
 ];
