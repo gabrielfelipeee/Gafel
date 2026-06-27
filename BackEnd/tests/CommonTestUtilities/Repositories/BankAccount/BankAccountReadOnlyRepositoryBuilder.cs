@@ -13,7 +13,7 @@ public class BankAccountReadOnlyRepositoryBuilder
     public void GetById(Gafel.Domain.Entities.Person person, Gafel.Domain.Entities.BankAccount bankAccount)
         => _repository.Setup(repository => repository.GetById(person, bankAccount.Id)).ReturnsAsync(bankAccount);
 
-    public void ExistActiveCategoryWithId(Gafel.Domain.Entities.Person person, long bankAccountId)
+    public void ExistActiveBankAccountWithId(Gafel.Domain.Entities.Person person, long bankAccountId)
     {
         _repository
             .Setup(repository => repository.ExistActiveBankAccountWithId(person, bankAccountId))
