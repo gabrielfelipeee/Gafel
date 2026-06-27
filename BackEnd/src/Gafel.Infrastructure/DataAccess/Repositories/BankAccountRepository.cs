@@ -1,4 +1,6 @@
-﻿using Gafel.Domain.Entities;
+﻿using Gafel.Domain.Dtos.QueryParams;
+using Gafel.Domain.Entities;
+using Gafel.Domain.Enums;
 using Gafel.Domain.Repositories.BankAccount;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +19,31 @@ public class BankAccountRepository(GafelDbContext context) : IBankAccountReadOnl
         => await _context.BankAccounts
         .AsNoTracking()
         .AnyAsync(bankAccount => bankAccount.IsActive && bankAccount.PersonId == person.Id && bankAccount.Id == bankAccountId);
+
+    public async Task<(IList<BankAccount> bankAccounts, int total)> Filter(Person person, FilterBankAccountQueryParams filters)
+    {
+        IQueryable<BankAccount> query = _context.BankAccounts
+            .AsNoTracking()
+            .Where(bankAccount => bankAccount.IsActive && bankAccount.PersonId == person.Id)
+            .OrderBy(x => x.Id);
+
+        if (filters.Type.HasValue)
+            query = query.Where(bankAccount => bankAccount.Type == filters.Type.Value);
+
+        if (!string.IsNullOrWhiteSpace(filters.BankAccountName))
+            query = query.Where(bankAccount => EF.Functions.Collate(bankAccount.Name, "SQL_Latin1_General_CP1_CI_AI").Contains(filters.BankAccountName));
+
+        int total = await query.CountAsync();
+
+        if (filters.Offset.HasValue && filters.Limit.HasValue)
+        {
+            query = query
+                .Skip(filters.Offset.Value)
+                .Take(filters.Limit.Value);
+        }
+
+        return (await query.ToListAsync(), total);
+    }
 
 
     // Write
