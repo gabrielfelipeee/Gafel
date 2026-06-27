@@ -5,6 +5,7 @@ using Gafel.Application.UseCases.BankAccount.Delete;
 using Gafel.Application.UseCases.BankAccount.GetById;
 using Gafel.Application.UseCases.BankAccount.Shared.Commands;
 using Gafel.Application.UseCases.BankAccount.Shared.Responses;
+using Gafel.Application.UseCases.BankAccount.Update;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,17 @@ public class BankAccountsController : GafelController
         await useCase.Execute(request);
 
         return Created();
+    }
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Update([FromRoute][ModelBinder(typeof(GafelIdBinder))] GafelId id, [FromBody] BankAccountCommand request, [FromServices] IUpdateBankAccountUseCase useCase)
+    {
+        await useCase.Execute(bankAccountId: id.Value, request: request);
+
+        return NoContent();
     }
 
     [HttpGet("{id}")]
