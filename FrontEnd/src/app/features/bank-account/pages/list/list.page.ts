@@ -116,7 +116,7 @@ export class ListPage implements OnInit {
   private readonly bankAccountList = createListResource<iBankAccountListFilters, iBankAccount>({
     parser: bankAccountListQueryParser,
     fetch: ({ offset, limit, filters }) =>
-      this.bankAccountApi.getAll(offset, limit, filters.type, filters.bankAccountName),
+      this.bankAccountApi.getAll(offset, limit, filters.bankAccountName),
     refresh$: this.refreshService.on(REFRESH_KEYS.BANK_ACCOUNTS),
   });
   readonly response = this.bankAccountList.response;
