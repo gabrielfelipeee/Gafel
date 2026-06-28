@@ -1,10 +1,155 @@
-import { Component } from '@angular/core';
-import { provideIcons } from '@ng-icons/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
+import { provideIcons, NgIcon } from '@ng-icons/core';
+import {
+  heroBanknotes,
+  heroBuildingLibrary,
+  heroCreditCard,
+  heroFunnel,
+  heroPencilSquare,
+  heroPlus,
+  heroTrash,
+  heroWallet,
+} from '@ng-icons/heroicons/outline';
+import { ButtonComponent } from '@shared/components/button/button.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CurrencyPipe, NgClass } from '@angular/common';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ItemActionsComponent } from '@shared/components/item-actions/item-actions.component';
+import { PaginatorComponent } from '@shared/components/paginator/paginator.component';
+import { iItemActionData } from '@shared/interfaces/item-action-data.interface';
+import { createListResource } from '@shared/query/create-list-resource';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { EmptyListComponent } from '@shared/components/empty-list/empty-list.component';
+import { CardSkeletonListComponent } from '@shared/components/card-skeleton-list/card-skeleton-list.component';
+import { RefreshService } from '@shared/services/refresh.service';
+import { REFRESH_KEYS } from '@shared/constants/refresh-keys.constant';
+import {
+  BANK_ACCOUNT_LIMIT_OPTIONS,
+  bankAccountListQueryParser,
+} from '@features/bank-account/parsers/bank-account-list-query.parser';
+import { iBankAccountListFilters } from '@features/bank-account/interfaces/bank-account-list-filters.interface';
+import { iBankAccount } from '@features/bank-account/interfaces/bank-account.interface';
+import { BankAccountApi } from '@features/bank-account/apis/bank-account.api';
+import { eBankAccountType } from '@features/bank-account/enums/bank-account-type.enum';
+import { iItemActionEvent } from '@shared/interfaces/item-action-event.interface';
+
+type tBankAccountAction = 'edit' | 'delete';
 
 @Component({
   selector: 'app-list-bank-account',
   templateUrl: './list.page.html',
-  imports: [],
-  providers: [provideIcons({})],
+  imports: [
+    ButtonComponent,
+    NgIcon,
+    ItemActionsComponent,
+    PaginatorComponent,
+    CurrencyPipe,
+    FormsModule,
+    ReactiveFormsModule,
+    EmptyListComponent,
+    CardSkeletonListComponent,
+    NgClass,
+  ],
+  providers: [
+    provideIcons({
+      heroFunnel,
+      heroTrash,
+      heroPencilSquare,
+      heroPlus,
+      heroWallet,
+      heroBanknotes,
+      heroCreditCard,
+      heroBuildingLibrary,
+    }),
+  ],
 })
-export class ListPage {}
+export class ListPage implements OnInit {
+  readonly BANK_ACCOUNT_LIMIT_OPTIONS = BANK_ACCOUNT_LIMIT_OPTIONS;
+  readonly eBankAccountType = eBankAccountType;
+
+  readonly bankAccountTypes = {
+    [eBankAccountType.Wallet]: {
+      icon: 'heroWallet',
+      label: 'Carteira',
+    },
+    [eBankAccountType.CheckingAccount]: {
+      icon: 'heroBuildingLibrary',
+      label: 'Conta Corrente',
+    },
+    [eBankAccountType.SavingsAccount]: {
+      icon: 'heroBanknotes',
+      label: 'Conta Poupança',
+    },
+    [eBankAccountType.DigitalAccount]: {
+      icon: 'heroCreditCard',
+      label: 'Conta Digital',
+    },
+  };
+  readonly bankAccountActions: iItemActionData<tBankAccountAction>[] = [
+    {
+      key: 'edit',
+      label: 'Editar',
+      icon: 'heroPencilSquare',
+    },
+    {
+      key: 'delete',
+      label: 'Excluir',
+      icon: 'heroTrash',
+      hoverClass: 'hover:bg-error/10 hover:text-error',
+    },
+  ];
+
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly bankAccountApi = inject(BankAccountApi);
+  private readonly refreshService = inject(RefreshService);
+
+  readonly searchControl = new FormControl('', { nonNullable: true });
+
+  private readonly bankAccountList = createListResource<iBankAccountListFilters, iBankAccount>({
+    parser: bankAccountListQueryParser,
+    fetch: ({ offset, limit, filters }) =>
+      this.bankAccountApi.getAll(offset, limit, filters.type, filters.bankAccountName),
+    refresh$: this.refreshService.on(REFRESH_KEYS.BANK_ACCOUNTS),
+  });
+  readonly response = this.bankAccountList.response;
+  readonly onOffsetChange = this.bankAccountList.setOffset;
+  readonly onLimitChange = this.bankAccountList.setLimit;
+  readonly isLoading = this.bankAccountList.isLoading;
+
+  constructor() {
+    effect(() => {
+      const bankAccountName = this.bankAccountList.filters().bankAccountName ?? '';
+
+      if (this.searchControl.value === bankAccountName) return;
+
+      this.searchControl.setValue(bankAccountName, { emitEvent: false });
+    });
+  }
+
+  ngOnInit(): void {
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe(value => {
+        this.bankAccountList.setFilters({
+          bankAccountName: value?.trim() || undefined,
+        });
+      });
+  }
+
+  async onBankAccountAction(event: iItemActionEvent<tBankAccountAction, iBankAccount>) {
+    switch (event.action) {
+      case 'edit':
+        // this.editBankAccount(event.item);
+        break;
+
+      case 'delete':
+        // await this.deleteBankAccount(event.item);
+        break;
+    }
+  }
+
+  onCreateBankAccount(): void {
+    //  this.router.navigate(['nova'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
+  }
+}

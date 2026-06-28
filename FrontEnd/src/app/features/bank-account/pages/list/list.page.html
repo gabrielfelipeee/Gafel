@@ -1,0 +1,82 @@
+<h1 class="font-semibold text-3xl mb-4 capitalize">contas bancárias</h1>
+
+<div
+  class="flex flex-col justify-center gap-8 border-b border-base pb-4 pt-4 sticky top-20.25 z-10 bg-base-100"
+>
+  <div class="flex items-center justify-between gap-4">
+    <div class="flex items-center justify-center gap-2">
+      <ng-icon name="heroFunnel" size="26" />
+      <span> {{response().total}} contas </span>
+    </div>
+
+    <app-button icon="heroPlus" (clicked)="onCreateBankAccount()">nova conta</app-button>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 items-center gap-4">
+    <input
+      type="text"
+      placeholder="Pesquisar..."
+      class="input input-md outline-none border-primary w-full sm:max-w-100"
+      [formControl]="searchControl"
+    />
+  </div>
+</div>
+@if(response().items.length) {
+<ul
+  class="list-none mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-16 pointer-events-none"
+  [ngClass]="{ 'opacity-50 pointer-events-none': isLoading() }"
+>
+  @for (bankAccount of response().items; track bankAccount.id) { @let accountType
+  =bankAccountTypes[bankAccount.type];
+
+  <li class="group relative surface flex flex-col gap-4">
+    <app-item-actions
+      class="absolute top-1 right-1"
+      [actions]="bankAccountActions"
+      [item]="bankAccount"
+      (clicked)="onBankAccountAction($event)"
+    />
+
+    <div class="flex items-center justify-start gap-4">
+      <span class="icon-container shrink-0 group-hover:text-primary">
+        <ng-icon
+          [name]="accountType.icon"
+          size="32"
+          class="transition-transform! duration-500 group-hover:scale-[1.2]"
+        />
+      </span>
+
+      <div class="min-w-0 flex items-center gap-2 flex-wrap pr-6">
+        <h3 class="font-mono text-xl font-bold text-neutral truncate">{{ bankAccount.name }}</h3>
+
+        <div class="badge badge-soft uppercase badge-sm badge-primary">{{ accountType.label }}</div>
+      </div>
+    </div>
+
+    <div>
+      <span class="font-mono text-xs uppercase tracking-wider text-base-content/60">
+        saldo atual
+      </span>
+
+      <p class="mt-1 text-2xl font-bold">{{1000 | currency:'BRL'}}</p>
+    </div>
+  </li>
+  }
+</ul>
+} @else if(isLoading()) {
+<app-card-skeleton-list [count]="3" />
+} @else {
+<app-empty-list
+  title="Nenhuma conta bancária encontrada"
+  description="Não encontramos nenhuma conta com os filtros ou termo de pesquisa informados."
+/>
+}
+
+<app-paginator
+  [limits]="BANK_ACCOUNT_LIMIT_OPTIONS"
+  [totalItems]="response().total"
+  [offset]="response().offset"
+  [limit]="response().limit"
+  (offsetChange)="onOffsetChange($event)"
+  (limitChange)="onLimitChange($event)"
+/>
