@@ -27,4 +27,8 @@ export class BankAccountApi {
 
     return this.http.get<iPagedResponse<iBankAccount>>(this.baseUrl, { params });
   }
+
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }

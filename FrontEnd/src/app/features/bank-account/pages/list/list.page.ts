@@ -32,6 +32,10 @@ import { iBankAccount } from '@features/bank-account/interfaces/bank-account.int
 import { BankAccountApi } from '@features/bank-account/apis/bank-account.api';
 import { eBankAccountType } from '@features/bank-account/enums/bank-account-type.enum';
 import { iItemActionEvent } from '@shared/interfaces/item-action-event.interface';
+import { ConfirmationModalService } from '@shared/services/confirmation-modal.service';
+import { ToastService } from '@shared/services/toast.service';
+import { iErrorResponse } from '@shared/interfaces/error-response.interface';
+import { ApiErrorHandlerService } from '@shared/services/api-error-handler.service';
 
 type tBankAccountAction = 'edit' | 'delete';
 
@@ -103,6 +107,9 @@ export class ListPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly bankAccountApi = inject(BankAccountApi);
   private readonly refreshService = inject(RefreshService);
+  private readonly confirmationModalService = inject(ConfirmationModalService);
+  private readonly toastService = inject(ToastService);
+  private readonly apiErrorHandlerService = inject(ApiErrorHandlerService);
 
   readonly searchControl = new FormControl('', { nonNullable: true });
 
@@ -144,9 +151,37 @@ export class ListPage implements OnInit {
         break;
 
       case 'delete':
-        // await this.deleteBankAccount(event.item);
+        await this.deleteBankAccount(event.item);
         break;
     }
+  }
+
+  private async deleteBankAccount(bankAccount: iBankAccount) {
+    const confirm = await this.confirmationModalService.show({
+      title: 'Excluir conta bancária',
+      message: `Deseja realmente excluir "${bankAccount.name}"? Essa ação não poderá ser desfeita.`,
+      type: 'danger',
+    });
+
+    if (!confirm) return;
+
+    this.bankAccountApi.delete(bankAccount.id).subscribe({
+      next: () => {
+        this.toastService.show(
+          'success',
+          'Conta bancária excluída',
+          'Sua conta bancária foi excluída com sucesso.',
+        );
+        this.refreshService.trigger(REFRESH_KEYS.BANK_ACCOUNTS);
+      },
+      error: (error: iErrorResponse) => {
+        this.apiErrorHandlerService.show(
+          error,
+          'Não foi possível excluir a conta bancária',
+          'Tivemos um problema ao excluir sua conta bancária. Tente novamente em alguns instantes.',
+        );
+      },
+    });
   }
 
   onCreateBankAccount(): void {
