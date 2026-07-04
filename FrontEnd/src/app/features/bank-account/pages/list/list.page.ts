@@ -3,7 +3,7 @@ import { provideIcons, NgIcon } from '@ng-icons/core';
 import {
   heroBanknotes,
   heroBuildingLibrary,
-  heroCreditCard,
+  heroDevicePhoneMobile,
   heroFunnel,
   heroPencilSquare,
   heroPlus,
@@ -11,7 +11,7 @@ import {
   heroWallet,
 } from '@ng-icons/heroicons/outline';
 import { ButtonComponent } from '@shared/components/button/button.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { CurrencyPipe, NgClass } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ItemActionsComponent } from '@shared/components/item-actions/item-actions.component';
@@ -30,7 +30,10 @@ import {
 import { iBankAccountListFilters } from '@features/bank-account/interfaces/bank-account-list-filters.interface';
 import { iBankAccount } from '@features/bank-account/interfaces/bank-account.interface';
 import { BankAccountApi } from '@features/bank-account/apis/bank-account.api';
-import { eBankAccountType } from '@features/bank-account/enums/bank-account-type.enum';
+import {
+  BankAccountTypeInfo,
+  eBankAccountType,
+} from '@features/bank-account/enums/bank-account-type.enum';
 import { iItemActionEvent } from '@shared/interfaces/item-action-event.interface';
 import { ConfirmationModalService } from '@shared/services/confirmation-modal.service';
 import { ToastService } from '@shared/services/toast.service';
@@ -53,6 +56,7 @@ type tBankAccountAction = 'edit' | 'delete';
     EmptyListComponent,
     CardSkeletonListComponent,
     NgClass,
+    RouterOutlet,
   ],
   providers: [
     provideIcons({
@@ -62,7 +66,7 @@ type tBankAccountAction = 'edit' | 'delete';
       heroPlus,
       heroWallet,
       heroBanknotes,
-      heroCreditCard,
+      heroDevicePhoneMobile,
       heroBuildingLibrary,
     }),
   ],
@@ -70,25 +74,8 @@ type tBankAccountAction = 'edit' | 'delete';
 export class ListPage implements OnInit {
   readonly BANK_ACCOUNT_LIMIT_OPTIONS = BANK_ACCOUNT_LIMIT_OPTIONS;
   readonly eBankAccountType = eBankAccountType;
+  readonly BankAccountTypeInfo = BankAccountTypeInfo;
 
-  readonly bankAccountTypes = {
-    [eBankAccountType.Wallet]: {
-      icon: 'heroWallet',
-      label: 'Carteira',
-    },
-    [eBankAccountType.CheckingAccount]: {
-      icon: 'heroBuildingLibrary',
-      label: 'Conta Corrente',
-    },
-    [eBankAccountType.SavingsAccount]: {
-      icon: 'heroBanknotes',
-      label: 'Conta Poupança',
-    },
-    [eBankAccountType.DigitalAccount]: {
-      icon: 'heroCreditCard',
-      label: 'Conta Digital',
-    },
-  };
   readonly bankAccountActions: iItemActionData<tBankAccountAction>[] = [
     {
       key: 'edit',
@@ -147,7 +134,7 @@ export class ListPage implements OnInit {
   async onBankAccountAction(event: iItemActionEvent<tBankAccountAction, iBankAccount>) {
     switch (event.action) {
       case 'edit':
-        // this.editBankAccount(event.item);
+        this.editBankAccount(event.item);
         break;
 
       case 'delete':
@@ -156,6 +143,12 @@ export class ListPage implements OnInit {
     }
   }
 
+  private editBankAccount(bankAccount: iBankAccount): void {
+    this.router.navigate([bankAccount.id], {
+      relativeTo: this.route,
+      queryParamsHandling: 'preserve',
+    });
+  }
   private async deleteBankAccount(bankAccount: iBankAccount) {
     const confirm = await this.confirmationModalService.show({
       title: 'Excluir conta bancária',
@@ -185,6 +178,6 @@ export class ListPage implements OnInit {
   }
 
   onCreateBankAccount(): void {
-    //  this.router.navigate(['nova'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
+    this.router.navigate(['nova'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
   }
 }

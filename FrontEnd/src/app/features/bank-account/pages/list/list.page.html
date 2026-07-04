@@ -27,7 +27,7 @@
   [ngClass]="{ 'opacity-50 pointer-events-none': isLoading() }"
 >
   @for (bankAccount of response().items; track bankAccount.id) { @let accountType
-  =bankAccountTypes[bankAccount.type];
+  =BankAccountTypeInfo[bankAccount.type];
 
   <li class="group relative surface flex flex-col gap-4">
     <app-item-actions
@@ -80,3 +80,5 @@
   (offsetChange)="onOffsetChange($event)"
   (limitChange)="onLimitChange($event)"
 />
+
+<router-outlet />
