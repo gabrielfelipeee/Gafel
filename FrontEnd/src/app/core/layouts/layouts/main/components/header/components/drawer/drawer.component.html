@@ -26,7 +26,7 @@
       [routerLink]="feature.path"
       routerLinkActive
       #rla="routerLinkActive"
-      [routerLinkActiveOptions]="{ exact: true }"
+      [routerLinkActiveOptions]="matchOptions"
       class="group relative flex items-center gap-4 rounded-xl p-2 transition-all duration-200 hover:bg-primary/10 hover:text-primary"
       [class.bg-primary/10]="rla.isActive"
       [class.text-primary]="rla.isActive"
@@ -46,10 +46,10 @@
       <!-- ACTIVE LINE -->
       <span
         class="absolute left-0 top-1/2 h-8 w-1 -translate-y-1/2 rounded-r-full bg-primary transition-all duration-300"
-        [class.opacity-100]="rla.isActive"
-        [class.scale-y-100]="rla.isActive"
-        [class.opacity-0]="!rla.isActive"
-        [class.scale-y-0]="!rla.isActive"
+        [ngClass]="{
+          'opacity-100 scale-y-100': rla.isActive,
+          'opacity-0 scale-y-0': !rla.isActive
+        }"
       ></span>
     </a>
     }
