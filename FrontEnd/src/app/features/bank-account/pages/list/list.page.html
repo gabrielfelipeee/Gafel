@@ -12,14 +12,12 @@
     <app-button icon="heroPlus" (clicked)="onCreateBankAccount()">nova conta</app-button>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 items-center gap-4">
-    <input
-      type="text"
-      placeholder="Pesquisar..."
-      class="input input-md outline-none border-primary w-full sm:max-w-100"
-      [formControl]="searchControl"
-    />
-  </div>
+  <input
+    type="text"
+    placeholder="Pesquisar..."
+    class="input input-md outline-none border-primary w-full max-w-100"
+    [formControl]="searchControl"
+  />
 </div>
 @if(response().items.length) {
 <ul
