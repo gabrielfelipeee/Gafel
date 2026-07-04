@@ -19,9 +19,10 @@
   }
 
   <input
-    [type]="currentType()"
-    [placeholder]="placeholder()"
+    [type]="type() === 'currency' ? 'text' : currentType()"
+    [maskito]="type() === 'currency' ? currencyMaskOptions : null"
     [value]="value"
+    [placeholder]="placeholder()"
     (input)="handleInput($event)"
     (blur)="handleTouched()"
     [disabled]="isDisabled()"

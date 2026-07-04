@@ -1,29 +1,40 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroEye, heroEyeSlash } from '@ng-icons/heroicons/outline';
 import { tFieldValidationMessages } from '@shared/types/field-validation-messages.type';
+import type { MaskitoOptions } from '@maskito/core';
+import { MaskitoDirective } from '@maskito/angular';
+import { maskitoNumber } from '@maskito/kit';
 
-type tInputType = 'text' | 'password' | 'number' | 'email';
+type InputType = 'text' | 'password' | 'email' | 'currency';
 
 @Component({
   selector: 'app-custom-input',
   templateUrl: './custom-input.component.html',
   styleUrl: './custom-input.component.scss',
-  imports: [NgIcon, FormsModule, NgClass],
+  imports: [NgIcon, FormsModule, NgClass, MaskitoDirective],
   viewProviders: [provideIcons({ heroEye, heroEyeSlash })],
 })
-export class CustomInputComponent implements ControlValueAccessor, OnInit {
-  type = input<tInputType>('text');
+export class CustomInputComponent implements ControlValueAccessor {
+  type = input<InputType>('text');
   icon = input.required<string>();
   label = input.required<string>();
   placeholder = input.required<string>();
   errorMessages = input<tFieldValidationMessages>({});
 
+  readonly currencyMaskOptions: MaskitoOptions = maskitoNumber({
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    decimalSeparator: ',',
+    thousandSeparator: '.',
+    min: 0,
+  });
+
   value = '';
-  currentType = signal<tInputType>(this.type());
-  isDisabled = signal(false);
+  readonly currentType = signal<InputType>(this.type());
+  readonly isDisabled = signal(false);
 
   private ngControl = inject(NgControl, { optional: true, self: true });
 
@@ -31,17 +42,24 @@ export class CustomInputComponent implements ControlValueAccessor, OnInit {
     if (this.ngControl) this.ngControl.valueAccessor = this;
   }
 
-  ngOnInit(): void {
-    this.currentType.set(this.type());
-  }
-
-  private onChange?: (value: string) => void;
+  private onChange?: (value: string | number | null) => void;
   private onTouched?: () => void;
 
-  writeValue(value: string | null): void {
-    this.value = value ?? '';
+  writeValue(value: string | number | null): void {
+    if (value == null) {
+      this.value = '';
+      return;
+    }
+
+    if (this.type() === 'currency') {
+      this.value = this.formatCurrency(Number(value));
+      return;
+    }
+
+    this.value = String(value);
   }
-  registerOnChange(fn: (value: string) => void): void {
+
+  registerOnChange(fn: (value: string | number | null) => void): void {
     this.onChange = fn;
   }
   registerOnTouched(fn: () => void): void {
@@ -52,9 +70,11 @@ export class CustomInputComponent implements ControlValueAccessor, OnInit {
   }
 
   handleInput(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.value = input.value;
-    if (this.onChange) this.onChange(this.value);
+    const value = (event.target as HTMLInputElement).value;
+
+    this.value = value;
+
+    this.onChange?.(this.type() === 'currency' ? this.parseCurrency(value) : value);
   }
   handleTouched(): void {
     if (this.onTouched) this.onTouched();
@@ -85,5 +105,23 @@ export class CustomInputComponent implements ControlValueAccessor, OnInit {
     }
 
     return 'Campo inválido';
+  }
+
+  private parseCurrency(value: string): number | null {
+    if (!value.trim()) return null;
+
+    const parsedValue = Number(
+      value
+        .replace(/\./g, '') // remove separador de milhar
+        .replace(',', '.'), // troca separador decimal
+    );
+
+    return Number.isNaN(parsedValue) ? null : parsedValue;
+  }
+  private formatCurrency(value: number): string {
+    return value.toLocaleString('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   }
 }
