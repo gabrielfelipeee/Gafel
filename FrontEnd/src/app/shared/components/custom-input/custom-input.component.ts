@@ -7,6 +7,7 @@ import { tFieldValidationMessages } from '@shared/types/field-validation-message
 import type { MaskitoOptions } from '@maskito/core';
 import { MaskitoDirective } from '@maskito/angular';
 import { maskitoNumber } from '@maskito/kit';
+import { getControlErrorMessage } from '@shared/validation/utils/get-control-error-message.utils';
 
 type InputType = 'text' | 'password' | 'email' | 'currency';
 
@@ -88,23 +89,8 @@ export class CustomInputComponent implements ControlValueAccessor {
     this.currentType.update(type => (type === 'password' ? 'text' : 'password'));
   }
 
-  // Erros
   get errorMessage(): string | null {
-    const control = this.ngControl?.control;
-
-    if (!control || !control.touched || !control.errors) return null;
-
-    // erro vindo da API
-    if (control.errors['apiError']) return control.errors['apiError'];
-
-    // erros locais
-    for (const key of Object.keys(control.errors)) {
-      const message = this.errorMessages()?.[key];
-
-      if (message) return message;
-    }
-
-    return 'Campo inválido';
+    return getControlErrorMessage(this.ngControl?.control ?? null, this.errorMessages());
   }
 
   private parseCurrency(value: string): number | null {
