@@ -1,4 +1,12 @@
+@if (isMobile()) {
+<ng-container *ngTemplateOutlet="content"></ng-container>
+} @else {
 <app-modal (modalClose)="onModalClose()">
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</app-modal>
+}
+
+<ng-template #content>
   <h1 class="text-2xl font-bold tracking-tight capitalize">
     {{ bankAccount ? 'atualizar conta bancária' : 'nova conta bancária' }}
   </h1>
@@ -38,4 +46,4 @@
       {{ bankAccount ? 'atualizar conta bancária' : 'criar conta bancária' }}
     </app-button>
   </form>
-</app-modal>
+</ng-template>

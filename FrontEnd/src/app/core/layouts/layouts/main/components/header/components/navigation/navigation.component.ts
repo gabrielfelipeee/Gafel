@@ -13,7 +13,7 @@ import { BreakpointerObserverService } from '@shared/services/breakpointer-obser
 export class NavigationComponent {
   features = input.required<MenuFeature[]>();
 
-  readonly isLg = inject(BreakpointerObserverService).lg;
+  readonly isDesktop = inject(BreakpointerObserverService).isDesktop;
 
   closeDropdown(): void {
     (document.activeElement as HTMLElement)?.blur();

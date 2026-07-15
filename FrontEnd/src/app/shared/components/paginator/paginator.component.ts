@@ -31,8 +31,8 @@ import { BreakpointerObserverService } from '@shared/services/breakpointer-obser
   ],
 })
 export class PaginatorComponent {
-  private readonly breakpoint = inject(BreakpointerObserverService);
-  private readonly maxVisiblePages = computed(() => (this.breakpoint.md() ? 5 : 3));
+  private readonly isDesktop = inject(BreakpointerObserverService).isDesktop;
+  private readonly maxVisiblePages = computed(() => (this.isDesktop() ? 5 : 3));
 
   limits = input<number[]>(PAGINATION_CONFIG.DEFAULT_LIMITS);
 

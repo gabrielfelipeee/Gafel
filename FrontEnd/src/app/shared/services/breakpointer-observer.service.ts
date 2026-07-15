@@ -9,12 +9,9 @@ import { map } from 'rxjs/operators';
 export class BreakpointerObserverService {
   private readonly breakpointObserver = inject(BreakpointObserver);
 
-  // Tailwind >= breakpoint
-  readonly sm = this.observe('(min-width: 640px)');
-  readonly md = this.observe('(min-width: 768px)');
-  readonly lg = this.observe('(min-width: 1024px)');
-  readonly xl = this.observe('(min-width: 1280px)');
-  readonly xxl = this.observe('(min-width: 1536px)');
+  readonly isMobile = this.observe('(max-width: 639.98px)');
+  readonly isTablet = this.observe('(min-width: 640px) and (max-width: 1023.98px)');
+  readonly isDesktop = this.observe('(min-width: 1024px)');
 
   private observe(query: string) {
     return toSignal(this.breakpointObserver.observe(query).pipe(map(state => state.matches)), {

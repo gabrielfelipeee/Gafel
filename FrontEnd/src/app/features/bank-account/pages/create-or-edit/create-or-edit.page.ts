@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgTemplateOutlet } from '@angular/common';
 import { provideIcons } from '@ng-icons/core';
 import { faSolidBrazilianRealSign } from '@ng-icons/font-awesome/solid';
 import { ModalComponent } from '@shared/components/modal/modal.component';
@@ -27,6 +28,7 @@ import { BankAccountApi } from '@features/bank-account/apis/bank-account.api';
 import { CustomSelectComponent } from '@shared/components/custom-select/custom-select.component';
 import { SelectOption } from '@shared/interfaces/select-option.interface';
 import { heroArrowPath } from '@ng-icons/heroicons/outline';
+import { BreakpointerObserverService } from '@shared/services/breakpointer-observer.service';
 
 @Component({
   selector: 'app-create-or-edit-bank-account',
@@ -37,6 +39,7 @@ import { heroArrowPath } from '@ng-icons/heroicons/outline';
     CustomInputComponent,
     ButtonComponent,
     CustomSelectComponent,
+    NgTemplateOutlet,
   ],
   providers: [
     provideIcons({
@@ -47,6 +50,8 @@ import { heroArrowPath } from '@ng-icons/heroicons/outline';
 })
 export class CreateOrEditPage {
   readonly BankAccountTypeInfo = BankAccountTypeInfo;
+
+  readonly isMobile = inject(BreakpointerObserverService).isMobile;
 
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);

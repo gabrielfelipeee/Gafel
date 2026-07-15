@@ -11,7 +11,7 @@
       class="group relative flex cursor-pointer items-center gap-2 transition-colors duration-300 hover:text-primary"
       [class.text-primary]="rla.isActive"
     >
-      <ng-icon [name]="item.icon" [size]="isLg() ? '18' : '26'" />
+      <ng-icon [name]="item.icon" [size]="isDesktop() ? '18' : '26'" />
 
       <span class="hidden lg:inline font-semibold"> {{ item.label }} </span>
 
@@ -70,7 +70,7 @@
     class="group relative flex cursor-pointer items-center gap-2 transition-colors duration-300 hover:text-primary"
     [class.text-primary]="rla.isActive"
   >
-    <ng-icon [name]="item.icon" [size]="isLg() ? '18' : '26'" />
+    <ng-icon [name]="item.icon" [size]="isDesktop() ? '18' : '26'" />
 
     <span class="hidden lg:inline font-semibold"> {{ item.label }} </span>
 
