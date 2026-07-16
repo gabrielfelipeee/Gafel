@@ -1,5 +1,6 @@
 :host {
-  select {
+  select,
+  .mobile-select-trigger {
     width: 100% !important;
     outline: none !important;
     padding-left: 3rem !important;

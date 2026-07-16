@@ -1,15 +1,15 @@
 <!-- Nome -->
-<label class="floating-label relative">
+<div class="floating-label relative">
   <span class="capitalize">{{label()}}</span>
 
   <ng-icon
-    [name]="icon()"
+    [name]="selectedOption()?.icon ?? 'heroListBullet'"
     size="20"
     class="absolute left-4 top-1/2 -translate-y-1/2 z-10 transition-colors duration-500 ease-in-out"
-    [ngClass]="errorMessage ? 'text-red-500!' : 'text-primary!'"
+    [ngClass]="errorMessage ? 'text-error!' : 'text-primary!'"
   ></ng-icon>
 
-  @if (!isRequired() && value !== null) {
+  @if (value() !== null && !isRequired() && !isDisabled()) {
   <ng-icon
     name="heroXMark"
     size="26"
@@ -18,19 +18,73 @@
   />
   }
 
+  <!---->
+  @if (isMobile()) {
+  <button
+    type="button"
+    class="mobile-select-trigger select select-lg w-full text-left cursor-pointer"
+    (click)="onOpenBottomSheet()"
+    [disabled]="isDisabled()"
+  >
+    {{ selectedOption()?.label ?? 'Selecione uma opção' }}
+  </button>
+  } @else {
   <select
-    [(ngModel)]="value"
+    [ngModel]="value()"
     [disabled]="isDisabled()"
     (ngModelChange)="handleChange($event)"
     (blur)="handleTouched()"
-    class="select select-lg"
+    class="select select-lg cursor-pointer"
   >
     <option [ngValue]="null" disabled>Selecione uma opção</option>
     @for (option of options(); track option.value) {
     <option [ngValue]="option.value">{{ option.label }}</option>
     }
   </select>
-</label>
+  }
+</div>
 <span class="block h-5 text-error text-sm" [class.animate-fade-in-up]="errorMessage">
   @if (errorMessage) { {{ errorMessage }} }
 </span>
+
+<!-- Mobile Sheet -->
+@if(showBottomSheet()) {
+<div class="fixed inset-0 z-50 bg-black/40 backdrop-blur-[2px]">
+  <button
+    type="button"
+    class="absolute inset-0 bg-black/40"
+    (click)="onCloseBottomSheet()"
+    aria-label="Fechar"
+  ></button>
+
+  <div
+    class="absolute bottom-0 w-full rounded-t-2xl bg-base-100 animate-in slide-in-from-bottom duration-200"
+  >
+    <!-- Header -->
+    <div class="flex flex-col items-center px-5 pt-3 pb-4">
+      <div class="mb-3 h-1.5 w-10 rounded-full bg-base-300"></div>
+
+      <h2 class="text-base font-semibold text-base-content">{{ bottomSheetTitle() }}</h2>
+    </div>
+
+    <!-- Lista -->
+    <div class="max-h-80 overflow-y-auto px-2 pb-2">
+      @for (option of options(); track option.value) { @let isSelected = option.value === value();
+      <button
+        type="button"
+        (click)="onSelectOptionBottomSheet(option)"
+        class="w-full flex items-center gap-3 rounded-xl px-4 py-3 text-left transition-colors hover:bg-neutral/10 cursor-pointer"
+        [ngClass]="{'bg-primary/10 text-primary': isSelected}"
+      >
+        <ng-icon [name]="option.icon" size="20" class="opacity-70" />
+        <span class="flex-1 font-medium"> {{ option.label }} </span>
+
+        @if (isSelected) {
+        <ng-icon name="heroCheck" size="18" class="text-primary" />
+        }
+      </button>
+      }
+    </div>
+  </div>
+</div>
+}
