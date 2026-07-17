@@ -27,8 +27,9 @@ import { iCreateOrEditBankAccountRequest } from '@features/bank-account/interfac
 import { BankAccountApi } from '@features/bank-account/apis/bank-account.api';
 import { CustomSelectComponent } from '@shared/components/custom-select/custom-select.component';
 import { SelectOption } from '@shared/interfaces/select-option.interface';
-import { heroArrowPath } from '@ng-icons/heroicons/outline';
+import { heroArrowLeft, heroArrowPath } from '@ng-icons/heroicons/outline';
 import { BreakpointerObserverService } from '@shared/services/breakpointer-observer.service';
+import { IconButtonComponent } from '@shared/components/icon-button/icon-button.component';
 
 @Component({
   selector: 'app-create-or-edit-bank-account',
@@ -40,11 +41,13 @@ import { BreakpointerObserverService } from '@shared/services/breakpointer-obser
     ButtonComponent,
     CustomSelectComponent,
     NgTemplateOutlet,
+    IconButtonComponent,
   ],
   providers: [
     provideIcons({
       faSolidBrazilianRealSign,
       heroArrowPath,
+      heroArrowLeft,
     }),
   ],
 })
@@ -52,7 +55,6 @@ export class CreateOrEditPage {
   readonly BankAccountTypeInfo = BankAccountTypeInfo;
 
   readonly isMobile = inject(BreakpointerObserverService).isMobile;
-
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly formBuilder = inject(NonNullableFormBuilder);
@@ -69,6 +71,7 @@ export class CreateOrEditPage {
     .map(value => ({
       value,
       label: BankAccountTypeInfo[value].label,
+      icon: BankAccountTypeInfo[value].icon,
     }));
   readonly formErrorMessages = {
     name: {
@@ -133,7 +136,7 @@ export class CreateOrEditPage {
     });
   }
 
-  onModalClose(): void {
+  onClose(): void {
     this.router.navigate(['/contas'], { queryParamsHandling: 'preserve' });
   }
 }

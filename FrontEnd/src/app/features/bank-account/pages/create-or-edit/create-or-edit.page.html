@@ -1,22 +1,27 @@
 @if (isMobile()) {
 <ng-container *ngTemplateOutlet="content"></ng-container>
 } @else {
-<app-modal (modalClose)="onModalClose()">
+<app-modal (modalClose)="onClose()">
   <ng-container *ngTemplateOutlet="content"></ng-container>
 </app-modal>
 }
 
 <ng-template #content>
-  <h1 class="text-2xl font-bold tracking-tight capitalize">
-    {{ bankAccount ? 'atualizar conta bancária' : 'nova conta bancária' }}
-  </h1>
+  <div class="flex items-center gap-4 mb-6 pb-3 border-b border-base">
+    <app-icon-button icon="heroArrowLeft" (clicked)="onClose()" class="sm:hidden" />
 
-  <p class="text-sm text-base-content/70 mt-1 pb-2 border-b border-base">
-    {{ bankAccount ? 'Atualize as informações da conta bancária.' : 'Crie uma nova conta bancária.'
-    }}
-  </p>
+    <div class="flex-1">
+      <h1 class="text-xl font-bold capitalize leading-tight">
+        {{ bankAccount ? 'atualizar conta bancária' : 'nova conta bancária' }}
+      </h1>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid gap-4 mt-6">
+      <p class="text-sm text-base-content/70">
+        {{ bankAccount ? 'Atualize as informações da conta bancária.' : 'Crie uma nova conta bancária.' }}
+      </p>
+    </div>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid gap-4">
     <app-custom-input
       label="Nome"
       icon="heroBuildingLibrary"
@@ -27,7 +32,7 @@
 
     <app-custom-select
       label="Tipo"
-      [icon]="BankAccountTypeInfo[selectedBankAccountType()].icon"
+      bottomSheetTitle="Selecione o tipo da sua conta"
       formControlName="type"
       [options]="bankAccountTypeOptions"
       [errorMessages]="formErrorMessages.type"
