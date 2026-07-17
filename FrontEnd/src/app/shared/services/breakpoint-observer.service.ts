@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
-export class BreakpointerObserverService {
+export class BreakpointObserverService {
   private readonly breakpointObserver = inject(BreakpointObserver);
 
   readonly isMobile = this.observe('(max-width: 639.98px)');

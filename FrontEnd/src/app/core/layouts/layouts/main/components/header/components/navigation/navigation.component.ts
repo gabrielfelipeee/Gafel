@@ -3,7 +3,7 @@ import { NgIcon } from '@ng-icons/core';
 import { NgClass } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MenuFeature } from '@core/layouts/interfaces/features.interface';
-import { BreakpointerObserverService } from '@shared/services/breakpointer-observer.service';
+import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
 
 @Component({
   selector: 'app-navigation',
@@ -13,7 +13,7 @@ import { BreakpointerObserverService } from '@shared/services/breakpointer-obser
 export class NavigationComponent {
   features = input.required<MenuFeature[]>();
 
-  readonly isDesktop = inject(BreakpointerObserverService).isDesktop;
+  readonly isDesktop = inject(BreakpointObserverService).isDesktop;
 
   closeDropdown(): void {
     (document.activeElement as HTMLElement)?.blur();

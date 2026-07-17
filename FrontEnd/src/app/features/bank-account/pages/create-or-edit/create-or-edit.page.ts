@@ -28,7 +28,7 @@ import { BankAccountApi } from '@features/bank-account/apis/bank-account.api';
 import { CustomSelectComponent } from '@shared/components/custom-select/custom-select.component';
 import { SelectOption } from '@shared/interfaces/select-option.interface';
 import { heroArrowLeft, heroArrowPath } from '@ng-icons/heroicons/outline';
-import { BreakpointerObserverService } from '@shared/services/breakpointer-observer.service';
+import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
 import { IconButtonComponent } from '@shared/components/icon-button/icon-button.component';
 
 @Component({
@@ -54,7 +54,7 @@ import { IconButtonComponent } from '@shared/components/icon-button/icon-button.
 export class CreateOrEditPage {
   readonly BankAccountTypeInfo = BankAccountTypeInfo;
 
-  readonly isMobile = inject(BreakpointerObserverService).isMobile;
+  readonly isMobile = inject(BreakpointObserverService).isMobile;
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly formBuilder = inject(NonNullableFormBuilder);

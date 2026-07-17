@@ -39,7 +39,7 @@ import { ConfirmationModalService } from '@shared/services/confirmation-modal.se
 import { ToastService } from '@shared/services/toast.service';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 import { ApiErrorHandlerService } from '@shared/services/api-error-handler.service';
-import { BreakpointerObserverService } from '@shared/services/breakpointer-observer.service';
+import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
 
 type tBankAccountAction = 'edit' | 'delete';
 
@@ -91,7 +91,7 @@ export class ListPage implements OnInit {
     },
   ];
 
-  readonly isMobile = inject(BreakpointerObserverService).isMobile;
+  readonly isMobile = inject(BreakpointObserverService).isMobile;
 
   readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);

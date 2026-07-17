@@ -12,7 +12,7 @@ import {
 } from '@ng-icons/heroicons/outline';
 import { PAGINATION_CONFIG } from '@shared/query/constants/pagination-config.constant';
 import { IconButtonComponent } from '../icon-button/icon-button.component';
-import { BreakpointerObserverService } from '@shared/services/breakpointer-observer.service';
+import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
 
 @Component({
   host: { class: 'fixed bottom-0 left-0 right-0 border-t border-base bg-base-100' },
@@ -31,7 +31,7 @@ import { BreakpointerObserverService } from '@shared/services/breakpointer-obser
   ],
 })
 export class PaginatorComponent {
-  private readonly isDesktop = inject(BreakpointerObserverService).isDesktop;
+  private readonly isDesktop = inject(BreakpointObserverService).isDesktop;
   private readonly maxVisiblePages = computed(() => (this.isDesktop() ? 5 : 3));
 
   limits = input<number[]>(PAGINATION_CONFIG.DEFAULT_LIMITS);
