@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, Renderer2, signal } from '@angular/core';
+import { Component, computed, ElementRef, inject, input, signal, viewChild } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { ControlValueAccessor, FormsModule, NgControl, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -21,13 +21,13 @@ export class CustomSelectComponent implements ControlValueAccessor {
   errorMessages = input<tFieldValidationMessages>({});
   bottomSheetTitle = input.required<string>();
 
+  private readonly bottomSheet = viewChild.required<ElementRef<HTMLDialogElement>>('bottomSheet');
+
   private readonly ngControl = inject(NgControl, { optional: true, self: true });
-  private readonly renderer = inject(Renderer2);
   readonly isMobile = inject(BreakpointObserverService).isMobile;
 
   readonly value = signal<string | number | null>(null);
   readonly isDisabled = signal(false);
-  readonly showBottomSheet = signal(false);
 
   readonly selectedOption = computed(
     () => this.options().find(option => option.value === this.value()) ?? null,
@@ -38,14 +38,6 @@ export class CustomSelectComponent implements ControlValueAccessor {
 
   constructor() {
     if (this.ngControl) this.ngControl.valueAccessor = this;
-
-    effect(() => {
-      // Bloqueia o scroll da página enquanto o Bottom Sheet estiver aberto.
-      if (this.showBottomSheet()) this.renderer.addClass(document.body, 'overflow-hidden');
-      else
-        // Libera o scroll quando o Bottom Sheet é fechado.
-        this.renderer.removeClass(document.body, 'overflow-hidden');
-    });
   }
 
   private onChange?: (value: string | number | null) => void;
@@ -84,16 +76,13 @@ export class CustomSelectComponent implements ControlValueAccessor {
   onOpenBottomSheet(): void {
     if (this.isDisabled()) return;
 
-    this.showBottomSheet.set(true);
-  }
-  onCloseBottomSheet(): void {
-    this.showBottomSheet.set(false);
+    this.bottomSheet().nativeElement.showModal();
   }
   onSelectOptionBottomSheet(option: SelectOption): void {
     this.handleChange(option.value);
     this.handleTouched();
 
-    this.showBottomSheet.set(false);
+    this.bottomSheet().nativeElement.close();
   }
 
   // Erros

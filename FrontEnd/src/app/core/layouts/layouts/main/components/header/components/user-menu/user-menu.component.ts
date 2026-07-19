@@ -1,16 +1,16 @@
 import { Component, inject } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
 import { NavigationItem } from '@core/layouts/interfaces/navigation.interface';
 import { UserStorageService } from '@core/auth/services/user-storage.service';
 import { LogoutFacade } from '@core/auth/facades/logout.facade';
-import { NavigationItemComponent } from "@core/layouts/components/navigation-item/navigation-item.component";
+import { NavigationItemComponent } from '@core/layouts/components/navigation-item/navigation-item.component';
 
 @Component({
   selector: 'app-user-menu',
   templateUrl: './user-menu.component.html',
-  imports: [NgIcon, RouterLink, NavigationItemComponent],
+  imports: [NgIcon, NavigationItemComponent],
 })
 export class UserMenuComponent {
   readonly userMenuItems: NavigationItem[] = [

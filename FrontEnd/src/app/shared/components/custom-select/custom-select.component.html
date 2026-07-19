@@ -47,36 +47,29 @@
   @if (errorMessage) { {{ errorMessage }} }
 </span>
 
-<!-- Mobile Sheet -->
-@if(showBottomSheet()) {
-<div class="fixed inset-0 z-50 bg-black/40 backdrop-blur-[2px]">
-  <button
-    type="button"
-    class="absolute inset-0 bg-black/40"
-    (click)="onCloseBottomSheet()"
-    aria-label="Fechar"
-  ></button>
-
-  <div
-    class="absolute bottom-0 w-full rounded-t-2xl bg-base-100 animate-in slide-in-from-bottom duration-200"
-  >
+<!-- Bottom Sheet -->
+<dialog #bottomSheet class="modal modal-bottom">
+  <div class="modal-box rounded-t-2xl p-0">
     <!-- Header -->
-    <div class="flex flex-col items-center px-5 pt-3 pb-4 border-b border-base-300">
-      <div class="mb-3 h-1.5 w-10 rounded-full bg-base-300"></div>
+    <div class="flex flex-col items-center border-b border-base-300 px-5 pt-3 pb-4">
+      <div class="mb-3 h-1.5 w-12 rounded-full bg-base-300"></div>
 
-      <h2 class="text-base font-semibold text-base-content">{{ bottomSheetTitle() }}</h2>
+      <h2 class="text-base font-semibold">{{ bottomSheetTitle() }}</h2>
     </div>
 
     <!-- Lista -->
-    <div class="max-h-80 overflow-y-auto px-2 pb-2">
+    <div class="max-h-80 overflow-y-auto p-4">
       @for (option of options(); track option.value) { @let isSelected = option.value === value();
       <button
         type="button"
         (click)="onSelectOptionBottomSheet(option)"
-        class="w-full flex items-center gap-3 rounded-xl p-4 text-left transition-colors hover:bg-neutral/10 cursor-pointer"
-        [ngClass]="{'bg-primary/10 text-primary': isSelected}"
+        class="flex w-full cursor-pointer items-center gap-3 rounded-xl p-4 text-left transition-colors hover:bg-base-200"
+        [ngClass]="{
+            'bg-primary/10 text-primary': isSelected
+          }"
       >
-        <ng-icon [name]="option.icon" size="20" class="opacity-70" />
+        <ng-icon [name]="option.icon" size="20" />
+
         <span class="flex-1 font-medium"> {{ option.label }} </span>
 
         @if (isSelected) {
@@ -86,5 +79,8 @@
       }
     </div>
   </div>
-</div>
-}
+
+  <form method="dialog" class="modal-backdrop">
+    <button aria-label="Fechar"></button>
+  </form>
+</dialog>
