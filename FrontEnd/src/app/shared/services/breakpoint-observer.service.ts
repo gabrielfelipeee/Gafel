@@ -9,8 +9,8 @@ import { map } from 'rxjs/operators';
 export class BreakpointObserverService {
   private readonly breakpointObserver = inject(BreakpointObserver);
 
-  readonly isMobile = this.observe('(max-width: 639.98px)');
-  readonly isTablet = this.observe('(min-width: 640px) and (max-width: 1023.98px)');
+  readonly isMobile = this.observe('(max-width: 767px)');
+  readonly isTablet = this.observe('(min-width: 768px) and (max-width: 1023px)');
   readonly isDesktop = this.observe('(min-width: 1024px)');
 
   private observe(query: string) {

@@ -1,12 +1,39 @@
+@let isCompact = compact();
+
 <div class="flex flex-col items-center justify-center animate-fade-in cursor-pointer uppercase">
-  <div class="flex items-center justify-center gap-4">
-    <img src="logo.svg" class="w-12" alt="Logo do Gafel" />
+  <div
+    class="flex items-center justify-center uppercase"
+    [ngClass]="{
+      'gap-2 lg:gap-4': !isCompact,
+      'gap-4': isCompact
+    }"
+  >
+    <img
+      src="logo.svg"
+      alt="Logo do Gafel"
+      [ngClass]="{
+        'w-7 lg:w-12': !isCompact,
+        'w-12': isCompact
+      }"
+    />
 
     <span
-      class="animate-slide-up delay-60 font-mono font-semibold text-4xl text-primary uppercase tracking-widest"
+      class="font-mono font-semibold text-primary tracking-widest animate-slide-up delay-60"
+      [ngClass]="{
+        'text-[24px] lg:text-4xl': !isCompact,
+        'text-4xl': isCompact
+      }"
       >gafel</span
     >
   </div>
 
-  <p class="text-[11px] mt-1 typewriter">controle total do seu dinheiro</p>
+  <p
+    class="typewriter"
+    [ngClass]="{ 
+      'text-[7px] lg:text-[11px] lg:mt-1': !isCompact,
+      'mt-1 text-[11px]': isCompact
+    }"
+  >
+    controle total do seu dinheiro
+  </p>
 </div>

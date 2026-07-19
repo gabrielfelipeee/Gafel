@@ -1,0 +1,13 @@
+<nav class="flex items-center justify-center gap-4 lg:gap-6 font-display">
+  @for (item of NAVIGATION_ITEMS; track $index) {
+
+  <!-- GROUP -->
+  @if ('items' in item) {
+  <app-navigation-dropdown [item]="item" />
+  }
+
+  <!-- SINGLE -->
+  @else {
+  <app-navigation-link [item]="item" />
+  } }
+</nav>

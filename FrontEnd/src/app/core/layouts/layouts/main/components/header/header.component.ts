@@ -4,9 +4,19 @@ import { LogoComponent } from '@core/layouts/components/logo/logo.component';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   heroAdjustmentsHorizontal,
+  heroArrowRightOnRectangle,
+  heroArrowsRightLeft,
   heroBanknotes,
   heroBars3,
+  heroBuildingLibrary,
+  heroCalendarDays,
+  heroChartBar,
   heroChevronDown,
+  heroCog6Tooth,
+  heroDocumentText,
+  heroFlag,
+  heroHeart,
+  heroHome,
   heroMoon,
   heroSquares2x2,
   heroSun,
@@ -15,24 +25,29 @@ import {
   heroWallet,
   heroXMark,
 } from '@ng-icons/heroicons/outline';
-import { tTheme } from '@core/layouts/types/tTheme';
+import { Theme } from '@core/layouts/types/theme.type';
 import { ThemeService } from '@core/layouts/services/theme.service';
-import {
-  iFeatureGroup,
-  iFeatureItem,
-  MenuFeature,
-} from '@core/layouts/interfaces/features.interface';
-import { DrawerComponent } from './components/drawer/drawer.component';
-import { NavigationComponent } from './components/navigation/navigation.component';
+import { DesktopNavigationComponent } from './components/desktop-navigation/desktop-navigation.component';
+import { NAVIGATION_ITEMS } from '@core/layouts/navigation/navigation-items';
+import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
+import { MobileNavigationComponent } from './components/mobile-navigation/mobile-navigation.component';
+import { UserMenuComponent } from './components/user-menu/user-menu.component';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  imports: [LogoComponent, NgIcon, DrawerComponent, NavigationComponent],
+  imports: [
+    LogoComponent,
+    NgIcon,
+    DesktopNavigationComponent,
+    MobileNavigationComponent,
+    UserMenuComponent,
+  ],
   providers: [
     provideIcons({
       heroBars3,
       heroSun,
+      heroHome,
       heroUser,
       heroSquares2x2,
       heroAdjustmentsHorizontal,
@@ -42,50 +57,27 @@ import { NavigationComponent } from './components/navigation/navigation.componen
       heroMoon,
       heroBanknotes,
       heroWallet,
+      heroDocumentText,
+      heroBuildingLibrary,
+      heroArrowsRightLeft,
+      heroCalendarDays,
+      heroChartBar,
+      heroFlag,
+      heroHeart,
+      heroArrowRightOnRectangle,
+      heroCog6Tooth,
     }),
   ],
 })
 export class HeaderComponent {
-  readonly fullName = inject(UserStorageService).get()?.fullName;
+  readonly NAVIGATION_ITEMS = NAVIGATION_ITEMS;
+
   private readonly themeService = inject(ThemeService);
 
-  theme = signal<tTheme>('gafel-light');
+  readonly isMobile = inject(BreakpointObserverService).isMobile;
+  readonly fullName = inject(UserStorageService).get()?.fullName;
 
-  readonly features: MenuFeature[] = [
-    {
-      label: 'Dashboard',
-      path: 'dashboard',
-      icon: 'heroSquares2x2',
-    } as iFeatureItem,
-
-    {
-      label: 'Financeiro',
-      icon: 'heroBanknotes',
-      features: [
-        {
-          label: 'Contas',
-          path: 'contas',
-          icon: 'heroWallet',
-        },
-      ],
-    } as iFeatureGroup,
-
-    {
-      label: 'Planejamento',
-      icon: 'heroAdjustmentsHorizontal',
-      features: [
-        {
-          label: 'Categorias',
-          path: 'categorias',
-          icon: 'heroTag',
-        },
-      ],
-    } as iFeatureGroup,
-  ];
-
-  readonly featuresList: iFeatureItem[] = this.features.flatMap(item =>
-    'features' in item ? item.features : item,
-  );
+  readonly theme = signal<Theme>('gafel-light');
 
   constructor() {
     this.theme.set(this.themeService.getInitialTheme());

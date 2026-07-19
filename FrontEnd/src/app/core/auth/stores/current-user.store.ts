@@ -15,7 +15,7 @@ export class CurrentUserStore {
     this.state.set(user);
   }
 
-  logout() {
+  remove() {
     this.state.set(null);
   }
 }

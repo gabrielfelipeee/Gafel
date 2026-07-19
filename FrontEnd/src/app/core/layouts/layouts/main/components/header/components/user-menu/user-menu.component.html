@@ -1,0 +1,44 @@
+<div class="dropdown dropdown-end">
+  <button
+    tabindex="0"
+    class="btn btn-ghost group rounded-xl border-none bg-transparent shadow-none p-0"
+  >
+    <span
+      class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary transition-all duration-300 group-hover:rotate-12"
+    >
+      <ng-icon name="heroUser" size="22" />
+    </span>
+
+    <p
+      class="hidden md:block text-sm font-semibold leading-none transition-colors duration-300 group-hover:text-primary"
+    >
+      {{ fullName }}
+    </p>
+  </button>
+
+  <div
+    tabindex="0"
+    class="menu dropdown-content mt-3 w-64 rounded-xl border border-base-300 bg-base-100 p-2 shadow-xl"
+  >
+    <span class="menu-title">{{ fullName }}</span>
+
+    <div class="flex flex-col gap-1">
+      @for (item of userMenuItems; track $index) {
+      <app-navigation-item [item]="item" />
+      }
+
+      <div class="divider my-1"></div>
+
+      <button
+        (click)="onLogout()"
+        class="group flex items-center gap-2 rounded-xl p-2 text-error transition-all duration-200 hover:bg-error/5 cursor-pointer"
+      >
+        <span class="flex h-7 w-7 items-center justify-center rounded-full">
+          <ng-icon name="heroArrowRightOnRectangle" size="20" />
+        </span>
+
+        <span class="font-semibold"> Sair </span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -122,7 +122,7 @@ export class CreateOrEditPage {
         this.toastService.show('success', title, message);
 
         this.refreshService.trigger(REFRESH_KEYS.BANK_ACCOUNTS);
-        this.router.navigate(['/contas'], { queryParamsHandling: 'preserve' });
+        this.router.navigate(['/contas-bancarias'], { queryParamsHandling: 'preserve' });
       },
       error: (error: iErrorResponse) => {
         mapApiErrorsToForm(this.form, error);
@@ -137,6 +137,6 @@ export class CreateOrEditPage {
   }
 
   onClose(): void {
-    this.router.navigate(['/contas'], { queryParamsHandling: 'preserve' });
+    this.router.navigate(['/contas-bancarias'], { queryParamsHandling: 'preserve' });
   }
 }

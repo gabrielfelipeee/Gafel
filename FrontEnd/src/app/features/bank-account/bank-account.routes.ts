@@ -5,7 +5,7 @@ import { getBankAccountResolver } from './resolvers/get-bank-account.resolver';
 
 export const BANK_ACCOUNT_ROUTES: Routes = [
   {
-    path: 'contas',
+    path: 'contas-bancarias',
     loadComponent: () => import('./pages/list/list.page').then(m => m.ListPage),
     canActivate: [withPaginationQueryGuard({ parser: bankAccountListQueryParser })],
     children: [
