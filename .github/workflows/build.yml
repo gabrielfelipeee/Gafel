@@ -41,11 +41,11 @@ jobs:
             /d:sonar.scanner.scanAll=false
 
       - name: Build
-        run: dotnet build Gafel.sln --configuration Release
+        run: dotnet build Gafel.slnx --configuration Release
 
       - name: Test with coverage
         run: |
-          dotnet test Gafel.sln \
+          dotnet test Gafel.slnx \
             --configuration Release \
             --no-build \
             /p:CollectCoverage=true \

@@ -15,7 +15,9 @@ import { IconButtonComponent } from '../icon-button/icon-button.component';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
 
 @Component({
-  host: { class: 'fixed bottom-0 left-0 right-0 border-t border-base bg-base-100' },
+  host: {
+    class: 'sm:fixed sm:bottom-0 sm:left-0 sm:right-0 border-t border-base bg-base-100',
+  },
   selector: 'app-paginator',
   templateUrl: './paginator.component.html',
   imports: [FormsModule, NgIcon, NgClass, IconButtonComponent],

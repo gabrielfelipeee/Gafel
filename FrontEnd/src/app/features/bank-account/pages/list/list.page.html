@@ -22,7 +22,7 @@
 </div>
 @if(response().items.length) {
 <ul
-  class="list-none mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-16 pointer-events-none"
+  class="list-none mt-8 sm:mb-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pointer-events-none"
   [ngClass]="{ 'opacity-50 pointer-events-none': isLoading() }"
 >
   @for (bankAccount of response().items; track bankAccount.id) { @let accountType
