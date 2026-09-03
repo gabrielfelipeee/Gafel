@@ -32,7 +32,7 @@ public class CustomAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewa
                 Instance = context.Request.Path
             };
 
-            await context.Response.WriteAsJsonAsync(problem);
+            await context.Response.WriteAsJsonAsync(value: problem, cancellationToken: context.RequestAborted);
             return;
         }
 
