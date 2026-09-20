@@ -63,7 +63,7 @@
   }
 </ul>
 } @else if(isLoading()) {
-<app-card-skeleton-list [count]="3" />
+<app-content-skeleton [totalItems]="3" [viewMode]="'grid'" />
 } @else {
 <app-empty-list
   title="Nenhuma conta bancária encontrada"

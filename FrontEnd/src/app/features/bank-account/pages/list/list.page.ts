@@ -20,7 +20,6 @@ import { iItemActionData } from '@shared/interfaces/item-action-data.interface';
 import { createListResource } from '@shared/query/create-list-resource';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { EmptyListComponent } from '@shared/components/empty-list/empty-list.component';
-import { CardSkeletonListComponent } from '@shared/components/card-skeleton-list/card-skeleton-list.component';
 import { RefreshService } from '@shared/services/refresh.service';
 import { REFRESH_KEYS } from '@shared/constants/refresh-keys.constant';
 import {
@@ -40,6 +39,7 @@ import { ToastService } from '@shared/services/toast.service';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 import { ApiErrorHandlerService } from '@shared/services/api-error-handler.service';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
+import { ContentSkeletonComponent } from '@shared/components/content-skeleton/content-skeleton.component';
 
 type tBankAccountAction = 'edit' | 'delete';
 
@@ -55,9 +55,9 @@ type tBankAccountAction = 'edit' | 'delete';
     FormsModule,
     ReactiveFormsModule,
     EmptyListComponent,
-    CardSkeletonListComponent,
     NgClass,
     RouterOutlet,
+    ContentSkeletonComponent,
   ],
   providers: [
     provideIcons({

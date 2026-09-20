@@ -10,6 +10,7 @@ import {
   heroPlus,
   heroSquares2x2,
   heroTrash,
+  heroXMark,
 } from '@ng-icons/heroicons/outline';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
@@ -30,7 +31,6 @@ import { CategoryType } from '@features/category/enums/category-type.enum';
 import { CATEGORY_ICONS } from '@features/category/contants/category-icons.constant';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { EmptyListComponent } from '@shared/components/empty-list/empty-list.component';
-import { CardSkeletonListComponent } from '@shared/components/card-skeleton-list/card-skeleton-list.component';
 import { ConfirmationModalService } from '@shared/services/confirmation-modal.service';
 import { iItemActionEvent } from '@shared/interfaces/item-action-event.interface';
 import { ToastService } from '@shared/services/toast.service';
@@ -44,6 +44,7 @@ import { ViewMode } from '@shared/types/view-mode.type';
 import { CategoryListComponent } from './components/category-list/category-list.component';
 import { CategoryAction } from '@features/category/types/category-action.type';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
+import { ContentSkeletonComponent } from '@shared/components/content-skeleton/content-skeleton.component';
 
 @Component({
   selector: 'app-category-list-page',
@@ -56,7 +57,7 @@ import { BreakpointObserverService } from '@shared/services/breakpoint-observer.
     FormsModule,
     ReactiveFormsModule,
     EmptyListComponent,
-    CardSkeletonListComponent,
+    ContentSkeletonComponent,
     IconButtonComponent,
     CategoryGridComponent,
     CategoryListComponent,
@@ -73,6 +74,7 @@ import { BreakpointObserverService } from '@shared/services/breakpoint-observer.
       heroListBullet,
       heroSquares2x2,
       heroPencil,
+      heroXMark,
     }),
   ],
 })
@@ -221,5 +223,9 @@ export class CategoryListPage implements OnInit {
         );
       },
     });
+  }
+
+  onDeleteSelectedCategories() {
+    console.log();
   }
 }

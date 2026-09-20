@@ -1,131 +1,129 @@
-<div class="mt-6 mb-16 overflow-x-auto">
-  <table class="table">
-    <colgroup>
-      <col class="w-14" />
-      <col />
-      <col class="w-28.75 xl:w-40" />
-      <col class="w-36 lg:w-52 xl:w-72" />
-      <col class="w-36 lg:w-40 xl:w-52" />
-      <col class="w-26" />
-    </colgroup>
+<table class="table mt-6 mb-16">
+  <colgroup>
+    <col class="w-14" />
+    <col />
+    <col class="w-28.75 xl:w-40" />
+    <col class="w-36 lg:w-52 xl:w-72" />
+    <col class="w-36 lg:w-40 xl:w-52" />
+    <col class="w-26" />
+  </colgroup>
 
-    <thead>
-      <tr>
-        <th>
-          @if(selectedCategoryIds().size > 0) {
-          <input
-            type="checkbox"
-            class="checkbox checkbox-sm transition-all duration-200 ease-out"
-            [checked]="selectedCategoryIds().size === categories().length"
-            (change)="allCategoriesSelectionChange.emit($any($event.target).checked)"
-          />
-          } @else {
-          <span>#</span>
-          }
-        </th>
-        <th>Categoria</th>
-        <th>Tipo</th>
-        <th>
-          <span
-            class="tooltip tooltip-bottom cursor-help"
-            data-tip="Percentual do total mensal de receitas ou despesas representado por esta categoria."
-          >
-            % do total
-          </span>
-        </th>
-        <th>Total no mês</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
+  <thead>
+    <tr>
+      <th>
+        @if(selectedCategoryIds().size > 0) {
+        <input
+          type="checkbox"
+          class="checkbox checkbox-sm transition-all duration-200 ease-out"
+          [checked]="selectedCategoryIds().size === categories().length"
+          (change)="allCategoriesSelectionChange.emit($any($event.target).checked)"
+        />
+        } @else {
+        <span>#</span>
+        }
+      </th>
+      <th>Categoria</th>
+      <th>Tipo</th>
+      <th>
+        <span
+          class="tooltip tooltip-bottom cursor-help"
+          data-tip="Percentual do total mensal de receitas ou despesas representado por esta categoria."
+        >
+          % do total
+        </span>
+      </th>
+      <th>Total no mês</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
 
-    <tbody>
-      @for (category of categories(); track category.id) { @let isCategorySelected =
-      selectedCategoryIds().has(category.id);
+  <tbody [ngClass]="{ 'opacity-50 pointer-events-none': isLoading() }">
+    @for (category of categories(); track category.id) { @let isCategorySelected =
+    selectedCategoryIds().has(category.id);
 
-      <tr class="group" [class.selected]="isCategorySelected">
-        <td>
-          <input
-            type="checkbox"
-            class="checkbox checkbox-sm group-hover:opacity-100 transition-opacity duration-200"
-            [class.opacity-0]="!isCategorySelected && selectedCategoryIds().size === 0"
-            [class.opacity-100]="isCategorySelected || selectedCategoryIds().size > 0"
-            [checked]="isCategorySelected"
-            (change)="categorySelectionChange.emit({
+    <tr class="group" [class.selected]="isCategorySelected">
+      <td>
+        <input
+          type="checkbox"
+          class="checkbox checkbox-sm group-hover:opacity-100 transition-opacity duration-200"
+          [class.opacity-0]="!isCategorySelected && selectedCategoryIds().size === 0"
+          [class.opacity-100]="isCategorySelected || selectedCategoryIds().size > 0"
+          [checked]="isCategorySelected"
+          (change)="categorySelectionChange.emit({
                 id: category.id,
                 selected: $any($event.target).checked
             })"
-          />
-        </td>
+        />
+      </td>
 
-        <td>
-          <div class="flex items-center gap-2">
-            <span
-              class="icon-container shrink-0"
-              [class.group-hover:text-primary]="category.type === CategoryType.Income"
-              [class.group-hover:text-error]="category.type === CategoryType.Expense"
-            >
-              <ng-icon
-                [name]="category.icon"
-                size="32"
-                class="transition-transform! duration-500 group-hover:scale-[1.2]"
-              />
-            </span>
-
-            <span class="truncate"> {{ category.name }} </span>
-          </div>
-        </td>
-
-        <td>
-          <div
-            class="badge badge-soft"
-            [class.badge-error]="category.type === CategoryType.Expense"
-            [class.badge-success]="category.type === CategoryType.Income"
-          >
-            {{ category.type === CategoryType.Income ? 'receita' : 'despesa' }}
-          </div>
-        </td>
-
-        <td>
-          <div class="flex items-center gap-2">
-            <progress
-              class="progress w-28 xl:w-36 shrink-0"
-              [class.progress-success]="category.type === CategoryType.Income"
-              [class.progress-error]="category.type === CategoryType.Expense"
-              value="50"
-              max="100"
-            ></progress>
-
-            <span class="hidden lg:inline text-xs"> {{ 100 | number: '1.2-2' }}% </span>
-          </div>
-        </td>
-
-        <td>
+      <td>
+        <div class="flex items-center gap-2">
           <span
-            [class.text-success]="category.type === CategoryType.Income"
-            [class.text-error]="category.type === CategoryType.Expense"
+            class="icon-container shrink-0"
+            [class.group-hover:text-primary]="category.type === CategoryType.Income"
+            [class.group-hover:text-error]="category.type === CategoryType.Expense"
           >
-            {{ (category.type === CategoryType.Income ? '+ ' : '- ') + (1000 | currency) }}
-          </span>
-        </td>
-
-        <td>
-          @if(!isCategorySelected) {
-          <div
-            class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-          >
-            @for (action of actions(); track $index) {
-            <app-icon-button
-              [icon]="action.icon"
-              [iconSize]="18"
-              [variant]="action.key === 'delete' ? 'error' : 'default'"
-              (clicked)="onAction(action.key, category)"
+            <ng-icon
+              [name]="category.icon"
+              size="32"
+              class="transition-transform! duration-500 group-hover:scale-[1.2]"
             />
-            }
-          </div>
+          </span>
+
+          <span class="truncate"> {{ category.name }} </span>
+        </div>
+      </td>
+
+      <td>
+        <div
+          class="badge badge-soft"
+          [class.badge-error]="category.type === CategoryType.Expense"
+          [class.badge-success]="category.type === CategoryType.Income"
+        >
+          {{ category.type === CategoryType.Income ? 'receita' : 'despesa' }}
+        </div>
+      </td>
+
+      <td>
+        <div class="flex items-center gap-2">
+          <progress
+            class="progress w-28 xl:w-36 shrink-0"
+            [class.progress-success]="category.type === CategoryType.Income"
+            [class.progress-error]="category.type === CategoryType.Expense"
+            value="50"
+            max="100"
+          ></progress>
+
+          <span class="hidden lg:inline text-xs"> {{ 100 | number: '1.2-2' }}% </span>
+        </div>
+      </td>
+
+      <td>
+        <span
+          [class.text-success]="category.type === CategoryType.Income"
+          [class.text-error]="category.type === CategoryType.Expense"
+        >
+          {{ (category.type === CategoryType.Income ? '+ ' : '- ') + (1000 | currency) }}
+        </span>
+      </td>
+
+      <td>
+        @if(!isCategorySelected) {
+        <div
+          class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        >
+          @for (action of actions(); track $index) {
+          <app-icon-button
+            [icon]="action.icon"
+            [iconSize]="18"
+            [variant]="action.key === 'delete' ? 'error' : 'default'"
+            (clicked)="onAction(action.key, category)"
+          />
           }
-        </td>
-      </tr>
-      }
-    </tbody>
-  </table>
-</div>
+        </div>
+        }
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
