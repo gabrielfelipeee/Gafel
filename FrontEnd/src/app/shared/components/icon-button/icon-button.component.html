@@ -1,7 +1,18 @@
 <button
+  type="button"
   (click)="onClick()"
   [disabled]="disabled()"
-  class="btn btn-circle group bg-inherit border-none shadow-none transition-all duration-500 hover:rotate-12 hover:bg-primary/7 hover:text-primary disabled:text-base-300"
+  class="btn btn-circle group border-none bg-inherit shadow-none transition-all duration-300 disabled:text-base-300"
+  [class.btn-sm]="iconSize() < 22"
+  [ngClass]="{
+    'hover:rotate-12': !selected(),
+    'text-neutral hover:bg-neutral/10': variant() === 'default' && !selected(),
+    'text-success hover:bg-success/10': variant() === 'success' && !selected(),
+    'text-info hover:bg-info/10': variant() === 'info' && !selected(),
+    'text-warning hover:bg-warning/10': variant() === 'warning' && !selected(),
+    'text-error hover:bg-error/10': variant() === 'error' && !selected(),
+    'bg-primary/10 text-primary': selected()
+  }"
 >
-  <ng-icon [name]="icon()" size="22" />
+  <ng-icon [name]="icon()" [size]="iconSize().toString()" />
 </button>
