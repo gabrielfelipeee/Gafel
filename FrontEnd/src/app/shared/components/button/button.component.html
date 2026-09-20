@@ -1,4 +1,14 @@
-<button class="btn btn-primary font-display gap-2 w-full rounded-xl" (click)="onClick()">
+<button
+  class="btn font-display gap-2 w-full rounded-xl"
+  [ngClass]="{
+    'btn-neutral': variant() === 'default' ,
+    'btn-success': variant() === 'success',
+    'btn-info': variant() === 'info',
+    'btn-warning': variant() === 'warning',
+    'btn-error': variant() === 'error',
+  }"
+  (click)="onClick()"
+>
   <ng-icon [name]="icon()" size="22" />
 
   <span class="text-base capitalize">

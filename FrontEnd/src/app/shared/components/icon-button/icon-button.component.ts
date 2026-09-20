@@ -1,8 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { NgClass } from '@angular/common';
-
-type IconButtonVariant = 'default' | 'success' | 'info' | 'warning' | 'error';
+import { ButtonVariant } from '@shared/types/button-variant.type';
 
 @Component({
   host: { class: 'block' },
@@ -16,7 +15,7 @@ export class IconButtonComponent {
   icon = input.required<string>();
   iconSize = input<number>(22);
 
-  variant = input<IconButtonVariant>('default');
+  variant = input<ButtonVariant>('default');
 
   disabled = input<boolean>(false);
   selected = input<boolean>(false);
