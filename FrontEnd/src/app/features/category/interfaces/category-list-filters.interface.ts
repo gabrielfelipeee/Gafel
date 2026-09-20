@@ -1,6 +1,6 @@
-import { eCategoryType } from '../enums/category-type.enum';
+import { CategoryType } from '../enums/category-type.enum';
 
-export interface iCategoryListFilters {
-  type?: eCategoryType;
+export interface CategoryListFilters {
+  type?: CategoryType;
   categoryName?: string;
 }

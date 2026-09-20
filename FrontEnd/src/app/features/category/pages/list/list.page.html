@@ -3,13 +3,23 @@
 <div
   class="flex flex-col justify-center gap-8 border-b border-base pb-4 pt-4 sticky top-20.25 z-10 bg-base-100"
 >
-  <div class="flex items-center justify-between gap-4">
-    <div class="flex items-center justify-center gap-2">
-      <ng-icon name="heroFunnel" size="26" />
-      <span> {{response().total}} categorias </span>
+  <div class="flex items-center justify-end md:justify-between gap-4">
+    @if (!isMobile()) {
+    <div class="flex items-center justify-center gap-1">
+      <app-icon-button
+        icon="heroListBullet"
+        [selected]="viewMode() === 'list'"
+        (clicked)="onViewModeChange('list')"
+      />
+      <app-icon-button
+        icon="heroSquares2x2"
+        [selected]="viewMode() === 'grid'"
+        (clicked)="onViewModeChange('grid')"
+      />
     </div>
+    }
 
-    <app-button icon="heroPlus" (clicked)="onCreateCategory()">nova categoria</app-button>
+    <app-button icon="heroPlus" (clicked)="onCreateOrEditCategory()">nova categoria</app-button>
   </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 items-center gap-4">
@@ -23,76 +33,30 @@
     <app-custom-radio-group
       [options]="categoryTypeOptions"
       [value]="filters().type"
-      (valueChange)="onSelectCategoryType($event)"
+      (valueChange)="onCategoryTypeChange($event)"
       class="sm:justify-self-end"
     />
   </div>
 </div>
-@if(response().items.length) {
-<ul
-  class="list-none mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-16 pointer-events-none"
-  [ngClass]="{ 'opacity-50 pointer-events-none': isLoading() }"
->
-  @for (category of response().items; track category.id) {
-  <li class="group relative surface flex flex-col gap-4">
-    <app-item-actions
-      class="absolute top-1 right-1"
-      [actions]="categoryActions"
-      [item]="category"
-      (clicked)="onCategoryAction($event)"
-    />
-
-    <div class="flex items-center justify-start gap-4">
-      <span class="icon-container shrink-0 group-hover:text-primary">
-        <ng-icon
-          [name]="category.icon"
-          size="32"
-          class="transition-transform! duration-500 group-hover:scale-[1.2]"
-        />
-      </span>
-
-      <div class="min-w-0 flex items-center gap-2 flex-wrap pr-6">
-        <h3 class="font-mono text-xl font-bold text-neutral truncate">{{ category.name }}</h3>
-
-        @if (filters().type === undefined) {
-        <div
-          class="badge badge-soft uppercase badge-sm"
-          [class.badge-error]="category.type === eCategoryType.Expense"
-          [class.badge-primary]="category.type === eCategoryType.Income"
-        >
-          {{ category.type === eCategoryType.Income ? 'receita' : 'despesa' }}
-        </div>
-        }
-      </div>
-    </div>
-
-    <div>
-      <span class="font-mono text-xs uppercase tracking-wider text-base-content/60">
-        total mensal
-      </span>
-
-      <p class="mt-1 text-2xl font-bold">{{'1000' | currency:'BRL'}}</p>
-    </div>
-
-    <div class="divider my-0"></div>
-
-    <div class="flex items-center justify-between">
-      <div>
-        <span class="font-mono text-xs uppercase text-base-content/60"> volume </span>
-
-        <p class="mt-1 font-semibold">{{'12'}} transações</p>
-      </div>
-
-      <div class="text-right">
-        <span class="font-mono text-xs uppercase text-base-content/60"> média </span>
-
-        <p class="mt-1 font-semibold">{{'83.33' | currency:'BRL'}}</p>
-      </div>
-    </div>
-  </li>
-  }
-</ul>
-} @else if(isLoading()) {
+@if(response().items.length) { @if(viewMode() === 'grid') {
+<app-category-grid
+  [categories]="response().items"
+  [isLoading]="isLoading()"
+  [actions]="actions"
+  (action)="handleCategoryAction($event)"
+/>
+} @else {
+<app-category-list
+  [categories]="response().items"
+  [categoryTypeFilter]="filters().type"
+  [isLoading]="isLoading()"
+  [actions]="actions"
+  (action)="handleCategoryAction($event)"
+  [selectedCategoryIds]="selectedCategoryIds"
+  (categorySelectionChange)="onCategorySelectionChange($event)"
+  (allCategoriesSelectionChange)="onAllCategoriesSelectionChange($event)"
+/>
+} } @else if(isLoading()) {
 <app-card-skeleton-list [count]="3" />
 } @else {
 <app-empty-list

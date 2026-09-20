@@ -5,7 +5,7 @@ import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } fr
 import { provideIcons, NgIcon } from '@ng-icons/core';
 import { heroArrowPath, heroHashtag } from '@ng-icons/heroicons/outline';
 import { ModalComponent } from '@shared/components/modal/modal.component';
-import { eCategoryType } from '@features/category/enums/category-type.enum';
+import { CategoryType } from '@features/category/enums/category-type.enum';
 import { iCreateOrEditCategoryForm } from '@features/category/interfaces/create-or-edit-category-form.interface';
 import { CustomInputComponent } from '@shared/components/custom-input/custom-input.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
@@ -23,7 +23,7 @@ import {
 } from '@features/category/contants/category-icons.constant';
 import { RefreshService } from '@shared/services/refresh.service';
 import { REFRESH_KEYS } from '@shared/constants/refresh-keys.constant';
-import { iCategory } from '@features/category/interfaces/category.interface';
+import { Category } from '@features/category/interfaces/category.interface';
 import { iCreateOrEditCategoryRequest } from '@features/category/interfaces/create-or-edit-category-request.interface';
 import { FormValidationService } from '@shared/services/form-validation.service';
 import { ApiErrorHandlerService } from '@shared/services/api-error-handler.service';
@@ -42,7 +42,7 @@ import { ApiErrorHandlerService } from '@shared/services/api-error-handler.servi
   providers: [provideIcons({ ...CATEGORY_ICONS, heroHashtag, heroArrowPath })],
 })
 export class CreateOrEditPage {
-  readonly eCategoryType = eCategoryType;
+  readonly eCategoryType = CategoryType;
   readonly CATEGORY_ICON_NAMES = CATEGORY_ICON_NAMES;
 
   private readonly router = inject(Router);
@@ -54,7 +54,7 @@ export class CreateOrEditPage {
   private readonly formValidationService = inject(FormValidationService);
   private readonly apiErrorHandlerService = inject(ApiErrorHandlerService);
 
-  readonly category: iCategory | undefined = this.route.snapshot.data['category'];
+  readonly category: Category | undefined = this.route.snapshot.data['category'];
 
   readonly formErrorMessages = {
     name: {
@@ -66,14 +66,14 @@ export class CreateOrEditPage {
     },
   } satisfies tFormValidationMessages;
 
-  readonly categoryTypeOptions: iCustomRadioOption<eCategoryType>[] = [
+  readonly categoryTypeOptions: iCustomRadioOption<CategoryType>[] = [
     {
-      value: eCategoryType.Income,
+      value: CategoryType.Income,
       label: 'receita',
       icon: 'heroArrowUp',
     },
     {
-      value: eCategoryType.Expense,
+      value: CategoryType.Expense,
       label: 'despesa',
       icon: 'heroArrowDown',
       activeClass: 'border-transparent bg-error text-error-content',
@@ -87,7 +87,7 @@ export class CreateOrEditPage {
       [Validators.required, Validators.maxLength(CATEGORY_RULES.NAME.MAX_LENGTH)],
     ],
     icon: [this.category?.icon ?? '', [Validators.required]],
-    type: [this.category?.type ?? eCategoryType.Income, [Validators.required]],
+    type: [this.category?.type ?? CategoryType.Income, [Validators.required]],
   });
 
   readonly selectedIcon = toSignal(this.form.controls.icon.valueChanges, {
@@ -128,7 +128,7 @@ export class CreateOrEditPage {
     });
   }
 
-  onSelectCategoryType(type: eCategoryType): void {
+  onSelectCategoryType(type: CategoryType): void {
     this.form.controls.type.setValue(type);
   }
   onSelectIcon(icon: string): void {

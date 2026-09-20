@@ -3,9 +3,9 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { iCreateOrEditCategoryRequest } from '../interfaces/create-or-edit-category-request.interface';
-import { iCategory } from '../interfaces/category.interface';
+import { Category } from '../interfaces/category.interface';
 import { iPagedResponse } from '@shared/interfaces/paged-response.interface';
-import { eCategoryType } from '../enums/category-type.enum';
+import { CategoryType } from '../enums/category-type.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -26,19 +26,19 @@ export class CategoryApi {
   getAll(
     offset = 0,
     limit = 10,
-    type: eCategoryType | null = null,
+    type: CategoryType | null = null,
     categoryName: string | null = null,
-  ): Observable<iPagedResponse<iCategory>> {
+  ): Observable<iPagedResponse<Category>> {
     let params = new HttpParams().set('offset', offset).set('limit', limit);
 
     if (type !== null && type !== undefined) params = params.set('type', type);
     if (categoryName) params = params.set('categoryName', categoryName);
 
-    return this.http.get<iPagedResponse<iCategory>>(this.baseUrl, { params });
+    return this.http.get<iPagedResponse<Category>>(this.baseUrl, { params });
   }
 
-  getById(id: string): Observable<iCategory> {
-    return this.http.get<iCategory>(`${this.baseUrl}/${id}`);
+  getById(id: string): Observable<Category> {
+    return this.http.get<Category>(`${this.baseUrl}/${id}`);
   }
 
   delete(id: string): Observable<void> {

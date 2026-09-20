@@ -1,0 +1,75 @@
+<ul
+  class="list-none mt-6 mb-16 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+  [ngClass]="{ 'opacity-50 pointer-events-none': isLoading() }"
+>
+  @for (category of categories(); track category.id) {
+  <li class="group relative surface flex flex-col gap-4 font-medium">
+    <app-item-actions
+      class="absolute top-1 right-1"
+      [actions]="actions()"
+      [item]="category"
+      (clicked)="onAction($event)"
+    />
+
+    <!-- Categoria + ícone + tipo -->
+    <div class="flex items-center gap-4 pr-8">
+      <span
+        class="icon-container shrink-0"
+        [class.group-hover:text-primary]="category.type === CategoryType.Income"
+        [class.group-hover:text-error]="category.type === CategoryType.Expense"
+      >
+        <ng-icon
+          [name]="category.icon"
+          size="32"
+          class="transition-transform! duration-500 group-hover:scale-[1.2]"
+        />
+      </span>
+
+      <div class="min-w-0">
+        <span class="block font-bold text-xl truncate">{{ category.name }}</span>
+
+        <div
+          class="badge badge-soft"
+          [class.badge-error]="category.type === CategoryType.Expense"
+          [class.badge-success]="category.type === CategoryType.Income"
+        >
+          {{ category.type === CategoryType.Income ? 'receita' : 'despesa' }}
+        </div>
+      </div>
+    </div>
+
+    <div class="divider my-0"></div>
+
+    <!-- Participação -->
+    <div>
+      <div class="flex items-center justify-between text-xs">
+        <span>
+          % do total de {{ category.type === CategoryType.Income ? 'receitas' : 'despesas' }}
+        </span>
+
+        <span> {{ 100 | number: '1.2-2' }}% </span>
+      </div>
+
+      <progress
+        class="progress mt-2 w-full"
+        [class.progress-success]="category.type === CategoryType.Income"
+        [class.progress-error]="category.type === CategoryType.Expense"
+        value="50"
+        max="100"
+      ></progress>
+    </div>
+
+    <!-- Total -->
+    <div>
+      <span class="text-xs"> Total no mês </span>
+      <span
+        class="block text-2xl"
+        [class.text-success]="category.type === CategoryType.Income"
+        [class.text-error]="category.type === CategoryType.Expense"
+      >
+        {{ (category.type === CategoryType.Income ? '+ ' : '- ') + (1000 | currency: 'BRL') }}
+      </span>
+    </div>
+  </li>
+  }
+</ul>

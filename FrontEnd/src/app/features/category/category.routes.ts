@@ -6,7 +6,7 @@ import { getCategoryResolver } from './resolvers/get-category.resolver';
 export const CATEGORY_ROUTES: Routes = [
   {
     path: 'categorias',
-    loadComponent: () => import('./pages/list/list.page').then(m => m.ListPage),
+    loadComponent: () => import('./pages/list/list.page').then(m => m.CategoryListPage),
     canActivate: [withPaginationQueryGuard({ parser: categoryListQueryParser })],
     children: [
       {

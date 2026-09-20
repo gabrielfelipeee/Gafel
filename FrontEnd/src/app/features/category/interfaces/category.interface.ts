@@ -1,8 +1,8 @@
-import { eCategoryType } from '../enums/category-type.enum';
+import { CategoryType } from '../enums/category-type.enum';
 
-export interface iCategory {
+export interface Category {
   id: string;
   name: string;
   icon: string;
-  type: eCategoryType;
+  type: CategoryType;
 }

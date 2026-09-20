@@ -1,23 +1,23 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
-import { provideIcons, NgIcon } from '@ng-icons/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { provideIcons } from '@ng-icons/core';
 import {
   heroArrowDown,
   heroArrowUp,
   heroEllipsisVertical,
   heroFunnel,
-  heroPencilSquare,
+  heroListBullet,
+  heroPencil,
   heroPlus,
+  heroSquares2x2,
   heroTrash,
 } from '@ng-icons/heroicons/outline';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { CurrencyPipe, NgClass } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ItemActionsComponent } from '@shared/components/item-actions/item-actions.component';
 import { PaginatorComponent } from '@shared/components/paginator/paginator.component';
 import { CategoryApi } from '@features/category/apis/category.api';
-import { iCategory } from '@features/category/interfaces/category.interface';
-import { iCategoryListFilters } from '@features/category/interfaces/category-list-filters.interface';
+import { Category } from '@features/category/interfaces/category.interface';
+import { CategoryListFilters } from '@features/category/interfaces/category-list-filters.interface';
 import { iItemActionData } from '@shared/interfaces/item-action-data.interface';
 import {
   CATEGORY_LIMIT_OPTIONS,
@@ -26,7 +26,7 @@ import {
 import { createListResource } from '@shared/query/create-list-resource';
 import { CustomRadioGroupComponent } from '@shared/components/custom-radio-group/custom-radio-group.component';
 import { iCustomRadioOption } from '@shared/interfaces/custom-radio-option.interface';
-import { eCategoryType } from '@features/category/enums/category-type.enum';
+import { CategoryType } from '@features/category/enums/category-type.enum';
 import { CATEGORY_ICONS } from '@features/category/contants/category-icons.constant';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { EmptyListComponent } from '@shared/components/empty-list/empty-list.component';
@@ -38,42 +38,46 @@ import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 import { RefreshService } from '@shared/services/refresh.service';
 import { REFRESH_KEYS } from '@shared/constants/refresh-keys.constant';
 import { ApiErrorHandlerService } from '@shared/services/api-error-handler.service';
-
-type tCategoryAction = 'edit' | 'delete';
+import { IconButtonComponent } from '@shared/components/icon-button/icon-button.component';
+import { CategoryGridComponent } from './components/category-grid/category-grid.component';
+import { ViewMode } from '@shared/types/view-mode.type';
+import { CategoryListComponent } from './components/category-list/category-list.component';
+import { CategoryAction } from '@features/category/types/category-action.type';
+import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
 
 @Component({
-  selector: 'app-list-category',
+  selector: 'app-category-list-page',
   templateUrl: './list.page.html',
   imports: [
     ButtonComponent,
     RouterOutlet,
-    NgIcon,
-    ItemActionsComponent,
     PaginatorComponent,
     CustomRadioGroupComponent,
-    CurrencyPipe,
     FormsModule,
     ReactiveFormsModule,
     EmptyListComponent,
     CardSkeletonListComponent,
-    NgClass,
+    IconButtonComponent,
+    CategoryGridComponent,
+    CategoryListComponent,
   ],
   providers: [
     provideIcons({
       ...CATEGORY_ICONS,
       heroFunnel,
       heroTrash,
-      heroPencilSquare,
       heroPlus,
       heroArrowUp,
       heroArrowDown,
       heroEllipsisVertical,
+      heroListBullet,
+      heroSquares2x2,
+      heroPencil,
     }),
   ],
 })
-export class ListPage implements OnInit {
+export class CategoryListPage implements OnInit {
   readonly CATEGORY_LIMIT_OPTIONS = CATEGORY_LIMIT_OPTIONS;
-  readonly eCategoryType = eCategoryType;
 
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
@@ -82,14 +86,18 @@ export class ListPage implements OnInit {
   private readonly toastService = inject(ToastService);
   private readonly refreshService = inject(RefreshService);
   private readonly apiErrorHandlerService = inject(ApiErrorHandlerService);
+  readonly isMobile = inject(BreakpointObserverService).isMobile;
 
   readonly searchControl = new FormControl('', { nonNullable: true });
+  readonly viewMode = signal<ViewMode>('list');
 
-  readonly categoryActions: iItemActionData<tCategoryAction>[] = [
+  readonly selectedCategoryIds = new Set<string>();
+
+  readonly actions: iItemActionData<CategoryAction>[] = [
     {
       key: 'edit',
       label: 'Editar',
-      icon: 'heroPencilSquare',
+      icon: 'heroPencil',
     },
     {
       key: 'delete',
@@ -98,7 +106,7 @@ export class ListPage implements OnInit {
       hoverClass: 'hover:bg-error/10 hover:text-error',
     },
   ];
-  readonly categoryTypeOptions: iCustomRadioOption<eCategoryType | undefined>[] = [
+  readonly categoryTypeOptions: iCustomRadioOption<CategoryType | undefined>[] = [
     {
       value: undefined,
       label: 'todas',
@@ -106,12 +114,12 @@ export class ListPage implements OnInit {
       hoverClass: 'hover:border-secondary',
     },
     {
-      value: eCategoryType.Income,
+      value: CategoryType.Income,
       label: 'receita',
       icon: 'heroArrowUp',
     },
     {
-      value: eCategoryType.Expense,
+      value: CategoryType.Expense,
       label: 'despesa',
       icon: 'heroArrowDown',
       activeClass: 'border-transparent bg-error text-error-content',
@@ -119,7 +127,7 @@ export class ListPage implements OnInit {
     },
   ];
 
-  private readonly categoryList = createListResource<iCategoryListFilters, iCategory>({
+  private readonly categoryList = createListResource<CategoryListFilters, Category>({
     parser: categoryListQueryParser,
     fetch: ({ offset, limit, filters }) =>
       this.categoryApi.getAll(offset, limit, filters.type, filters.categoryName),
@@ -135,9 +143,11 @@ export class ListPage implements OnInit {
     effect(() => {
       const categoryName = this.filters().categoryName ?? '';
 
-      if (this.searchControl.value === categoryName) return;
-
-      this.searchControl.setValue(categoryName, { emitEvent: false });
+      if (this.searchControl.value !== categoryName)
+        this.searchControl.setValue(categoryName, { emitEvent: false });
+    });
+    effect(() => {
+      if (this.isMobile()) this.viewMode.set('grid');
     });
   }
 
@@ -151,18 +161,27 @@ export class ListPage implements OnInit {
       });
   }
 
-  onCreateCategory(): void {
-    this.router.navigate(['nova'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
+  onCategorySelectionChange(result: { id: string; selected: boolean }): void {
+    if (result?.selected) this.selectedCategoryIds.add(result.id);
+    else this.selectedCategoryIds.delete(result.id);
+  }
+  onAllCategoriesSelectionChange(selected: boolean): void {
+    if (selected)
+      this.response().items.forEach(category => this.selectedCategoryIds.add(category.id));
+    else this.selectedCategoryIds.clear();
   }
 
-  onSelectCategoryType(type?: eCategoryType): void {
+  onCategoryTypeChange(type?: CategoryType): void {
     this.categoryList.setFilters({ type });
   }
+  onViewModeChange(mode: ViewMode): void {
+    this.viewMode.set(mode);
+  }
 
-  async onCategoryAction(event: iItemActionEvent<tCategoryAction, iCategory>) {
+  async handleCategoryAction(event: iItemActionEvent<CategoryAction, Category>) {
     switch (event.action) {
       case 'edit':
-        this.editCategory(event.item);
+        this.onCreateOrEditCategory(event.item);
         break;
 
       case 'delete':
@@ -170,8 +189,13 @@ export class ListPage implements OnInit {
         break;
     }
   }
-
-  private async deleteCategory(category: iCategory) {
+  onCreateOrEditCategory(category?: Category): void {
+    this.router.navigate([category?.id ?? 'nova'], {
+      relativeTo: this.route,
+      queryParamsHandling: 'preserve',
+    });
+  }
+  private async deleteCategory(category: Category) {
     const confirm = await this.confirmationModalService.show({
       title: 'Excluir categoria',
       message: `Deseja realmente excluir "${category.name}"? Essa ação não poderá ser desfeita.`,
@@ -196,12 +220,6 @@ export class ListPage implements OnInit {
           'Tivemos um problema ao excluir sua categoria. Tente novamente em alguns instantes.',
         );
       },
-    });
-  }
-  private editCategory(category: iCategory): void {
-    this.router.navigate([category.id], {
-      relativeTo: this.route,
-      queryParamsHandling: 'preserve',
     });
   }
 }

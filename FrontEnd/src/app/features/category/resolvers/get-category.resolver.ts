@@ -1,12 +1,12 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 import { catchError } from 'rxjs';
-import { iCategory } from '../interfaces/category.interface';
+import { Category } from '../interfaces/category.interface';
 import { CategoryApi } from '../apis/category.api';
 import { ToastService } from '@shared/services/toast.service';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 
-export const getCategoryResolver: ResolveFn<iCategory> = route => {
+export const getCategoryResolver: ResolveFn<Category> = route => {
   const categoryApi = inject(CategoryApi);
   const toastService = inject(ToastService);
 

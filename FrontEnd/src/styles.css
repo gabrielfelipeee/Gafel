@@ -168,10 +168,25 @@
     text-decoration: none;
   }
 
-  code,
-  pre,
-  .font-mono {
-    font-family: var(--font-mono);
+  /* Tabelas */
+  table {
+    table-layout: fixed;
+    border-radius: 0;
+  }
+
+  thead {
+    background-color: var(--color-base-200);
+    font-family: var(--font-display);
+  }
+
+  tbody {
+    font-weight: 500;
+  }
+  tbody > tr:hover {
+    background-color: var(--color-base-200);
+  }
+  tbody > tr.selected {
+    background-color: var(--color-base-200);
   }
 }
 

@@ -1,4 +1,4 @@
-export enum eCategoryType {
+export enum CategoryType {
   Expense,
   Income,
 }
