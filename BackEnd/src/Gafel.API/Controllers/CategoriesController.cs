@@ -1,7 +1,7 @@
-﻿using Gafel.Application.UseCases.Category.Delete;
+﻿using Gafel.Application.UseCases.Category.Create;
+using Gafel.Application.UseCases.Category.Delete;
 using Gafel.Application.UseCases.Category.Filter;
 using Gafel.Application.UseCases.Category.GetById;
-using Gafel.Application.UseCases.Category.Register;
 using Gafel.Application.UseCases.Category.Shared.Commands;
 using Gafel.Application.UseCases.Category.Shared.Responses;
 using Gafel.Application.UseCases.Category.Update;
@@ -18,7 +18,7 @@ public class CategoriesController : GafelController
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Register([FromBody] CategoryCommand request, [FromServices] IRegisterCategoryUseCase useCase)
+    public async Task<IActionResult> Register([FromBody] CategoryCommand request, [FromServices] ICreateCategoryUseCase useCase)
     {
         await useCase.Execute(request);
 

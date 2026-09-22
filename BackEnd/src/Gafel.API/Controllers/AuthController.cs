@@ -1,7 +1,7 @@
 ﻿using Gafel.Application.UseCases.Auth.ChangePassword;
 using Gafel.Application.UseCases.Auth.Login.DoLogin;
 using Gafel.Application.UseCases.Auth.Register;
-using Gafel.Application.UseCases.Auth.SharedResponses;
+using Gafel.Application.UseCases.Auth.Shared.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

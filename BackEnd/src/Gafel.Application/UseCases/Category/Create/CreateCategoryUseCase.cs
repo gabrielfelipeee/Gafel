@@ -8,16 +8,16 @@ using Gafel.Domain.Repositories.Person;
 using Gafel.Domain.Services.CurrentUser;
 using Mapster;
 
-namespace Gafel.Application.UseCases.Category.Register;
+namespace Gafel.Application.UseCases.Category.Create;
 
-public class RegisterCategoryUseCase : IRegisterCategoryUseCase
+public class CreateCategoryUseCase : ICreateCategoryUseCase
 {
     private readonly ICurrentUser _currentUser;
     private readonly ICategoryWriteOnlyRepository _categoryWriteOnlyRepository;
     private readonly IPersonReadOnlyRepository _personReadOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public RegisterCategoryUseCase(
+    public CreateCategoryUseCase(
         ICurrentUser currentUser,
         ICategoryWriteOnlyRepository categoryWriteOnlyRepository,
         IPersonReadOnlyRepository personReadOnlyRepository,

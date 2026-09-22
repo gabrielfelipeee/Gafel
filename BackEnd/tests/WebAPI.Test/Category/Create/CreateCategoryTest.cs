@@ -7,14 +7,14 @@ using Shouldly;
 using System.Net;
 using WebAPI.Test.Assertions;
 
-namespace WebAPI.Test.Category.Register;
+namespace WebAPI.Test.Category.Create;
 
-public class RegisterCategoryTest : GafelClassFixture
+public class CreateCategoryTest : GafelClassFixture
 {
     private const string METHOD = "categories";
 
     private readonly UserDto _user;
-    public RegisterCategoryTest(CustomWebApplicationFactory factory) : base(factory) => _user = factory.GetUser();
+    public CreateCategoryTest(CustomWebApplicationFactory factory) : base(factory) => _user = factory.GetUser();
 
 
     [Fact]

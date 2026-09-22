@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Gafel.Domain.Resources;
-using Gafel.Application.RuleExtensions;
+using Gafel.Application.UseCases.Auth.Shared.Extensions;
 
 namespace Gafel.Application.UseCases.Auth.Register;
 

@@ -2,9 +2,9 @@
 using Gafel.Domain.Resources;
 using System.Text.RegularExpressions;
 
-namespace Gafel.Application.RuleExtensions;
+namespace Gafel.Application.UseCases.Auth.Shared.Extensions;
 
-public static partial class PasswordRuleExtension
+public static partial class PasswordValidationExtensions
 {
     public static IRuleBuilderOptions<T, string> PasswordPolicy<T>(this IRuleBuilder<T, string> ruleBuilder)
     {

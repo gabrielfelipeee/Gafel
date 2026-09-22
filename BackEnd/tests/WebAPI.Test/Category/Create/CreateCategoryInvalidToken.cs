@@ -3,9 +3,9 @@ using CommonTestUtilities.Tokens;
 using Shouldly;
 using System.Net;
 
-namespace WebAPI.Test.Category.Register;
+namespace WebAPI.Test.Category.Create;
 
-public class RegisterCategoryInvalidToken(CustomWebApplicationFactory factory) : GafelClassFixture(factory)
+public class CreateCategoryInvalidToken(CustomWebApplicationFactory factory) : GafelClassFixture(factory)
 {
     private const string METHOD = "categories";
 

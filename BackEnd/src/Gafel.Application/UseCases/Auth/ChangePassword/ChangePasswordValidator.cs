@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Gafel.Domain.Resources;
-using Gafel.Application.RuleExtensions;
+using Gafel.Application.UseCases.Auth.Shared.Extensions;
 
 namespace Gafel.Application.UseCases.Auth.ChangePassword;
 
@@ -10,16 +10,12 @@ public class ChangePasswordValidator : AbstractValidator<ChangePasswordCommand>
     {
         RuleFor(x => x.Password)
                 .NotEmpty()
-                .WithMessage(ResourceMessagesException.USER_PASSWORD_EMPTY);
-        RuleFor(x => x.Password)
-            .PasswordPolicy()
-            .When(x => !string.IsNullOrEmpty(x.Password));
+                .WithMessage(ResourceMessagesException.USER_PASSWORD_EMPTY)
+                .DependentRules(() => RuleFor(x => x.Password).PasswordPolicy());
 
         RuleFor(x => x.NewPassword)
             .NotEmpty()
-            .WithMessage(ResourceMessagesException.USER_PASSWORD_EMPTY);
-        RuleFor(x => x.NewPassword)
-            .PasswordPolicy()
-            .When(x => !string.IsNullOrEmpty(x.NewPassword));
+            .WithMessage(ResourceMessagesException.USER_PASSWORD_EMPTY)
+            .DependentRules(() => RuleFor(x => x.NewPassword).PasswordPolicy());
     }
 }

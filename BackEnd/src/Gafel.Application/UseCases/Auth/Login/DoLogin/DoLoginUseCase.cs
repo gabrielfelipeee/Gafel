@@ -1,6 +1,6 @@
 ﻿using Gafel.Application.Exceptions;
 using Gafel.Application.Extensions;
-using Gafel.Application.UseCases.Auth.SharedResponses;
+using Gafel.Application.UseCases.Auth.Shared.Responses;
 using Gafel.Domain.Dtos;
 using Gafel.Domain.Repositories.Person;
 using Gafel.Domain.Security.Tokens;

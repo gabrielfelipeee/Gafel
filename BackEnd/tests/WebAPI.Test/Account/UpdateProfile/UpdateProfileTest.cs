@@ -1,6 +1,6 @@
 ﻿using CommonTestUtilities.Commands;
 using CommonTestUtilities.Tokens;
-using Gafel.Application.UseCases.Auth.SharedResponses;
+using Gafel.Application.UseCases.Auth.Shared.Responses;
 using Gafel.Domain.Dtos;
 using Gafel.Domain.Resources;
 using Shouldly;

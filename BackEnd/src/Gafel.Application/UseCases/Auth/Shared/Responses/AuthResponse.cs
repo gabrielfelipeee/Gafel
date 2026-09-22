@@ -1,4 +1,4 @@
-﻿namespace Gafel.Application.UseCases.Auth.SharedResponses;
+﻿namespace Gafel.Application.UseCases.Auth.Shared.Responses;
 
 public class AuthResponse
 {

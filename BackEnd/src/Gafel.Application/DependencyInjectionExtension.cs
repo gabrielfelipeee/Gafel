@@ -9,10 +9,10 @@ using Gafel.Application.UseCases.BankAccount.Delete;
 using Gafel.Application.UseCases.BankAccount.Filter;
 using Gafel.Application.UseCases.BankAccount.GetById;
 using Gafel.Application.UseCases.BankAccount.Update;
+using Gafel.Application.UseCases.Category.Create;
 using Gafel.Application.UseCases.Category.Delete;
 using Gafel.Application.UseCases.Category.Filter;
 using Gafel.Application.UseCases.Category.GetById;
-using Gafel.Application.UseCases.Category.Register;
 using Gafel.Application.UseCases.Category.Update;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -38,7 +38,7 @@ public static class DependencyInjectionExtension
 
         services.AddScoped<IGetCategoryByIdUseCase, GetCategoryByIdUseCase>();
         services.AddScoped<IFilterCategoryUseCase, FilterCategoryUseCase>();
-        services.AddScoped<IRegisterCategoryUseCase, RegisterCategoryUseCase>();
+        services.AddScoped<ICreateCategoryUseCase, CreateCategoryUseCase>();
         services.AddScoped<IUpdateCategoryUseCase, UpdateCategoryUseCase>();
         services.AddScoped<IDeleteCategoryUseCase, DeleteCategoryUseCase>();
 

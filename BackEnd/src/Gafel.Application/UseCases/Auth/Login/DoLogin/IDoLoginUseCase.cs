@@ -1,4 +1,4 @@
-﻿using Gafel.Application.UseCases.Auth.SharedResponses;
+﻿using Gafel.Application.UseCases.Auth.Shared.Responses;
 
 namespace Gafel.Application.UseCases.Auth.Login.DoLogin;
 

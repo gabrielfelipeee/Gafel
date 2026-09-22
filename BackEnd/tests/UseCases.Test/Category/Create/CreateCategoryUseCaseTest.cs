@@ -6,7 +6,7 @@ using CommonTestUtilities.Repositories.Category;
 using CommonTestUtilities.Repositories.Person;
 using CommonTestUtilities.Services.CurrentUser;
 using Gafel.Application.Exceptions;
-using Gafel.Application.UseCases.Category.Register;
+using Gafel.Application.UseCases.Category.Create;
 using Gafel.Domain.Dtos;
 using Gafel.Domain.Entities;
 using Gafel.Domain.Enums;
@@ -14,9 +14,9 @@ using Gafel.Domain.Resources;
 using Shouldly;
 using System.Net;
 
-namespace UseCases.Test.Category.Register;
+namespace UseCases.Test.Category.Create;
 
-public class RegisterCategoryUseCaseTest
+public class CreateCategoryUseCaseTest
 {
     [Fact]
     public async Task Success()
@@ -113,7 +113,7 @@ public class RegisterCategoryUseCaseTest
     }
 
 
-    private static RegisterCategoryUseCase CreateUseCase(UserDto user, Person? person = null)
+    private static CreateCategoryUseCase CreateUseCase(UserDto user, Person? person = null)
     {
         var unitOfWork = UnitOfWorkBuilder.Build();
         var currentUser = CurrentUserBuilder.Build(user);
