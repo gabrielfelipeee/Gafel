@@ -2,7 +2,6 @@
 using CommonTestUtilities.Dtos;
 using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
-using CommonTestUtilities.Repositories.BankAccount;
 using CommonTestUtilities.Repositories.Category;
 using CommonTestUtilities.Repositories.Person;
 using CommonTestUtilities.Services.CurrentUser;
@@ -24,7 +23,7 @@ public class RegisterCategoryUseCaseTest
     {
         // Arrange 
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var request = CategoryCommandBuilder.Build();
 
         var useCase = CreateUseCase(user: user, person: person);
@@ -40,7 +39,7 @@ public class RegisterCategoryUseCaseTest
     public async Task Error_Name_Empty()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var request = CategoryCommandBuilder.Build();
         request.Name = string.Empty;
         var useCase = CreateUseCase(user: user, person: person);
@@ -61,7 +60,7 @@ public class RegisterCategoryUseCaseTest
     public async Task Error_Icon_Empty()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var request = CategoryCommandBuilder.Build();
         request.Icon = string.Empty;
         var useCase = CreateUseCase(user: user, person: person);
@@ -82,7 +81,7 @@ public class RegisterCategoryUseCaseTest
     public async Task Error_Type_Invalid()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var request = CategoryCommandBuilder.Build();
         request.Type = (CategoryType)100;
         var useCase = CreateUseCase(user: user, person: person);

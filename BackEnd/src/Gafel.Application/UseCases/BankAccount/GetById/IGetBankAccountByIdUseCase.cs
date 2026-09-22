@@ -4,5 +4,5 @@ namespace Gafel.Application.UseCases.BankAccount.GetById;
 
 public interface IGetBankAccountByIdUseCase
 {
-    Task<BankAccountResponse> Execute(long bankAccountId);
+    Task<BankAccountResponse> Execute(Guid bankAccountId);
 }

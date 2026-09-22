@@ -18,7 +18,7 @@ public class UpdateProfileUseCaseTest
     {
         // Arrange 
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var request = UpdateProfileCommandBuilder.Build();
 
         var useCase = CreateUseCase(user: user, person: person);
@@ -34,7 +34,7 @@ public class UpdateProfileUseCaseTest
     public async Task Error_Cpf_Invalid()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var request = UpdateProfileCommandBuilder.Build();
         request.Cpf = "00000000000";
         var useCase = CreateUseCase(user: user, person: person);
@@ -55,7 +55,7 @@ public class UpdateProfileUseCaseTest
     public async Task Error_Cpf_Already_Registered_By_Another_User()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var request = UpdateProfileCommandBuilder.Build(withCpf: true);
         var useCase = CreateUseCase(user: user, person: person, existPersonWithCpf: true);
 
@@ -76,7 +76,7 @@ public class UpdateProfileUseCaseTest
     public async Task Error_Cpf_Cannot_Be_Modified_After_Creation()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build(withCpf: true);
+        var person = PersonBuilder.Build(user: user, withCpf: true);
         var request = UpdateProfileCommandBuilder.Build(withCpf: true);
         var useCase = CreateUseCase(user: user, person: person);
 
@@ -97,7 +97,7 @@ public class UpdateProfileUseCaseTest
     public async Task Error_DateOfBirth_Invalid()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var request = UpdateProfileCommandBuilder.Build();
         request.DateOfBirth = DateOnly.FromDateTime(DateTime.UtcNow);
         var useCase = CreateUseCase(user: user, person: person);
@@ -118,7 +118,7 @@ public class UpdateProfileUseCaseTest
     public async Task Error_DateOfBirth_Future()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var request = UpdateProfileCommandBuilder.Build();
         request.DateOfBirth = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(5));
         var useCase = CreateUseCase(user: user, person: person);
@@ -139,7 +139,7 @@ public class UpdateProfileUseCaseTest
     public async Task Error_DateOfBirth_Cannot_Be_Modified_After_Creation()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build(withDateOfBirth: true);
+        var person = PersonBuilder.Build(user: user, withDateOfBirth: true);
         var request = UpdateProfileCommandBuilder.Build(withDateOfBirth: true);
         request.DateOfBirth = request.DateOfBirth!.Value.AddDays(-1);
         var useCase = CreateUseCase(user: user, person: person);

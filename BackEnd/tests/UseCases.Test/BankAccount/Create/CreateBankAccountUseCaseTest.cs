@@ -23,7 +23,7 @@ public class CreateBankAccountUseCaseTest
     {
         // Arrange 
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var request = BankAccountCommandBuilder.Build();
 
         var useCase = CreateUseCase(user: user, person: person);
@@ -39,7 +39,7 @@ public class CreateBankAccountUseCaseTest
     public async Task Error_Name_Empty()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var request = BankAccountCommandBuilder.Build();
         request.Name = string.Empty;
         var useCase = CreateUseCase(user: user, person: person);
@@ -60,7 +60,7 @@ public class CreateBankAccountUseCaseTest
     public async Task Error_InitialBalance_Negative()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var request = BankAccountCommandBuilder.Build();
         request.InitialBalance = -100;
         var useCase = CreateUseCase(user: user, person: person);
@@ -81,7 +81,7 @@ public class CreateBankAccountUseCaseTest
     public async Task Error_Type_Invalid()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var request = BankAccountCommandBuilder.Build();
         request.Type = (BankAccountType)100;
         var useCase = CreateUseCase(user: user, person: person);

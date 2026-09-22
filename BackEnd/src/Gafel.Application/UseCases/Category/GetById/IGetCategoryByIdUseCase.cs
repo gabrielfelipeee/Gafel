@@ -4,5 +4,5 @@ namespace Gafel.Application.UseCases.Category.GetById;
 
 public interface IGetCategoryByIdUseCase
 {
-    Task<CategoryResponse> Execute(long categoryId);
+    Task<CategoryResponse> Execute(Guid categoryId);
 }

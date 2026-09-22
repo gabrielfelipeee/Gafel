@@ -13,7 +13,7 @@ public class UserDtoBuilder
                 var email = faker.Internet.Email();
 
                 return new(
-                    Id: 1,
+                    Id: Guid.CreateVersion7(),
                     Email: email,
                     UserName: email
                 );

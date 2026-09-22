@@ -21,7 +21,7 @@ public class FilterBankAccountUseCaseTest
     {
         // Arrange 
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var bankAccounts = BankAccountBuilder.Collection(person);
         var request = FilterBankAccountQueryParamsBuilder.Build();
 
@@ -38,7 +38,7 @@ public class FilterBankAccountUseCaseTest
     public async Task Error_Type_Invalid()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var bankAccounts = BankAccountBuilder.Collection(person);
         var request = FilterBankAccountQueryParamsBuilder.Build(type: (BankAccountType)100);
 
@@ -61,7 +61,7 @@ public class FilterBankAccountUseCaseTest
     public async Task Error_Person_NotFound()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var bankAccounts = BankAccountBuilder.Collection(person);
         var request = FilterBankAccountQueryParamsBuilder.Build();
 

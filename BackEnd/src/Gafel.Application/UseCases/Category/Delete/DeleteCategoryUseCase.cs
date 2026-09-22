@@ -29,7 +29,7 @@ public class DeleteCategoryUseCase : IDeleteCategoryUseCase
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Execute(long categoryId)
+    public async Task Execute(Guid categoryId)
     {
         var currentUser = _currentUser.CurrentUser();
         var person = await _personReadOnlyRepository.GetByUserId(currentUser.Id) ?? throw new PersonNotFoundException();

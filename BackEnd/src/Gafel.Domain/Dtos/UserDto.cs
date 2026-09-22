@@ -1,7 +1,7 @@
 ﻿namespace Gafel.Domain.Dtos;
 
 public record UserDto(
-    long Id,
+    Guid Id,
     string Email,
     string UserName
 );

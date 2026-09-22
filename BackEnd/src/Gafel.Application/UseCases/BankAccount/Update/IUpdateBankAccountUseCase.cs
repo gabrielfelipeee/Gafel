@@ -4,5 +4,5 @@ namespace Gafel.Application.UseCases.BankAccount.Update;
 
 public interface IUpdateBankAccountUseCase
 {
-    Task Execute(long bankAccountId, BankAccountCommand request);
+    Task Execute(Guid bankAccountId, BankAccountCommand request);
 }

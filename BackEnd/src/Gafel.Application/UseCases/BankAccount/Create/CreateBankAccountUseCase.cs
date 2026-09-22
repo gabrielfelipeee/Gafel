@@ -38,7 +38,6 @@ public class CreateBankAccountUseCase : ICreateBankAccountUseCase
 
         var bankAccount = request.Adapt<Domain.Entities.BankAccount>();
         bankAccount.PersonId = person.Id;
-        bankAccount.CreatedAt = DateTime.UtcNow;
 
         await _bankAccountWriteOnlyRepository.Add(bankAccount);
         await _unitOfWork.SaveChangesAsync();

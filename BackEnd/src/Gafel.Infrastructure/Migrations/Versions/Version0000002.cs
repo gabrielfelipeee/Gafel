@@ -14,7 +14,7 @@ public class Version0000002 : VersionBase
             .WithColumn("date_of_birth").AsDate().Nullable()
             .WithColumn("city").AsString(60).Nullable()
             .WithColumn("uf").AsFixedLengthString(2).Nullable()
-            .WithColumn("user_id").AsInt64().NotNullable()
+            .WithColumn("user_id").AsGuid().NotNullable()
                 .ForeignKey("fk_people_users_id", DatabaseTables.USERS, "id");
 
         Create.Index("idx_people_user_id")

@@ -12,7 +12,7 @@ public class DeleteBankAccountTest : GafelClassFixture
     private const string METHOD = "bankaccounts";
 
     private readonly UserDto _user;
-    private readonly (Gafel.Domain.Entities.BankAccount entity, string obfuscatedId) _bankAccount;
+    private readonly Gafel.Domain.Entities.BankAccount _bankAccount;
     public DeleteBankAccountTest(CustomWebApplicationFactory factory) : base(factory)
     {
         _user = factory.GetUser();
@@ -26,12 +26,12 @@ public class DeleteBankAccountTest : GafelClassFixture
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
         // Act
-        var response = await DoDelete(method: $"{METHOD}/{_bankAccount.obfuscatedId}", token: token);
+        var response = await DoDelete(method: $"{METHOD}/{_bankAccount.Id}", token: token);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
 
-        response = await DoGet($"{METHOD}/{_bankAccount.obfuscatedId}", token: token);
+        response = await DoGet($"{METHOD}/{_bankAccount.Id}", token: token);
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 
@@ -40,7 +40,7 @@ public class DeleteBankAccountTest : GafelClassFixture
     {
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
-        var response = await DoDelete(method: $"{METHOD}/100", token: token);
+        var response = await DoDelete(method: $"{METHOD}/{Guid.CreateVersion7()}", token: token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
 

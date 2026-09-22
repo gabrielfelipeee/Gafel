@@ -8,10 +8,10 @@ public static class IdentitySeeder
 {
     public static async Task SeedRolesAsync(IServiceProvider serviceProvider)
     {
-        var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole<long>>>();
+        var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
         foreach (var role in Roles.All)
             if (!await roleManager.RoleExistsAsync(role))
-                await roleManager.CreateAsync(new IdentityRole<long>(role));
+                await roleManager.CreateAsync(new IdentityRole<Guid>(role));
     }
 }

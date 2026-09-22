@@ -14,7 +14,7 @@ public class IdentityUserService(UserManager<ApplicationUser> userManager) : IUs
 {
     private readonly UserManager<ApplicationUser> _userManager = userManager;
 
-    public async Task<UserDto?> GetById(long userId)
+    public async Task<UserDto?> GetById(Guid userId)
     {
         return await _userManager.Users
             .AsNoTracking()

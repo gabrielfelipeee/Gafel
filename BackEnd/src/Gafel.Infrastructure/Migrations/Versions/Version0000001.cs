@@ -24,7 +24,7 @@ public class Version0000001 : ForwardOnlyMigration
     private void CreateUsers()
     {
         Create.Table(DatabaseTables.USERS)
-            .WithColumn("id").AsInt64().PrimaryKey().Identity()
+            .WithColumn("id").AsGuid().PrimaryKey()
 
             .WithColumn("user_name").AsString(60).NotNullable()
             .WithColumn("normalized_user_name").AsString(60).NotNullable()
@@ -61,7 +61,7 @@ public class Version0000001 : ForwardOnlyMigration
     private void CreateRoles()
     {
         Create.Table(DatabaseTables.ROLES)
-            .WithColumn("id").AsInt64().PrimaryKey().Identity()
+            .WithColumn("id").AsGuid().PrimaryKey()
             .WithColumn("name").AsString(50).NotNullable()
             .WithColumn("normalized_name").AsString(50).NotNullable()
             .WithColumn("concurrency_stamp").AsString(2000).Nullable();
@@ -75,8 +75,8 @@ public class Version0000001 : ForwardOnlyMigration
     private void CreateRoleClaims()
     {
         Create.Table(DatabaseTables.ROLE_CLAIMS)
-            .WithColumn("id").AsInt64().PrimaryKey().Identity()
-            .WithColumn(ROLE_ID).AsInt64().NotNullable()
+            .WithColumn("id").AsGuid().PrimaryKey()
+            .WithColumn(ROLE_ID).AsGuid().NotNullable()
             .WithColumn("claim_type").AsString(256).Nullable()
             .WithColumn("claim_value").AsString(256).Nullable();
 
@@ -92,8 +92,8 @@ public class Version0000001 : ForwardOnlyMigration
     private void CreateUserClaims()
     {
         Create.Table(DatabaseTables.USER_CLAIMS)
-            .WithColumn("id").AsInt64().PrimaryKey().Identity()
-            .WithColumn(USER_ID).AsInt64().NotNullable()
+            .WithColumn("id").AsGuid().PrimaryKey()
+            .WithColumn(USER_ID).AsGuid().NotNullable()
             .WithColumn("claim_type").AsString(256).Nullable()
             .WithColumn("claim_value").AsString(256).Nullable();
 
@@ -112,7 +112,7 @@ public class Version0000001 : ForwardOnlyMigration
             .WithColumn(LOGIN_PROVIDER).AsString(128).NotNullable()
             .WithColumn("provider_key").AsString(128).NotNullable()
             .WithColumn("provider_display_name").AsString(256).Nullable()
-            .WithColumn(USER_ID).AsInt64().NotNullable();
+            .WithColumn(USER_ID).AsGuid().NotNullable();
 
         Create.PrimaryKey("pk_user_logins")
             .OnTable(DatabaseTables.USER_LOGINS)
@@ -130,8 +130,8 @@ public class Version0000001 : ForwardOnlyMigration
     private void CreateUserRoles()
     {
         Create.Table(DatabaseTables.USER_ROLES)
-            .WithColumn(USER_ID).AsInt64().NotNullable()
-            .WithColumn(ROLE_ID).AsInt64().NotNullable();
+            .WithColumn(USER_ID).AsGuid().NotNullable()
+            .WithColumn(ROLE_ID).AsGuid().NotNullable();
 
         Create.PrimaryKey("pk_user_roles")
             .OnTable(DatabaseTables.USER_ROLES)
@@ -153,7 +153,7 @@ public class Version0000001 : ForwardOnlyMigration
     private void CreateUserTokens()
     {
         Create.Table(DatabaseTables.USER_TOKENS)
-            .WithColumn(USER_ID).AsInt64().NotNullable()
+            .WithColumn(USER_ID).AsGuid().NotNullable()
             .WithColumn(LOGIN_PROVIDER).AsString(128).NotNullable()
             .WithColumn("name").AsString(128).NotNullable()
             .WithColumn("value").AsString(256).Nullable();

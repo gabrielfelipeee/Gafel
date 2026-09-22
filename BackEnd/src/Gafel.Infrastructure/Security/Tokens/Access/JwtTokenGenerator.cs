@@ -10,7 +10,7 @@ public class JwtTokenGenerator(uint expirationTimeMinutes, string signinKey) : J
     private readonly uint _expirationTimeMinutes = expirationTimeMinutes;
     private readonly string _signinKey = signinKey;
 
-    public string Generate(long userId)
+    public string Generate(Guid userId)
     {
         // Lista de claims (informações) que estarão dentro do token
         var claims = new List<Claim>()

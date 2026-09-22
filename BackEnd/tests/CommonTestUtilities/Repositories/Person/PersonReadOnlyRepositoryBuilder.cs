@@ -12,7 +12,7 @@ public class PersonReadOnlyRepositoryBuilder
     public IPersonReadOnlyRepository Build() => _repository.Object;
 
     public void GetByUserId(Gafel.Domain.Entities.Person person)
-        => _repository.Setup(repository => repository.GetByUserId(1)).ReturnsAsync(person);
+        => _repository.Setup(repository => repository.GetByUserId(person.UserId)).ReturnsAsync(person);
 
-    public void ExistPersonWithCpf() => _repository.Setup(r => r.ExistPersonWithCpf(It.IsAny<Cpf>(), It.IsAny<long>())).ReturnsAsync(true);
+    public void ExistPersonWithCpf() => _repository.Setup(r => r.ExistPersonWithCpf(It.IsAny<Cpf>(), It.IsAny<Guid>())).ReturnsAsync(true);
 }

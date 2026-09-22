@@ -25,7 +25,7 @@ public class GetCategoryByIdUseCase : IGetCategoryByIdUseCase
         _categoryReadOnlyRepository = categoryReadOnlyRepository;
     }
 
-    public async Task<CategoryResponse> Execute(long categoryId)
+    public async Task<CategoryResponse> Execute(Guid categoryId)
     {
         var currentUser = _currentUser.CurrentUser();
         var person = await _personReadOnlyRepository.GetByUserId(currentUser.Id) ?? throw new PersonNotFoundException();

@@ -19,7 +19,7 @@ public class GetCategoryByIdUseCaseTest
     {
         // Arrange 
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var category = CategoryBuilder.Build(person);
 
         var useCase = CreateUseCase(user: user, category: category, person: person);
@@ -35,10 +35,10 @@ public class GetCategoryByIdUseCaseTest
     public async Task Error_Category_NotFound()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var useCase = CreateUseCase(user: user, person: person);
 
-        var exception = await Should.ThrowAsync<NotFoundException>(useCase.Execute(categoryId: 100));
+        var exception = await Should.ThrowAsync<NotFoundException>(useCase.Execute(categoryId: Guid.CreateVersion7()));
 
         exception.GetErrorTitle().ShouldBe(ResourceMessagesException.EXCEPTION_NOT_FOUND_TITLE);
         exception.GetErrorDetail().ShouldBe(ResourceMessagesException.CATEGORY_NOT_FOUND);
@@ -51,7 +51,7 @@ public class GetCategoryByIdUseCaseTest
         var user = UserDtoBuilder.Build();
         var useCase = CreateUseCase(user: user);
 
-        var exception = await Should.ThrowAsync<PersonNotFoundException>(useCase.Execute(categoryId: 1));
+        var exception = await Should.ThrowAsync<PersonNotFoundException>(useCase.Execute(categoryId: Guid.CreateVersion7()));
 
         exception.GetErrorTitle().ShouldBe(ResourceMessagesException.EXCEPTION_PERSON_NOT_FOUND_TITLE);
         exception.GetErrorDetail().ShouldBe(ResourceMessagesException.EXCEPTION_PERSON_NOT_FOUND_DETAIL);

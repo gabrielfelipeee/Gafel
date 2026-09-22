@@ -2,5 +2,5 @@
 
 public interface IDeleteCategoryUseCase
 {
-    Task Execute(long categoryId);
+    Task Execute(Guid categoryId);
 }

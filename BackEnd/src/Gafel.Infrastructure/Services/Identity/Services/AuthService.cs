@@ -36,7 +36,7 @@ public class AuthService(SignInManager<ApplicationUser> signInManager, UserManag
         return new LoginResponseDto(Success: true, UserId: user.Id);
     }
 
-    public async Task<ChangePasswordResponseDto> ChangePassword(long userId, string password, string newPassword)
+    public async Task<ChangePasswordResponseDto> ChangePassword(Guid userId, string password, string newPassword)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
 

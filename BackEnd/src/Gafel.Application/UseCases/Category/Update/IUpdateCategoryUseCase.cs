@@ -4,5 +4,5 @@ namespace Gafel.Application.UseCases.Category.Update;
 
 public interface IUpdateCategoryUseCase
 {
-    Task Execute(long categoryId, CategoryCommand request);
+    Task Execute(Guid categoryId, CategoryCommand request);
 }

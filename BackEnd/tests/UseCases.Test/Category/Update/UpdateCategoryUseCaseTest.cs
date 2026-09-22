@@ -22,7 +22,7 @@ public class UpdateCategoryUseCaseTest
     {
         // Arrange 
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user: user);
         var category = CategoryBuilder.Build(person);
         var request = CategoryCommandBuilder.Build();
 
@@ -39,12 +39,12 @@ public class UpdateCategoryUseCaseTest
     public async Task Error_Category_NotFound()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var request = CategoryCommandBuilder.Build();
 
         var useCase = CreateUseCase(user: user, person: person);
 
-        var exception = await Should.ThrowAsync<NotFoundException>(useCase.Execute(categoryId: 100, request: request));
+        var exception = await Should.ThrowAsync<NotFoundException>(useCase.Execute(categoryId: Guid.CreateVersion7(), request: request));
 
         exception.GetErrorTitle().ShouldBe(ResourceMessagesException.EXCEPTION_NOT_FOUND_TITLE);
         exception.GetErrorDetail().ShouldBe(ResourceMessagesException.CATEGORY_NOT_FOUND);
@@ -55,7 +55,7 @@ public class UpdateCategoryUseCaseTest
     public async Task Error_Name_Empty()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var category = CategoryBuilder.Build(person);
         var request = CategoryCommandBuilder.Build();
         request.Name = string.Empty;
@@ -78,7 +78,7 @@ public class UpdateCategoryUseCaseTest
     public async Task Error_Icon_Empty()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var category = CategoryBuilder.Build(person);
         var request = CategoryCommandBuilder.Build();
         request.Icon = string.Empty;
@@ -101,7 +101,7 @@ public class UpdateCategoryUseCaseTest
     public async Task Error_Type_Invalid()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var category = CategoryBuilder.Build(person);
         var request = CategoryCommandBuilder.Build();
         request.Type = (CategoryType)100;
@@ -127,7 +127,7 @@ public class UpdateCategoryUseCaseTest
         var request = CategoryCommandBuilder.Build();
         var useCase = CreateUseCase(user: user);
 
-        var exception = await Should.ThrowAsync<PersonNotFoundException>(useCase.Execute(categoryId: 100, request: request));
+        var exception = await Should.ThrowAsync<PersonNotFoundException>(useCase.Execute(categoryId: Guid.CreateVersion7(), request: request));
 
         exception.GetErrorTitle().ShouldBe(ResourceMessagesException.EXCEPTION_PERSON_NOT_FOUND_TITLE);
         exception.GetErrorDetail().ShouldBe(ResourceMessagesException.EXCEPTION_PERSON_NOT_FOUND_DETAIL);

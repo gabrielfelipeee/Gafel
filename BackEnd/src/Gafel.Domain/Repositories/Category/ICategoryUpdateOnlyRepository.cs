@@ -2,6 +2,6 @@
 
 public interface ICategoryUpdateOnlyRepository
 {
-    Task<Entities.Category?> GetById(Entities.Person person, long categoryId);
+    Task<Entities.Category?> GetById(Entities.Person person, Guid categoryId);
     void Update(Entities.Category category);
 }

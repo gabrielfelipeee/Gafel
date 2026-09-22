@@ -1,6 +1,4 @@
-﻿using Gafel.API.Binders;
-using Gafel.API.Models;
-using Gafel.Application.UseCases.Category.Delete;
+﻿using Gafel.Application.UseCases.Category.Delete;
 using Gafel.Application.UseCases.Category.Filter;
 using Gafel.Application.UseCases.Category.GetById;
 using Gafel.Application.UseCases.Category.Register;
@@ -31,9 +29,9 @@ public class CategoriesController : GafelController
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update([FromRoute][ModelBinder(typeof(GafelIdBinder))] GafelId id, [FromBody] CategoryCommand request, [FromServices] IUpdateCategoryUseCase useCase)
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] CategoryCommand request, [FromServices] IUpdateCategoryUseCase useCase)
     {
-        await useCase.Execute(categoryId: id.Value, request: request);
+        await useCase.Execute(categoryId: id, request: request);
 
         return NoContent();
     }
@@ -41,9 +39,9 @@ public class CategoriesController : GafelController
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(CategoryResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById([FromRoute][ModelBinder(typeof(GafelIdBinder))] GafelId id, [FromServices] IGetCategoryByIdUseCase useCase)
+    public async Task<IActionResult> GetById([FromRoute] Guid id, [FromServices] IGetCategoryByIdUseCase useCase)
     {
-        var result = await useCase.Execute(categoryId: id.Value);
+        var result = await useCase.Execute(id);
 
         return Ok(result);
     }
@@ -61,9 +59,9 @@ public class CategoriesController : GafelController
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete([FromRoute][ModelBinder(typeof(GafelIdBinder))] GafelId id, [FromServices] IDeleteCategoryUseCase useCase)
+    public async Task<IActionResult> Delete([FromRoute] Guid id, [FromServices] IDeleteCategoryUseCase useCase)
     {
-        await useCase.Execute(id.Value);
+        await useCase.Execute(id);
 
         return NoContent();
     }

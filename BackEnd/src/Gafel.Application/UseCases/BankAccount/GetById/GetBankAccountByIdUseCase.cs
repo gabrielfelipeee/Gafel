@@ -25,7 +25,7 @@ public class GetBankAccountByIdUseCase : IGetBankAccountByIdUseCase
         _bankAccountReadOnlyRepository = bankAccountReadOnlyRepository;
     }
 
-    public async Task<BankAccountResponse> Execute(long bankAccountId)
+    public async Task<BankAccountResponse> Execute(Guid bankAccountId)
     {
         var currentUser = _currentUser.CurrentUser();
         var person = await _personReadOnlyRepository.GetByUserId(currentUser.Id) ?? throw new PersonNotFoundException();

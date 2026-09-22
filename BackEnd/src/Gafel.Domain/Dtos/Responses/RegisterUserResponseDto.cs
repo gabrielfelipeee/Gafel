@@ -2,6 +2,6 @@
 
 public record RegisterUserResponseDto(
     bool Success,
-    long? UserId = null,
+    Guid? UserId = null,
     Dictionary<string, string[]>? Errors = null
 );

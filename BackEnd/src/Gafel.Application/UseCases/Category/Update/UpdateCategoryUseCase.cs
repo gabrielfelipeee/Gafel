@@ -30,7 +30,7 @@ public class UpdateCategoryUseCase : IUpdateCategoryUseCase
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Execute(long categoryId, CategoryCommand request)
+    public async Task Execute(Guid categoryId, CategoryCommand request)
     {
         Validate(request);
 
@@ -39,7 +39,6 @@ public class UpdateCategoryUseCase : IUpdateCategoryUseCase
 
         var category = await _categoryUpdateOnlyRepository.GetById(person, categoryId) ?? throw new NotFoundException(ResourceMessagesException.CATEGORY_NOT_FOUND);
         request.Adapt(category);
-        category.UpdatedAt = DateTime.UtcNow;
 
         _categoryUpdateOnlyRepository.Update(category);
         await _unitOfWork.SaveChangesAsync();

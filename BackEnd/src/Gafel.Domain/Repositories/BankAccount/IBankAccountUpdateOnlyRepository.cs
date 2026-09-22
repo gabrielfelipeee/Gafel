@@ -2,6 +2,6 @@
 
 public interface IBankAccountUpdateOnlyRepository
 {
-    Task<Entities.BankAccount?> GetById(Entities.Person person, long bankAccountId);
+    Task<Entities.BankAccount?> GetById(Entities.Person person, Guid bankAccountId);
     void Update(Entities.BankAccount bankAccount);
 }

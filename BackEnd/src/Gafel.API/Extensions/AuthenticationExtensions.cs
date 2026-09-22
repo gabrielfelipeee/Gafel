@@ -53,7 +53,7 @@ public static class AuthenticationExtensions
     private static async Task ValidateUserExistence(TokenValidatedContext context)
     {
         var claimValue = context.Principal?.FindFirst(ClaimTypes.Sid)?.Value;
-        if (!long.TryParse(claimValue, out var userId))
+        if (!Guid.TryParse(claimValue, out var userId))
         {
             context.Fail(string.Empty);
             return;

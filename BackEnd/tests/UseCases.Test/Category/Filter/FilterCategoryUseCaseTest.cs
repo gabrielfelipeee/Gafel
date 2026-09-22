@@ -21,7 +21,7 @@ public class FilterCategoryUseCaseTest
     {
         // Arrange 
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var categories = CategoryBuilder.Collection(person);
         var request = FilterCategoryQueryParamsBuilder.Build();
 
@@ -38,7 +38,7 @@ public class FilterCategoryUseCaseTest
     public async Task Error_Type_Invalid()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var categories = CategoryBuilder.Collection(person);
         var request = FilterCategoryQueryParamsBuilder.Build(type: (CategoryType)100);
 
@@ -61,7 +61,7 @@ public class FilterCategoryUseCaseTest
     public async Task Error_Person_NotFound()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var categories = CategoryBuilder.Collection(person);
         var request = FilterCategoryQueryParamsBuilder.Build();
 

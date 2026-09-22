@@ -11,9 +11,8 @@ public class Version0000005 : VersionBase
             .WithColumn("name").AsString(100).NotNullable()
             .WithColumn("initial_balance").AsDecimal(18, 2).NotNullable()
             .WithColumn("type").AsInt32().NotNullable()
-            .WithColumn("is_active").AsBoolean().NotNullable()
 
-            .WithColumn("person_id").AsInt64().NotNullable()
+            .WithColumn("person_id").AsGuid().NotNullable()
                 .ForeignKey("fk_bank_accounts_people_id", DatabaseTables.PEOPLE, "id");
     }
 }

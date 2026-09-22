@@ -3,5 +3,5 @@
 public interface ICategoryWriteOnlyRepository
 {
     Task Add(Entities.Category category);
-    Task Delete(long categoryId);
+    Task Delete(Guid categoryId);
 }

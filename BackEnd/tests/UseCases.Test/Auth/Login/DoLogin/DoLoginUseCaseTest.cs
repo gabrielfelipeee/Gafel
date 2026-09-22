@@ -1,11 +1,12 @@
 ﻿using CommonTestUtilities.Commands;
+using CommonTestUtilities.Dtos;
 using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories.Person;
 using CommonTestUtilities.Services.Identity;
 using CommonTestUtilities.Tokens;
 using Gafel.Application.Exceptions;
 using Gafel.Application.UseCases.Auth.Login.DoLogin;
-using Gafel.Domain.Entities;
+using Gafel.Domain.Dtos;
 using Gafel.Domain.Resources;
 using Shouldly;
 using System.Net;
@@ -19,8 +20,9 @@ public class DoLoginUseCaseTest
     {
         // Arrange
         var request = DoLoginCommandBuilder.Build();
-        var person = PersonBuilder.Build();
-        var useCase = CreateUseCase(person);
+        var user = UserDtoBuilder.Build();
+        var person = PersonBuilder.Build(user);
+        var useCase = CreateUseCase(person: person, user: user);
 
         // Act
         var result = await useCase.Execute(request);
@@ -36,7 +38,8 @@ public class DoLoginUseCaseTest
     public async Task Error_Person_NotFound()
     {
         var request = DoLoginCommandBuilder.Build();
-        var useCase = CreateUseCase();
+        var user = UserDtoBuilder.Build();
+        var useCase = CreateUseCase(user: user);
 
         var exception = await Should.ThrowAsync<PersonNotFoundException>(() => useCase.Execute(request));
 
@@ -78,13 +81,13 @@ public class DoLoginUseCaseTest
         value.ShouldContain(ResourceMessagesException.USER_EMAIL_INVALID);
     }
 
-    private static DoLoginUseCase CreateUseCase(Gafel.Domain.Entities.Person? person = null, bool invalidCredentials = false)
+    private static DoLoginUseCase CreateUseCase(Gafel.Domain.Entities.Person? person = null, UserDto? user = null, bool invalidCredentials = false)
     {
         var authService = new AuthServiceBuilder();
         if (invalidCredentials)
             authService.LoginWithInvalidCredentials();
-        else
-            authService.Login();
+        else if (user is not null)
+            authService.Login(user);
 
         var personReadOnlyRepository = new PersonReadOnlyRepositoryBuilder();
         if (person is not null)

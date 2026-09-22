@@ -1,6 +1,4 @@
-﻿using Gafel.API.Binders;
-using Gafel.API.Models;
-using Gafel.Application.UseCases.BankAccount.Create;
+﻿using Gafel.Application.UseCases.BankAccount.Create;
 using Gafel.Application.UseCases.BankAccount.Delete;
 using Gafel.Application.UseCases.BankAccount.Filter;
 using Gafel.Application.UseCases.BankAccount.GetById;
@@ -31,9 +29,9 @@ public class BankAccountsController : GafelController
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update([FromRoute][ModelBinder(typeof(GafelIdBinder))] GafelId id, [FromBody] BankAccountCommand request, [FromServices] IUpdateBankAccountUseCase useCase)
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] BankAccountCommand request, [FromServices] IUpdateBankAccountUseCase useCase)
     {
-        await useCase.Execute(bankAccountId: id.Value, request: request);
+        await useCase.Execute(bankAccountId: id, request: request);
 
         return NoContent();
     }
@@ -41,9 +39,9 @@ public class BankAccountsController : GafelController
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(BankAccountResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById([FromRoute][ModelBinder(typeof(GafelIdBinder))] GafelId id, [FromServices] IGetBankAccountByIdUseCase useCase)
+    public async Task<IActionResult> GetById([FromRoute] Guid id, [FromServices] IGetBankAccountByIdUseCase useCase)
     {
-        var result = await useCase.Execute(bankAccountId: id.Value);
+        var result = await useCase.Execute(bankAccountId: id);
 
         return Ok(result);
     }
@@ -61,9 +59,9 @@ public class BankAccountsController : GafelController
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete([FromRoute][ModelBinder(typeof(GafelIdBinder))] GafelId id, [FromServices] IDeleteBankAccountUseCase useCase)
+    public async Task<IActionResult> Delete([FromRoute] Guid id, [FromServices] IDeleteBankAccountUseCase useCase)
     {
-        await useCase.Execute(id.Value);
+        await useCase.Execute(id);
 
         return NoContent();
     }

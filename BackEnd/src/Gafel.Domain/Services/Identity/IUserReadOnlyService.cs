@@ -4,5 +4,5 @@ namespace Gafel.Domain.Services.Identity;
 
 public interface IUserReadOnlyService
 {
-    Task<UserDto?> GetById(long userId);
+    Task<UserDto?> GetById(Guid userId);
 }

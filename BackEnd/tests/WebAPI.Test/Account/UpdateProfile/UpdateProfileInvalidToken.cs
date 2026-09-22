@@ -33,7 +33,7 @@ public class UpdateProfileInvalidToken(CustomWebApplicationFactory factory) : Ga
     public async Task Error_Token_With_User_NotFound()
     {
         var request = UpdateProfileCommandBuilder.Build();
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: 10);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: Guid.CreateVersion7());
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 

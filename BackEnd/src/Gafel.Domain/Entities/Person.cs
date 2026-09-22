@@ -13,7 +13,7 @@ public class Person : EntityBase
     public Uf? Uf { get; set; }
     public string? City { get; set; }
 
-    public long UserId { get; set; }
+    public Guid UserId { get; set; }
 
     public Result<bool> SetCpf(Cpf cpf)
     {

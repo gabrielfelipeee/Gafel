@@ -15,13 +15,9 @@ public class CategoryBuilder
         if (count == 0)
             count = 1;
 
-        var categoryId = 1;
-
         for (int i = 0; i < count; i++)
         {
             var fakeCategory = Build(person);
-            fakeCategory.Id = categoryId++;
-
             list.Add(fakeCategory);
         }
 

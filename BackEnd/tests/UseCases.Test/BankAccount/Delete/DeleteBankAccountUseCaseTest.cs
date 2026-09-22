@@ -20,7 +20,7 @@ public class DeleteBankAccountUseCaseTest
     {
         // Arrange 
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var bankAccount = BankAccountBuilder.Build(person);
 
         var useCase = CreateUseCase(user: user, person: person, bankAccount: bankAccount);
@@ -36,10 +36,10 @@ public class DeleteBankAccountUseCaseTest
     public async Task Error_BankAccount_NotFound()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var useCase = CreateUseCase(user: user, person: person);
 
-        var exception = await Should.ThrowAsync<NotFoundException>(useCase.Execute(bankAccountId: 100));
+        var exception = await Should.ThrowAsync<NotFoundException>(useCase.Execute(bankAccountId: Guid.CreateVersion7()));
 
         exception.GetErrorTitle().ShouldBe(ResourceMessagesException.EXCEPTION_NOT_FOUND_TITLE);
         exception.GetErrorDetail().ShouldBe(ResourceMessagesException.BANK_ACCOUNT_NOT_FOUND);
@@ -52,7 +52,7 @@ public class DeleteBankAccountUseCaseTest
         var user = UserDtoBuilder.Build();
         var useCase = CreateUseCase(user: user);
 
-        var exception = await Should.ThrowAsync<PersonNotFoundException>(useCase.Execute(bankAccountId: 1));
+        var exception = await Should.ThrowAsync<PersonNotFoundException>(useCase.Execute(bankAccountId: Guid.CreateVersion7()));
 
         exception.GetErrorTitle().ShouldBe(ResourceMessagesException.EXCEPTION_PERSON_NOT_FOUND_TITLE);
         exception.GetErrorDetail().ShouldBe(ResourceMessagesException.EXCEPTION_PERSON_NOT_FOUND_DETAIL);

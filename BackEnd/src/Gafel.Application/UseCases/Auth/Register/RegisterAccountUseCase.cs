@@ -49,8 +49,7 @@ public class RegisterAccountUseCase : IRegisterAccountUseCase
             var person = new Domain.Entities.Person()
             {
                 FullName = request.FullName,
-                UserId = userId,
-                CreatedAt = DateTime.UtcNow,
+                UserId = userId
             };
             await _personWriteOnlyRepository.Add(person);
 

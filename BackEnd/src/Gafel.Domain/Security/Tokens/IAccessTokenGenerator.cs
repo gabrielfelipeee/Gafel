@@ -2,5 +2,5 @@
 
 public interface IAccessTokenGenerator
 {
-    public string Generate(long userId);
+    public string Generate(Guid userId);
 }

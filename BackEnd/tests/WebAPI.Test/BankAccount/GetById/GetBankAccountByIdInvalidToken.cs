@@ -8,13 +8,13 @@ public class GetBankAccountByIdInvalidToken : GafelClassFixture
 {
     private const string METHOD = "bankaccounts";
 
-    private readonly (Gafel.Domain.Entities.BankAccount entity, string obfuscatedId) _bankAccount;
+    private readonly Gafel.Domain.Entities.BankAccount _bankAccount;
     public GetBankAccountByIdInvalidToken(CustomWebApplicationFactory factory) : base(factory) => _bankAccount = factory.GetBankAccount();
 
     [Fact]
     public async Task Error_Token_Invalid()
     {
-        var response = await DoGet(method: $"{METHOD}/{_bankAccount.obfuscatedId}", token: "invalidToken");
+        var response = await DoGet(method: $"{METHOD}/{_bankAccount.Id}", token: "invalidToken");
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
@@ -22,7 +22,7 @@ public class GetBankAccountByIdInvalidToken : GafelClassFixture
     [Fact]
     public async Task Error_Without_Token()
     {
-        var response = await DoGet(method: $"{METHOD}/{_bankAccount.obfuscatedId}", token: string.Empty);
+        var response = await DoGet(method: $"{METHOD}/{_bankAccount.Id}", token: string.Empty);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
@@ -30,9 +30,9 @@ public class GetBankAccountByIdInvalidToken : GafelClassFixture
     [Fact]
     public async Task Error_Token_With_User_NotFound()
     {
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: 10);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: Guid.CreateVersion7());
 
-        var response = await DoGet(method: $"{METHOD}/{_bankAccount.obfuscatedId}", token: token);
+        var response = await DoGet(method: $"{METHOD}/{_bankAccount.Id}", token: token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }

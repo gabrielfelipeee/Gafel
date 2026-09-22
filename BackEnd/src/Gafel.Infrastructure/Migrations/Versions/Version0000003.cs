@@ -9,7 +9,6 @@ public class Version0000003 : VersionBase
     {
         CreateTableWithDefaults(DatabaseTables.DEFAULT_CATEGORIES)
             .WithColumn("name").AsString(100).NotNullable()
-            .WithColumn("is_active").AsBoolean().NotNullable()
             .WithColumn("type").AsInt32().NotNullable()
             .WithColumn("icon").AsString(50).NotNullable();
     }

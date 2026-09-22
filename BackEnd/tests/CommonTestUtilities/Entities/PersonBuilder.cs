@@ -7,14 +7,13 @@ namespace CommonTestUtilities.Entities;
 
 public class PersonBuilder
 {
-    public static Gafel.Domain.Entities.Person Build(bool withCpf = false, bool withDateOfBirth = false)
+    public static Gafel.Domain.Entities.Person Build(Gafel.Domain.Dtos.UserDto user, bool withCpf = false, bool withDateOfBirth = false)
     {
         return new Faker<Gafel.Domain.Entities.Person>("pt_BR")
-            .RuleFor(person => person.Id, _ => 1)
             .RuleFor(person => person.FullName, faker => faker.Person.FullName)
             .RuleFor(person => person.Uf, f => Enum.Parse<Uf>(f.Address.StateAbbr()))
             .RuleFor(person => person.City, faker => faker.Address.City())
-            .RuleFor(person => person.UserId, _ => 1)
+            .RuleFor(person => person.UserId, _ => user.Id)
             .FinishWith((faker, person) =>
             {
                 if (withCpf)

@@ -10,12 +10,12 @@ public class CategoryRepository(GafelDbContext context) : ICategoryReadOnlyRepos
     private readonly GafelDbContext _context = context;
 
     // Read
-    async Task<Category?> ICategoryReadOnlyRepository.GetById(Person person, long categoryId)
+    async Task<Category?> ICategoryReadOnlyRepository.GetById(Person person, Guid categoryId)
         => await _context.Categories
             .AsNoTracking()
             .FirstOrDefaultAsync(category => category.IsActive && category.PersonId == person.Id && category.Id == categoryId);
 
-    public async Task<bool> ExistActiveCategoryWithId(Person person, long categoryId)
+    public async Task<bool> ExistActiveCategoryWithId(Person person, Guid categoryId)
         => await _context.Categories.AsNoTracking().AnyAsync(category => category.IsActive && category.PersonId == person.Id && category.Id == categoryId);
 
     public async Task<(IList<Category> categories, int total)> Filter(Person person, FilterCategoryQueryParams filters)
@@ -46,14 +46,14 @@ public class CategoryRepository(GafelDbContext context) : ICategoryReadOnlyRepos
     // Write
     public async Task Add(Category category) => await _context.Categories.AddAsync(category);
 
-    public async Task Delete(long categoryId)
+    public async Task Delete(Guid categoryId)
     {
         var category = await _context.Categories.FindAsync(categoryId);
         _context.Categories.Remove(category!);
     }
 
     // Update
-    async Task<Category?> ICategoryUpdateOnlyRepository.GetById(Person person, long categoryId)
+    async Task<Category?> ICategoryUpdateOnlyRepository.GetById(Person person, Guid categoryId)
         => await _context.Categories.FirstOrDefaultAsync(category => category.IsActive && category.PersonId == person.Id && category.Id == categoryId);
 
     public void Update(Category category) => _context.Categories.Update(category);

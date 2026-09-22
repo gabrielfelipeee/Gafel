@@ -12,7 +12,7 @@ public class GetBankAccountByIdTest : GafelClassFixture
     private const string METHOD = "bankaccounts";
 
     private readonly UserDto _user;
-    private readonly (Gafel.Domain.Entities.BankAccount entity, string obfuscatedId) _bankAccount;
+    private readonly Gafel.Domain.Entities.BankAccount _bankAccount;
     public GetBankAccountByIdTest(CustomWebApplicationFactory factory) : base(factory)
     {
         _user = factory.GetUser();
@@ -27,7 +27,7 @@ public class GetBankAccountByIdTest : GafelClassFixture
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
         // Act
-        var response = await DoGet(method: $"{METHOD}/{_bankAccount.obfuscatedId}", token: token);
+        var response = await DoGet(method: $"{METHOD}/{_bankAccount.Id}", token: token);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -35,10 +35,10 @@ public class GetBankAccountByIdTest : GafelClassFixture
         await using var stream = await response.Content.ReadAsStreamAsync();
         var json = await JsonDocument.ParseAsync(stream);
 
-        json.RootElement.GetProperty("id").GetString().ShouldBe(_bankAccount.obfuscatedId);
-        json.RootElement.GetProperty("name").GetString().ShouldBe(_bankAccount.entity.Name);
-        json.RootElement.GetProperty("initialBalance").GetDecimal().ShouldBe(_bankAccount.entity.InitialBalance);
-        json.RootElement.GetProperty("type").GetInt32().ShouldBe((int)_bankAccount.entity.Type);
+        json.RootElement.GetProperty("id").GetGuid().ShouldBe(_bankAccount.Id);
+        json.RootElement.GetProperty("name").GetString().ShouldBe(_bankAccount.Name);
+        json.RootElement.GetProperty("initialBalance").GetDecimal().ShouldBe(_bankAccount.InitialBalance);
+        json.RootElement.GetProperty("type").GetInt32().ShouldBe((int)_bankAccount.Type);
     }
 
     [Fact]
@@ -46,7 +46,7 @@ public class GetBankAccountByIdTest : GafelClassFixture
     {
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: _user.Id);
 
-        var response = await DoGet(method: $"{METHOD}/100", token: token);
+        var response = await DoGet(method: $"{METHOD}/{Guid.CreateVersion7()}", token: token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
 

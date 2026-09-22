@@ -30,7 +30,7 @@ public class UpdateBankAccountUseCase : IUpdateBankAccountUseCase
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Execute(long bankAccountId, BankAccountCommand request)
+    public async Task Execute(Guid bankAccountId, BankAccountCommand request)
     {
         Validate(request);
 
@@ -39,7 +39,6 @@ public class UpdateBankAccountUseCase : IUpdateBankAccountUseCase
 
         var bankAccount = await _bankAccountUpdateOnlyRepository.GetById(person, bankAccountId) ?? throw new NotFoundException(ResourceMessagesException.BANK_ACCOUNT_NOT_FOUND);
         request.Adapt(bankAccount);
-        bankAccount.UpdatedAt = DateTime.UtcNow;
 
         _bankAccountUpdateOnlyRepository.Update(bankAccount);
         await _unitOfWork.SaveChangesAsync();

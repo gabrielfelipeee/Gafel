@@ -8,13 +8,13 @@ public class GetCategoryByIdInvalidToken : GafelClassFixture
 {
     private const string METHOD = "categories";
 
-    private readonly (Gafel.Domain.Entities.Category entity, string obfuscatedId) _category;
+    private readonly Gafel.Domain.Entities.Category _category;
     public GetCategoryByIdInvalidToken(CustomWebApplicationFactory factory) : base(factory) => _category = factory.GetCategory();
 
     [Fact]
     public async Task Error_Token_Invalid()
     {
-        var response = await DoGet(method: $"{METHOD}/{_category.obfuscatedId}", token: "invalidToken");
+        var response = await DoGet(method: $"{METHOD}/{_category.Id}", token: "invalidToken");
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
@@ -22,7 +22,7 @@ public class GetCategoryByIdInvalidToken : GafelClassFixture
     [Fact]
     public async Task Error_Without_Token()
     {
-        var response = await DoGet(method: $"{METHOD}/{_category.obfuscatedId}", token: string.Empty);
+        var response = await DoGet(method: $"{METHOD}/{_category.Id}", token: string.Empty);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
@@ -30,9 +30,9 @@ public class GetCategoryByIdInvalidToken : GafelClassFixture
     [Fact]
     public async Task Error_Token_With_User_NotFound()
     {
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: 10);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: Guid.CreateVersion7());
 
-        var response = await DoGet(method: $"{METHOD}/{_category.obfuscatedId}", token: token);
+        var response = await DoGet(method: $"{METHOD}/{_category.Id}", token: token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }

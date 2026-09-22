@@ -23,7 +23,7 @@ public class BankAccountReadOnlyRepositoryBuilder
         return _repository.Object;
     }
 
-    public void ExistActiveBankAccountWithId(Gafel.Domain.Entities.Person person, long bankAccountId)
+    public void ExistActiveBankAccountWithId(Gafel.Domain.Entities.Person person, Guid bankAccountId)
     {
         _repository
             .Setup(repository => repository.ExistActiveBankAccountWithId(person, bankAccountId))

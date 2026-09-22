@@ -14,13 +14,8 @@ public class RegisterCategoryTest : GafelClassFixture
     private const string METHOD = "categories";
 
     private readonly UserDto _user;
-    private readonly Gafel.Domain.Entities.Person _person;
+    public RegisterCategoryTest(CustomWebApplicationFactory factory) : base(factory) => _user = factory.GetUser();
 
-    public RegisterCategoryTest(CustomWebApplicationFactory factory) : base(factory)
-    {
-        _user = factory.GetUser();
-        _person = factory.GetPerson();
-    }
 
     [Fact]
     public async Task Success()

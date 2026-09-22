@@ -2,7 +2,6 @@
 
 public abstract class EntityBase
 {
-    public long Id { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
+    public Guid Id { get; private set; } = Guid.CreateVersion7();
+    public bool IsActive { get; set; } = true;
 }

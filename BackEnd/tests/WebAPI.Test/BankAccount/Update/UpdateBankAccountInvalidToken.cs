@@ -9,7 +9,7 @@ public class UpdateBankAccountInvalidToken : GafelClassFixture
 {
     private const string METHOD = "bankaccounts";
 
-    private readonly (Gafel.Domain.Entities.BankAccount entity, string obfuscatedId) _bankAccount;
+    private readonly Gafel.Domain.Entities.BankAccount _bankAccount;
     public UpdateBankAccountInvalidToken(CustomWebApplicationFactory factory) : base(factory) => _bankAccount = factory.GetBankAccount();
 
     [Fact]
@@ -17,7 +17,7 @@ public class UpdateBankAccountInvalidToken : GafelClassFixture
     {
         var request = BankAccountCommandBuilder.Build();
 
-        var response = await DoPut(method: $"{METHOD}/{_bankAccount.obfuscatedId}", request: request, token: "invalidToken");
+        var response = await DoPut(method: $"{METHOD}/{_bankAccount.Id}", request: request, token: "invalidToken");
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
@@ -27,7 +27,7 @@ public class UpdateBankAccountInvalidToken : GafelClassFixture
     {
         var request = BankAccountCommandBuilder.Build();
 
-        var response = await DoPut(method: $"{METHOD}/{_bankAccount.obfuscatedId}", request: request, token: string.Empty);
+        var response = await DoPut(method: $"{METHOD}/{_bankAccount.Id}", request: request, token: string.Empty);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
@@ -36,9 +36,9 @@ public class UpdateBankAccountInvalidToken : GafelClassFixture
     public async Task Error_Token_With_User_NotFound()
     {
         var request = BankAccountCommandBuilder.Build();
-        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: 10);
+        var token = JwtTokenGeneratorBuilder.Build().Generate(userId: Guid.CreateVersion7());
 
-        var response = await DoPut(method: $"{METHOD}/{_bankAccount.obfuscatedId}", request: request, token: token);
+        var response = await DoPut(method: $"{METHOD}/{_bankAccount.Id}", request: request, token: token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }

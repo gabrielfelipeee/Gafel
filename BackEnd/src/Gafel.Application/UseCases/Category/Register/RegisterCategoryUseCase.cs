@@ -39,7 +39,6 @@ public class RegisterCategoryUseCase : IRegisterCategoryUseCase
 
         var category = request.Adapt<Domain.Entities.Category>();
         category.PersonId = person.Id;
-        category.CreatedAt = DateTime.UtcNow;
 
         await _categoryWriteOnlyRepository.Add(category);
         await _unitOfWork.SaveChangesAsync();

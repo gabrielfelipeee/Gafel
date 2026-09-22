@@ -64,8 +64,8 @@ public static class DependencyInjectionExtension
                 options.Password.RequireUppercase = false; // Pelo menos uma letra maiúscula
                 options.User.RequireUniqueEmail = true;
             })
-            .AddRoles<IdentityRole<long>>()
-            .AddRoleManager<RoleManager<IdentityRole<long>>>()
+            .AddRoles<IdentityRole<Guid>>()
+            .AddRoleManager<RoleManager<IdentityRole<Guid>>>()
             .AddSignInManager()
             .AddEntityFrameworkStores<GafelDbContext>()
             .AddErrorDescriber<CustomIdentityErrorDescriber>()

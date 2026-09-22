@@ -2,5 +2,5 @@
 
 public interface IDeleteBankAccountUseCase
 {
-    Task Execute(long bankAccountId);
+    Task Execute(Guid bankAccountId);
 }

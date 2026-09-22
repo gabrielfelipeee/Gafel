@@ -13,9 +13,9 @@ public class AuthServiceBuilder
 
     public IAuthService Build() => _repository.Object;
 
-    public void Login()
+    public void Login(UserDto user)
     {
-        var response = new LoginResponseDto(Success: true, UserId: 1);
+        var response = new LoginResponseDto(Success: true, UserId: user.Id);
 
         _repository.Setup(r => r.Login(It.IsAny<UserCredentialsDto>())).ReturnsAsync(response);
     }
@@ -30,7 +30,7 @@ public class AuthServiceBuilder
     {
         var response = new ChangePasswordResponseDto(Success: true);
 
-        _repository.Setup(r => r.ChangePassword(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(response);
+        _repository.Setup(r => r.ChangePassword(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(response);
     }
     public void ChangePasswordWithCurrentPasswordDifferent()
     {
@@ -40,6 +40,6 @@ public class AuthServiceBuilder
         };
         var response = new ChangePasswordResponseDto(Success: false, Errors: errors);
 
-        _repository.Setup(r => r.ChangePassword(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(response);
+        _repository.Setup(r => r.ChangePassword(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(response);
     }
 }

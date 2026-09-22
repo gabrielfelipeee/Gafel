@@ -51,7 +51,6 @@ public class UpdateProfileUseCase : IUpdateProfileUseCase
         person.FullName = request.FullName;
         person.City = request.City;
         person.Uf = string.IsNullOrWhiteSpace(request.Uf) ? null : Enum.Parse<Uf>(request.Uf, true);
-        person.UpdatedAt = DateTime.UtcNow;
 
         _personUpdateOnlyRepository.Update(person);
         await _unitOfWork.SaveChangesAsync();

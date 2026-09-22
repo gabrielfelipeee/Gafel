@@ -15,7 +15,7 @@ public class UserWriteOnlyServiceBuilder
 
     public void Register()
     {
-        var response = new RegisterUserResponseDto(Success: true, UserId: 1);
+        var response = new RegisterUserResponseDto(Success: true, UserId: Guid.CreateVersion7());
 
         _repository
             .Setup(r => r.Register(It.IsAny<UserCredentialsDto>()))

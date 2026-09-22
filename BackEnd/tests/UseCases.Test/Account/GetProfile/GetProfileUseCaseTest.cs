@@ -17,7 +17,7 @@ public class GetProfileUseCaseTest
     {
         // Arrange
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build(true, true);
+        var person = PersonBuilder.Build(user, true, true);
         var useCase = CreateUseCase(user: user, person: person);
 
         // Act

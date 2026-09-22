@@ -1,11 +1,9 @@
 using Gafel.API.Converters;
 using Gafel.API.Extensions;
 using Gafel.API.Handlers;
-using Gafel.API.Models;
 using Gafel.Application;
 using Gafel.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.OpenApi;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -26,7 +24,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 // Configurações de Infraestrutura e Aplicação
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddApplication(builder.Configuration);
+builder.Services.AddApplication();
 
 
 // Segurança (Auth)
@@ -42,13 +40,7 @@ builder.Services.AddProblemDetails();
 
 
 // Documentação
-builder.Services.AddSwaggerGen(options =>
-{
-    options.MapType<GafelId>(() => new OpenApiSchema
-    {
-        Type = JsonSchemaType.String,
-    });
-});
+builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddCors(options =>

@@ -22,7 +22,7 @@ public class UpdateBankAccountUseCaseTest
     {
         // Arrange 
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var bankAccount = BankAccountBuilder.Build(person);
         var request = BankAccountCommandBuilder.Build();
 
@@ -39,12 +39,12 @@ public class UpdateBankAccountUseCaseTest
     public async Task Error_BankAccount_NotFound()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var request = BankAccountCommandBuilder.Build();
 
         var useCase = CreateUseCase(user: user, person: person);
 
-        var exception = await Should.ThrowAsync<NotFoundException>(useCase.Execute(bankAccountId: 100, request: request));
+        var exception = await Should.ThrowAsync<NotFoundException>(useCase.Execute(bankAccountId: Guid.CreateVersion7(), request: request));
 
         exception.GetErrorTitle().ShouldBe(ResourceMessagesException.EXCEPTION_NOT_FOUND_TITLE);
         exception.GetErrorDetail().ShouldBe(ResourceMessagesException.BANK_ACCOUNT_NOT_FOUND);
@@ -55,7 +55,7 @@ public class UpdateBankAccountUseCaseTest
     public async Task Error_Name_Empty()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var bankAccount = BankAccountBuilder.Build(person);
         var request = BankAccountCommandBuilder.Build();
         request.Name = string.Empty;
@@ -78,7 +78,7 @@ public class UpdateBankAccountUseCaseTest
     public async Task Error_InitialBalance_Negative()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var bankAccount = BankAccountBuilder.Build(person);
         var request = BankAccountCommandBuilder.Build();
         request.InitialBalance = -100;
@@ -101,7 +101,7 @@ public class UpdateBankAccountUseCaseTest
     public async Task Error_Type_Invalid()
     {
         var user = UserDtoBuilder.Build();
-        var person = PersonBuilder.Build();
+        var person = PersonBuilder.Build(user);
         var bankAccount = BankAccountBuilder.Build(person);
         var request = BankAccountCommandBuilder.Build();
         request.Type = (BankAccountType)100;
@@ -127,7 +127,7 @@ public class UpdateBankAccountUseCaseTest
         var request = BankAccountCommandBuilder.Build();
         var useCase = CreateUseCase(user: user);
 
-        var exception = await Should.ThrowAsync<PersonNotFoundException>(useCase.Execute(bankAccountId: 100, request: request));
+        var exception = await Should.ThrowAsync<PersonNotFoundException>(useCase.Execute(bankAccountId: Guid.CreateVersion7(), request: request));
 
         exception.GetErrorTitle().ShouldBe(ResourceMessagesException.EXCEPTION_PERSON_NOT_FOUND_TITLE);
         exception.GetErrorDetail().ShouldBe(ResourceMessagesException.EXCEPTION_PERSON_NOT_FOUND_DETAIL);

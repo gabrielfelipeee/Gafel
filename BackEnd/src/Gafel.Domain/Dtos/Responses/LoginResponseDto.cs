@@ -2,6 +2,6 @@
 
 public record LoginResponseDto(
     bool Success,
-    long? UserId = null,
+    Guid? UserId = null,
     string? ErrorMessage = null
 );
