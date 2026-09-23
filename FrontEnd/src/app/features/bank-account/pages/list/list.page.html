@@ -1,8 +1,8 @@
 @if(!route.firstChild || !isMobile()) {
-<h1 class="font-semibold text-3xl mb-4 capitalize">contas bancárias</h1>
+<h1 class="font-semibold text-3xl capitalize">contas bancárias</h1>
 
 <div
-  class="flex flex-col justify-center gap-8 border-b border-base pb-4 pt-4 sticky top-20.25 z-10 bg-base-100"
+  class="flex flex-col justify-center gap-8 border-b border-primary/20 py-4 mb-4 sticky top-0 z-10 bg-base-100"
 >
   <div class="flex items-center justify-between gap-4">
     <div class="flex items-center justify-center gap-2">
@@ -22,7 +22,7 @@
 </div>
 @if(response().items.length) {
 <ul
-  class="list-none mt-8 sm:mb-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pointer-events-none"
+  class="list-none grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pointer-events-none"
   [ngClass]="{ 'opacity-50 pointer-events-none': isLoading() }"
 >
   @for (bankAccount of response().items; track bankAccount.id) { @let accountType

@@ -1,5 +1,5 @@
 import { Component, computed, effect, ElementRef, inject, viewChild } from '@angular/core';
-import { NgIcon } from '@ng-icons/core';
+import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   IsActiveMatchOptions,
   NavigationEnd,
@@ -15,11 +15,37 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map, startWith } from 'rxjs';
 import { IconButtonComponent } from '@shared/components/icon-button/icon-button.component';
+import {
+  heroArrowsRightLeft,
+  heroBars3,
+  heroBuildingLibrary,
+  heroCalendarDays,
+  heroDocumentText,
+  heroFlag,
+  heroHeart,
+  heroSquares2x2,
+  heroTag,
+  heroXMark,
+} from '@ng-icons/heroicons/outline';
 
 @Component({
   selector: 'app-mobile-navigation',
   templateUrl: './mobile-navigation.component.html',
   imports: [NgIcon, RouterLink, RouterLinkActive, IconButtonComponent],
+  providers: [
+    provideIcons({
+      heroBars3,
+      heroSquares2x2,
+      heroTag,
+      heroXMark,
+      heroDocumentText,
+      heroBuildingLibrary,
+      heroArrowsRightLeft,
+      heroCalendarDays,
+      heroFlag,
+      heroHeart,
+    }),
+  ],
 })
 export class MobileNavigationComponent {
   readonly BOTTOM_NAVIGATION_ITEMS = BOTTOM_NAVIGATION_ITEMS;

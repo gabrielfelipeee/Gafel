@@ -30,19 +30,12 @@ import { ThemeService } from '@core/layouts/services/theme.service';
 import { DesktopNavigationComponent } from './components/desktop-navigation/desktop-navigation.component';
 import { NAVIGATION_ITEMS } from '@core/layouts/navigation/navigation-items';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
-import { MobileNavigationComponent } from './components/mobile-navigation/mobile-navigation.component';
 import { UserMenuComponent } from './components/user-menu/user-menu.component';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  imports: [
-    LogoComponent,
-    NgIcon,
-    DesktopNavigationComponent,
-    MobileNavigationComponent,
-    UserMenuComponent,
-  ],
+  imports: [LogoComponent, NgIcon, DesktopNavigationComponent, UserMenuComponent],
   providers: [
     provideIcons({
       heroBars3,
