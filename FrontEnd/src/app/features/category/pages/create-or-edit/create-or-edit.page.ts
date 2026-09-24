@@ -1,9 +1,10 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideIcons, NgIcon } from '@ng-icons/core';
-import { heroArrowPath, heroHashtag } from '@ng-icons/heroicons/outline';
+import { heroArrowLeft, heroArrowPath, heroHashtag } from '@ng-icons/heroicons/outline';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CategoryType } from '@features/category/enums/category-type.enum';
 import { iCreateOrEditCategoryForm } from '@features/category/interfaces/create-or-edit-category-form.interface';
@@ -27,6 +28,8 @@ import { Category } from '@features/category/interfaces/category.interface';
 import { iCreateOrEditCategoryRequest } from '@features/category/interfaces/create-or-edit-category-request.interface';
 import { FormValidationService } from '@shared/services/form-validation.service';
 import { ApiErrorHandlerService } from '@shared/services/api-error-handler.service';
+import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
+import { IconButtonComponent } from '@shared/components/icon-button/icon-button.component';
 
 @Component({
   selector: 'app-create-or-edit-category',
@@ -38,13 +41,16 @@ import { ApiErrorHandlerService } from '@shared/services/api-error-handler.servi
     CustomInputComponent,
     ButtonComponent,
     CustomRadioGroupComponent,
+    NgTemplateOutlet,
+    IconButtonComponent,
   ],
-  providers: [provideIcons({ ...CATEGORY_ICONS, heroHashtag, heroArrowPath })],
+  providers: [provideIcons({ ...CATEGORY_ICONS, heroHashtag, heroArrowPath, heroArrowLeft })],
 })
 export class CreateOrEditPage {
   readonly eCategoryType = CategoryType;
   readonly CATEGORY_ICON_NAMES = CATEGORY_ICON_NAMES;
 
+  readonly isMobile = inject(BreakpointObserverService).isMobile;
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly formBuilder = inject(NonNullableFormBuilder);
@@ -135,7 +141,7 @@ export class CreateOrEditPage {
     this.form.controls.icon.setValue(icon);
   }
 
-  onModalClose(): void {
+  onClose(): void {
     this.router.navigate(['/categorias'], { queryParamsHandling: 'preserve' });
   }
 }

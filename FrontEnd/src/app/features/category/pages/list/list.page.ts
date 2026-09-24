@@ -82,7 +82,7 @@ export class CategoryListPage implements OnInit {
   readonly CATEGORY_LIMIT_OPTIONS = CATEGORY_LIMIT_OPTIONS;
 
   private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
+  readonly route = inject(ActivatedRoute);
   private readonly categoryApi = inject(CategoryApi);
   private readonly confirmationModalService = inject(ConfirmationModalService);
   private readonly toastService = inject(ToastService);

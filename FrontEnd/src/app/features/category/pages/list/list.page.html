@@ -1,3 +1,4 @@
+@if(!route.firstChild || !isMobile()) {
 <h1 class="font-semibold text-3xl capitalize">categorias</h1>
 
 <div
@@ -73,5 +74,6 @@
   (offsetChange)="onOffsetChange($event)"
   (limitChange)="onLimitChange($event)"
 />
+}
 
 <router-outlet />
