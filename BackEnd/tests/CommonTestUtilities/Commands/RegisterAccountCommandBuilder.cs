@@ -1,5 +1,4 @@
-﻿using Bogus;
-using CommonTestUtilities.Helpers;
+﻿using CommonTestUtilities.Helpers;
 using Gafel.Application.UseCases.Auth.Register;
 
 namespace CommonTestUtilities.Commands;
@@ -11,7 +10,7 @@ public static class RegisterAccountCommandBuilder
         bool withNumber = true,
         bool withSpecialCharacter = true)
     {
-        return new Faker<RegisterAccountCommand>("pt_BR")
+        return FakerFactory.Create<RegisterAccountCommand>()
         .RuleFor(acc => acc.FullName, faker => faker.Person.FullName)
         .RuleFor(acc => acc.Email, (faker, acc) => faker.Internet.Email(acc.FullName))
         .RuleFor(acc => acc.Password, faker => PasswordGenerator.Generate(faker, passwordLength, withNumber, withSpecialCharacter));

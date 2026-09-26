@@ -1,5 +1,4 @@
-﻿using Bogus;
-using Bogus.Extensions.Brazil;
+﻿using Bogus.Extensions.Brazil;
 using Gafel.Domain.Enums;
 using Gafel.Domain.ValueObjects;
 
@@ -9,9 +8,9 @@ public class PersonBuilder
 {
     public static Gafel.Domain.Entities.Person Build(Gafel.Domain.Dtos.UserDto user, bool withCpf = false, bool withDateOfBirth = false)
     {
-        return new Faker<Gafel.Domain.Entities.Person>("pt_BR")
+        return FakerFactory.Create<Gafel.Domain.Entities.Person>()
             .RuleFor(person => person.FullName, faker => faker.Person.FullName)
-            .RuleFor(person => person.Uf, f => Enum.Parse<Uf>(f.Address.StateAbbr()))
+            .RuleFor(person => person.Uf, faker => faker.Random.Enum<Uf>())
             .RuleFor(person => person.City, faker => faker.Address.City())
             .RuleFor(person => person.UserId, _ => user.Id)
             .FinishWith((faker, person) =>

@@ -1,5 +1,4 @@
-﻿using Bogus;
-using CommonTestUtilities.Helpers;
+﻿using CommonTestUtilities.Helpers;
 using Gafel.Application.UseCases.Category.Shared.Commands;
 using Gafel.Domain.Enums;
 
@@ -9,7 +8,7 @@ public class CategoryCommandBuilder
 {
     public static CategoryCommand Build()
     {
-        return new Faker<CategoryCommand>()
+        return FakerFactory.Create<CategoryCommand>()
             .CustomInstantiator(faker =>
             {
                 var type = faker.PickRandom<CategoryType>();

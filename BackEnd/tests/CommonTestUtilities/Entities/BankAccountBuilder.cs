@@ -1,5 +1,4 @@
-﻿using Bogus;
-using Gafel.Domain.Entities;
+﻿using Gafel.Domain.Entities;
 using Gafel.Domain.Enums;
 
 namespace CommonTestUtilities.Entities;
@@ -7,7 +6,7 @@ namespace CommonTestUtilities.Entities;
 public class BankAccountBuilder
 {
 
-    public static IList<BankAccount> Collection(Gafel.Domain.Entities.Person person, uint count = 2)
+    public static IList<BankAccount> Collection(Person person, uint count = 2)
     {
         var list = new List<BankAccount>();
 
@@ -26,7 +25,7 @@ public class BankAccountBuilder
 
     public static BankAccount Build(Gafel.Domain.Entities.Person person)
     {
-        return new Faker<BankAccount>("pt_BR")
+        return FakerFactory.Create<BankAccount>()
             .RuleFor(bankAccount => bankAccount.Id, _ => Guid.CreateVersion7())
             .RuleFor(bankAccount => bankAccount.PersonId, _ => person.Id)
             .RuleFor(bankAccount => bankAccount.Name, faker => faker.Company.CompanyName())

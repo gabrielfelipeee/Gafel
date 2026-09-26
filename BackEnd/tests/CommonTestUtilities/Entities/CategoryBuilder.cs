@@ -1,5 +1,4 @@
-﻿using Bogus;
-using CommonTestUtilities.Helpers;
+﻿using CommonTestUtilities.Helpers;
 using Gafel.Domain.Entities;
 using Gafel.Domain.Enums;
 
@@ -8,7 +7,7 @@ namespace CommonTestUtilities.Entities;
 public class CategoryBuilder
 {
 
-    public static IList<Category> Collection(Gafel.Domain.Entities.Person person, uint count = 2)
+    public static IList<Category> Collection(Person person, uint count = 2)
     {
         var list = new List<Category>();
 
@@ -24,10 +23,10 @@ public class CategoryBuilder
         return list;
     }
 
-    public static Category Build(Gafel.Domain.Entities.Person person)
+    public static Category Build(Person person)
     {
 
-        return new Faker<Category>()
+        return FakerFactory.Create<Category>()
             .CustomInstantiator(faker =>
             {
                 var type = faker.PickRandom<CategoryType>();
