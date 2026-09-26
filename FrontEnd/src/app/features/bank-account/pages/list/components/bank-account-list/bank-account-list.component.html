@@ -1,0 +1,92 @@
+<table class="table">
+  <colgroup>
+    <col class="w-14" />
+    <col />
+    <col class="w-40 lg:w-52 xl:w-64" />
+    <col class="w-36 lg:w-52 xl:w-64" />
+    <col class="w-26 lg:w-32 xl:w-36" />
+  </colgroup>
+
+  <thead>
+    <tr>
+      <th>
+        @if(selectedBankAccountIds().size > 0) {
+        <input
+          type="checkbox"
+          class="checkbox checkbox-sm transition-all duration-200 ease-out"
+          [checked]="selectedBankAccountIds().size === bankAccounts().length"
+          (change)="allBankAccountsSelectionChange.emit($any($event.target).checked)"
+        />
+        } @else {
+        <span>#</span>
+        }
+      </th>
+      <th>Conta</th>
+      <th>Tipo</th>
+      <th>Saldo atual</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+
+  <tbody [ngClass]="{ 'opacity-50 pointer-events-none': isLoading() }">
+    @for (bankAccount of bankAccounts(); track bankAccount.id) {
+      @let accountType = BankAccountTypeInfo[bankAccount.type]; 
+      @let isBankAccountSelected = selectedBankAccountIds().has(bankAccount.id);
+
+    <tr class="group" [class.selected]="isBankAccountSelected">
+      <td>
+        <input
+          type="checkbox"
+          class="checkbox checkbox-sm group-hover:opacity-100 transition-opacity duration-200"
+          [class.opacity-0]="!isBankAccountSelected && selectedBankAccountIds().size === 0"
+          [class.opacity-100]="isBankAccountSelected || selectedBankAccountIds().size > 0"
+          [checked]="isBankAccountSelected"
+          (change)="bankAccountSelectionChange.emit({
+                id: bankAccount.id,
+                selected: $any($event.target).checked
+            })"
+        />
+      </td>
+
+      <td>
+        <div class="flex items-center gap-2">
+          <span class="icon-container shrink-0 group-hover:text-primary">
+            <ng-icon
+              [name]="accountType.icon"
+              size="32"
+              class="transition-transform! duration-500 group-hover:scale-[1.2]"
+            />
+          </span>
+
+          <span class="truncate"> {{ bankAccount.name }} </span>
+        </div>
+      </td>
+
+      <td>
+        <div class="badge badge-soft badge-primary">{{ accountType.label }}</div>
+      </td>
+
+      <td>
+        <span> {{ 1000 | currency: 'BRL' }} </span>
+      </td>
+
+      <td>
+        @if(!isBankAccountSelected) {
+        <div
+          class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        >
+          @for (action of actions(); track $index) {
+          <app-icon-button
+            [icon]="action.icon"
+            [iconSize]="18"
+            [variant]="action.key === 'delete' ? 'error' : 'default'"
+            (clicked)="onAction(action.key, bankAccount)"
+          />
+          }
+        </div>
+        }
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>

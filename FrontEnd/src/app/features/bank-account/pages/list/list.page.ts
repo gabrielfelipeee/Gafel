@@ -1,20 +1,20 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
-import { provideIcons, NgIcon } from '@ng-icons/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { provideIcons } from '@ng-icons/core';
 import {
   heroBanknotes,
   heroBuildingLibrary,
   heroDevicePhoneMobile,
   heroFunnel,
-  heroPencilSquare,
+  heroListBullet,
+  heroPencil,
   heroPlus,
+  heroSquares2x2,
   heroTrash,
   heroWallet,
 } from '@ng-icons/heroicons/outline';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { CurrencyPipe, NgClass } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ItemActionsComponent } from '@shared/components/item-actions/item-actions.component';
 import { PaginatorComponent } from '@shared/components/paginator/paginator.component';
 import { iItemActionData } from '@shared/interfaces/item-action-data.interface';
 import { createListResource } from '@shared/query/create-list-resource';
@@ -27,12 +27,8 @@ import {
   bankAccountListQueryParser,
 } from '@features/bank-account/parsers/bank-account-list-query.parser';
 import { iBankAccountListFilters } from '@features/bank-account/interfaces/bank-account-list-filters.interface';
-import { iBankAccount } from '@features/bank-account/interfaces/bank-account.interface';
+import { BankAccount } from '@features/bank-account/interfaces/bank-account.interface';
 import { BankAccountApi } from '@features/bank-account/apis/bank-account.api';
-import {
-  BankAccountTypeInfo,
-  eBankAccountType,
-} from '@features/bank-account/enums/bank-account-type.enum';
 import { iItemActionEvent } from '@shared/interfaces/item-action-event.interface';
 import { ConfirmationModalService } from '@shared/services/confirmation-modal.service';
 import { ToastService } from '@shared/services/toast.service';
@@ -40,48 +36,50 @@ import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 import { ApiErrorHandlerService } from '@shared/services/api-error-handler.service';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
 import { ContentSkeletonComponent } from '@shared/components/content-skeleton/content-skeleton.component';
-
-type tBankAccountAction = 'edit' | 'delete';
+import { IconButtonComponent } from '@shared/components/icon-button/icon-button.component';
+import { ViewMode } from '@shared/types/view-mode.type';
+import { BankAccountGridComponent } from './components/bank-account-grid/bank-account-grid.component';
+import { BankAccountAction } from '@features/bank-account/types/bank-account-action.type';
+import { BankAccountListComponent } from './components/bank-account-list/bank-account-list.component';
 
 @Component({
   selector: 'app-list-bank-account',
   templateUrl: './list.page.html',
   imports: [
     ButtonComponent,
-    NgIcon,
-    ItemActionsComponent,
     PaginatorComponent,
-    CurrencyPipe,
     FormsModule,
     ReactiveFormsModule,
     EmptyListComponent,
-    NgClass,
     RouterOutlet,
     ContentSkeletonComponent,
+    IconButtonComponent,
+    BankAccountGridComponent,
+    BankAccountListComponent,
   ],
   providers: [
     provideIcons({
       heroFunnel,
       heroTrash,
-      heroPencilSquare,
+      heroPencil,
       heroPlus,
       heroWallet,
       heroBanknotes,
       heroDevicePhoneMobile,
       heroBuildingLibrary,
+      heroListBullet,
+      heroSquares2x2,
     }),
   ],
 })
 export class ListPage implements OnInit {
   readonly BANK_ACCOUNT_LIMIT_OPTIONS = BANK_ACCOUNT_LIMIT_OPTIONS;
-  readonly eBankAccountType = eBankAccountType;
-  readonly BankAccountTypeInfo = BankAccountTypeInfo;
 
-  readonly bankAccountActions: iItemActionData<tBankAccountAction>[] = [
+  readonly actions: iItemActionData<BankAccountAction>[] = [
     {
       key: 'edit',
       label: 'Editar',
-      icon: 'heroPencilSquare',
+      icon: 'heroPencil',
     },
     {
       key: 'delete',
@@ -91,19 +89,21 @@ export class ListPage implements OnInit {
     },
   ];
 
-  readonly isMobile = inject(BreakpointObserverService).isMobile;
-
-  readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly bankAccountApi = inject(BankAccountApi);
   private readonly refreshService = inject(RefreshService);
   private readonly confirmationModalService = inject(ConfirmationModalService);
   private readonly toastService = inject(ToastService);
   private readonly apiErrorHandlerService = inject(ApiErrorHandlerService);
+  readonly isMobile = inject(BreakpointObserverService).isMobile;
+  readonly route = inject(ActivatedRoute);
 
   readonly searchControl = new FormControl('', { nonNullable: true });
+  readonly viewMode = signal<ViewMode>('list');
 
-  private readonly bankAccountList = createListResource<iBankAccountListFilters, iBankAccount>({
+  readonly selectedBankAccountIds = new Set<string>();
+
+  private readonly bankAccountList = createListResource<iBankAccountListFilters, BankAccount>({
     parser: bankAccountListQueryParser,
     fetch: ({ offset, limit, filters }) =>
       this.bankAccountApi.getAll(offset, limit, filters.bankAccountName),
@@ -118,9 +118,11 @@ export class ListPage implements OnInit {
     effect(() => {
       const bankAccountName = this.bankAccountList.filters().bankAccountName ?? '';
 
-      if (this.searchControl.value === bankAccountName) return;
-
-      this.searchControl.setValue(bankAccountName, { emitEvent: false });
+      if (this.searchControl.value !== bankAccountName)
+        this.searchControl.setValue(bankAccountName, { emitEvent: false });
+    });
+    effect(() => {
+      if (this.isMobile()) this.viewMode.set('grid');
     });
   }
 
@@ -134,10 +136,24 @@ export class ListPage implements OnInit {
       });
   }
 
-  async onBankAccountAction(event: iItemActionEvent<tBankAccountAction, iBankAccount>) {
+  onBankAccountSelectionChange(result: { id: string; selected: boolean }): void {
+    if (result?.selected) this.selectedBankAccountIds.add(result.id);
+    else this.selectedBankAccountIds.delete(result.id);
+  }
+  onAllBankAccountsSelectionChange(selected: boolean): void {
+    if (selected)
+      this.response().items.forEach(bankAccount => this.selectedBankAccountIds.add(bankAccount.id));
+    else this.selectedBankAccountIds.clear();
+  }
+
+  onViewModeChange(mode: ViewMode): void {
+    this.viewMode.set(mode);
+  }
+
+  async handleBankAccountAction(event: iItemActionEvent<BankAccountAction, BankAccount>) {
     switch (event.action) {
       case 'edit':
-        this.editBankAccount(event.item);
+        this.onCreateOrEditBankAccount(event.item);
         break;
 
       case 'delete':
@@ -145,14 +161,13 @@ export class ListPage implements OnInit {
         break;
     }
   }
-
-  private editBankAccount(bankAccount: iBankAccount): void {
-    this.router.navigate([bankAccount.id], {
+  onCreateOrEditBankAccount(bankAccount?: BankAccount): void {
+    this.router.navigate([bankAccount?.id ?? 'nova'], {
       relativeTo: this.route,
       queryParamsHandling: 'preserve',
     });
   }
-  private async deleteBankAccount(bankAccount: iBankAccount) {
+  private async deleteBankAccount(bankAccount: BankAccount) {
     const confirm = await this.confirmationModalService.show({
       title: 'Excluir conta bancária',
       message: `Deseja realmente excluir "${bankAccount.name}"? Essa ação não poderá ser desfeita.`,
@@ -178,9 +193,5 @@ export class ListPage implements OnInit {
         );
       },
     });
-  }
-
-  onCreateBankAccount(): void {
-    this.router.navigate(['nova'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
   }
 }

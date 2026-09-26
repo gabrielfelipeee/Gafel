@@ -16,12 +16,12 @@ import { RefreshService } from '@shared/services/refresh.service';
 import { REFRESH_KEYS } from '@shared/constants/refresh-keys.constant';
 import { FormValidationService } from '@shared/services/form-validation.service';
 import { ApiErrorHandlerService } from '@shared/services/api-error-handler.service';
-import { iBankAccount } from '@features/bank-account/interfaces/bank-account.interface';
+import { BankAccount } from '@features/bank-account/interfaces/bank-account.interface';
 import { iCreateOrEditBankAccountForm } from '@features/bank-account/interfaces/create-or-edit-bank-account-form.interface';
 import { BANK_ACCOUNT_RULES } from '@features/bank-account/rules/bank-account.rules';
 import {
   BankAccountTypeInfo,
-  eBankAccountType,
+  BankAccountType,
 } from '@features/bank-account/enums/bank-account-type.enum';
 import { iCreateOrEditBankAccountRequest } from '@features/bank-account/interfaces/create-or-edit-bank-account-request.interface';
 import { BankAccountApi } from '@features/bank-account/apis/bank-account.api';
@@ -64,10 +64,10 @@ export class CreateOrEditPage {
   private readonly formValidationService = inject(FormValidationService);
   private readonly apiErrorHandlerService = inject(ApiErrorHandlerService);
 
-  readonly bankAccount: iBankAccount | undefined = this.route.snapshot.data['bankAccount'];
+  readonly bankAccount: BankAccount | undefined = this.route.snapshot.data['bankAccount'];
 
-  readonly bankAccountTypeOptions: SelectOption[] = Object.values(eBankAccountType)
-    .filter((v): v is eBankAccountType => typeof v === 'number')
+  readonly bankAccountTypeOptions: SelectOption[] = Object.values(BankAccountType)
+    .filter((v): v is BankAccountType => typeof v === 'number')
     .map(value => ({
       value,
       label: BankAccountTypeInfo[value].label,
@@ -96,7 +96,7 @@ export class CreateOrEditPage {
       this.bankAccount?.initialBalance ?? 0,
       [Validators.required, Validators.min(BANK_ACCOUNT_RULES.INITIAL_BALANCE.MIN)],
     ],
-    type: [this.bankAccount?.type ?? eBankAccountType.CheckingAccount, [Validators.required]],
+    type: [this.bankAccount?.type ?? BankAccountType.CheckingAccount, [Validators.required]],
   });
   readonly selectedBankAccountType = toSignal(this.form.controls.type.valueChanges, {
     initialValue: this.form.controls.type.value,

@@ -1,0 +1,43 @@
+<ul
+  class="list-none grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+  [ngClass]="{ 'opacity-50 pointer-events-none': isLoading() }"
+>
+  @for (bankAccount of bankAccounts(); track bankAccount.id) { @let accountType =
+  BankAccountTypeInfo[bankAccount.type];
+
+  <li class="group relative surface flex flex-col gap-4 font-medium">
+    <app-item-actions
+      class="absolute top-1 right-1"
+      [actions]="actions()"
+      [item]="bankAccount"
+      (clicked)="onAction($event)"
+    />
+
+    <!-- Conta + ícone + tipo -->
+    <div class="flex items-center gap-4 pr-8">
+      <span class="icon-container shrink-0 group-hover:text-primary">
+        <ng-icon
+          [name]="accountType.icon"
+          size="32"
+          class="transition-transform! duration-500 group-hover:scale-[1.2]"
+        />
+      </span>
+
+      <div class="min-w-0">
+        <span class="block font-bold text-xl truncate"> {{ bankAccount.name }} </span>
+
+        <div class="badge badge-soft badge-primary">{{ accountType.label }}</div>
+      </div>
+    </div>
+
+    <div class="divider my-0"></div>
+
+    <!-- Saldo -->
+    <div>
+      <span class="text-xs"> Saldo atual </span>
+
+      <span class="block text-2xl"> {{ 1000 | currency: 'BRL' }} </span>
+    </div>
+  </li>
+  }
+</ul>

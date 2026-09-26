@@ -1,7 +1,7 @@
-import { eBankAccountType } from '../enums/bank-account-type.enum';
+import { BankAccountType } from '../enums/bank-account-type.enum';
 
 export interface iCreateOrEditBankAccountRequest {
   name: string;
   initialBalance: number;
-  type: eBankAccountType;
+  type: BankAccountType;
 }

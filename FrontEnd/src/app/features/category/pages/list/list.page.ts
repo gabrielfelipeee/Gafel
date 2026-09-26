@@ -81,20 +81,6 @@ import { ContentSkeletonComponent } from '@shared/components/content-skeleton/co
 export class CategoryListPage implements OnInit {
   readonly CATEGORY_LIMIT_OPTIONS = CATEGORY_LIMIT_OPTIONS;
 
-  private readonly router = inject(Router);
-  readonly route = inject(ActivatedRoute);
-  private readonly categoryApi = inject(CategoryApi);
-  private readonly confirmationModalService = inject(ConfirmationModalService);
-  private readonly toastService = inject(ToastService);
-  private readonly refreshService = inject(RefreshService);
-  private readonly apiErrorHandlerService = inject(ApiErrorHandlerService);
-  readonly isMobile = inject(BreakpointObserverService).isMobile;
-
-  readonly searchControl = new FormControl('', { nonNullable: true });
-  readonly viewMode = signal<ViewMode>('list');
-
-  readonly selectedCategoryIds = new Set<string>();
-
   readonly actions: iItemActionData<CategoryAction>[] = [
     {
       key: 'edit',
@@ -128,6 +114,20 @@ export class CategoryListPage implements OnInit {
       hoverClass: 'hover:border-error hover:text-error',
     },
   ];
+
+  private readonly router = inject(Router);
+  private readonly categoryApi = inject(CategoryApi);
+  private readonly confirmationModalService = inject(ConfirmationModalService);
+  private readonly toastService = inject(ToastService);
+  private readonly refreshService = inject(RefreshService);
+  private readonly apiErrorHandlerService = inject(ApiErrorHandlerService);
+  readonly route = inject(ActivatedRoute);
+  readonly isMobile = inject(BreakpointObserverService).isMobile;
+
+  readonly searchControl = new FormControl('', { nonNullable: true });
+  readonly viewMode = signal<ViewMode>('list');
+
+  readonly selectedCategoryIds = new Set<string>();
 
   private readonly categoryList = createListResource<CategoryListFilters, Category>({
     parser: categoryListQueryParser,

@@ -4,9 +4,9 @@ import { catchError } from 'rxjs';
 import { ToastService } from '@shared/services/toast.service';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 import { BankAccountApi } from '../apis/bank-account.api';
-import { iBankAccount } from '../interfaces/bank-account.interface';
+import { BankAccount } from '../interfaces/bank-account.interface';
 
-export const getBankAccountResolver: ResolveFn<iBankAccount> = route => {
+export const getBankAccountResolver: ResolveFn<BankAccount> = route => {
   const bankAccountApi = inject(BankAccountApi);
   const toastService = inject(ToastService);
 

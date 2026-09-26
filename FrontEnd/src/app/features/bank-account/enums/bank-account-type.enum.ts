@@ -1,25 +1,25 @@
-export enum eBankAccountType {
+export enum BankAccountType {
   Wallet,
   CheckingAccount,
   SavingsAccount,
   DigitalAccount,
 }
 
-export const BankAccountTypeInfo: Record<eBankAccountType, { label: string; icon: string }> = {
-  [eBankAccountType.Wallet]: {
+export const BankAccountTypeInfo: Record<BankAccountType, { label: string; icon: string }> = {
+  [BankAccountType.Wallet]: {
     icon: 'heroWallet',
-    label: 'Carteira',
+    label: 'carteira',
   },
-  [eBankAccountType.CheckingAccount]: {
+  [BankAccountType.CheckingAccount]: {
     icon: 'heroBuildingLibrary',
-    label: 'Conta Corrente',
+    label: 'conta corrente',
   },
-  [eBankAccountType.SavingsAccount]: {
+  [BankAccountType.SavingsAccount]: {
     icon: 'heroBanknotes',
-    label: 'Conta Poupança',
+    label: 'conta poupança',
   },
-  [eBankAccountType.DigitalAccount]: {
+  [BankAccountType.DigitalAccount]: {
     icon: 'heroDevicePhoneMobile',
-    label: 'Conta Digital',
+    label: 'conta digital',
   },
 };
