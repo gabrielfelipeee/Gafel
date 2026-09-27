@@ -26,6 +26,7 @@
       [options]="categoryTypeOptions"
       [value]="form.controls.type.value"
       (valueChange)="onSelectCategoryType($event)"
+      [disabled]="form.disabled"
     />
 
     <app-custom-input
@@ -45,7 +46,8 @@
             type="button"
             (click)="onSelectIcon(icon)"
             class="icon-container icon-container-hover cursor-pointer"
-            [class.icon-container--active]="selectedIcon() === icon"
+            [class.icon-container--active]="form.controls.icon.value === icon"
+            [disabled]="form.disabled"
           >
             <ng-icon [name]="icon" size="32" />
           </button>
@@ -61,7 +63,11 @@
       </div>
     </div>
 
-    <app-button [icon]="category ? 'heroArrowPath' : 'heroPlus'" class="justify-self-end">
+    <app-button
+      [icon]="category ? 'heroArrowPath' : 'heroPlus'"
+      class="justify-self-end"
+      [isLoading]="form.disabled"
+    >
       {{ category ? 'atualizar categoria' : 'criar categoria' }}
     </app-button>
   </form>

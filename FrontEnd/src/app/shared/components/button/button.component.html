@@ -7,10 +7,14 @@
     'btn-warning': variant() === 'warning',
     'btn-error': variant() === 'error',
   }"
+  [disabled]="isLoading()"
   (click)="onClick()"
 >
+  @if(isLoading()) {
+  <span class="loading loading-spinner loading-xs text-primary"></span>
+  } @else {
   <ng-icon [name]="icon()" size="22" />
-
+  }
   <span class="text-base capitalize">
     <ng-content></ng-content>
   </span>

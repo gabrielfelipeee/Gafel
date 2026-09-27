@@ -1,3 +1,3 @@
-import { tFieldValidationMessages } from './field-validation-messages.type';
+import { FieldValidationMessages } from './field-validation-messages.type';
 
-export type tFormValidationMessages = Record<string, tFieldValidationMessages>;
+export type FormValidationMessages = Record<string, FieldValidationMessages>;

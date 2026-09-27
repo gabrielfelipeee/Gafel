@@ -11,6 +11,7 @@ import { ButtonVariant } from '@shared/types/button-variant.type';
 export class ButtonComponent {
   icon = input.required<string>();
   variant = input<ButtonVariant>('success');
+  isLoading = input<boolean>(false);
 
   clicked = output<void>();
 

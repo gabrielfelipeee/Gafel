@@ -3,7 +3,7 @@ import { NgClass } from '@angular/common';
 import { ControlValueAccessor, FormsModule, NgControl, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroCheck, heroListBullet, heroXMark } from '@ng-icons/heroicons/outline';
-import { tFieldValidationMessages } from '@shared/types/field-validation-messages.type';
+import { FieldValidationMessages } from '@shared/types/field-validation-messages.type';
 import { getControlErrorMessage } from '@shared/validation/utils/get-control-error-message.utils';
 import { SelectOption } from '@shared/interfaces/select-option.interface';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
@@ -18,7 +18,7 @@ import { BreakpointObserverService } from '@shared/services/breakpoint-observer.
 export class CustomSelectComponent implements ControlValueAccessor {
   label = input.required<string>();
   options = input.required<SelectOption[]>();
-  errorMessages = input<tFieldValidationMessages>({});
+  errorMessages = input<FieldValidationMessages>({});
   bottomSheetTitle = input.required<string>();
 
   private readonly bottomSheet = viewChild.required<ElementRef<HTMLDialogElement>>('bottomSheet');

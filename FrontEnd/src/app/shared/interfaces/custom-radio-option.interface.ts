@@ -1,4 +1,4 @@
-export interface iCustomRadioOption<T> {
+export interface CustomRadioOption<T> {
   value: T;
   label: string;
   icon?: string;

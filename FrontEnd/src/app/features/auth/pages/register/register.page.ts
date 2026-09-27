@@ -17,7 +17,7 @@ import { FULLNAME_VALIDATION_MESSAGES } from '@shared/validation/messages/fullna
 import { EMAIL_VALIDATION_MESSAGES } from '@shared/validation/messages/email-validation.messages';
 import { PASSWORD_VALIDATION_MESSAGES } from '@shared/validation/messages/password-validation.messages';
 import { PasswordValidators } from '@shared/validation/validators/password.validators';
-import { tFormValidationMessages } from '@shared/types/form-validation-messages.type';
+import { FormValidationMessages } from '@shared/types/form-validation-messages.type';
 import {
   EMAIL_RULES,
   FULLNAME_RULES,
@@ -75,7 +75,7 @@ export class RegisterPage {
       required: 'Confirmação de senha é obrigatória',
       passwordMismatch: 'As senhas não coincidem',
     },
-  } satisfies tFormValidationMessages;
+  } satisfies FormValidationMessages;
 
   protected readonly features: iFeatureCard[] = [
     {

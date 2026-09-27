@@ -1,1 +1,1 @@
-export type tFieldValidationMessages = Record<string, string>;
+export type FieldValidationMessages = Record<string, string>;

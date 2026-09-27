@@ -1,9 +1,9 @@
 import { AbstractControl } from '@angular/forms';
-import { tFieldValidationMessages } from '@shared/types/field-validation-messages.type';
+import { FieldValidationMessages } from '@shared/types/field-validation-messages.type';
 
 export function getControlErrorMessage(
   control: AbstractControl | null,
-  messages: tFieldValidationMessages,
+  messages: FieldValidationMessages,
 ): string | null {
   if (!control?.touched || !control.errors) return null;
 

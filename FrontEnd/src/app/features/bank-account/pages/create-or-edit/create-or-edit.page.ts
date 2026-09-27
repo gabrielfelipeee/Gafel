@@ -8,7 +8,7 @@ import { faSolidBrazilianRealSign } from '@ng-icons/font-awesome/solid';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CustomInputComponent } from '@shared/components/custom-input/custom-input.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
-import { tFormValidationMessages } from '@shared/types/form-validation-messages.type';
+import { FormValidationMessages } from '@shared/types/form-validation-messages.type';
 import { ToastService } from '@shared/services/toast.service';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 import { mapApiErrorsToForm } from '@shared/validation/utils/map-api-errors-to-form.utils';
@@ -85,7 +85,7 @@ export class CreateOrEditPage {
     type: {
       required: 'Tipo é obrigatório',
     },
-  } satisfies tFormValidationMessages;
+  } satisfies FormValidationMessages;
 
   readonly form: FormGroup<iCreateOrEditBankAccountForm> = this.formBuilder.group({
     name: [

@@ -26,7 +26,7 @@ import {
 } from '@features/category/parsers/category-list-query.parser';
 import { createListResource } from '@shared/query/create-list-resource';
 import { CustomRadioGroupComponent } from '@shared/components/custom-radio-group/custom-radio-group.component';
-import { iCustomRadioOption } from '@shared/interfaces/custom-radio-option.interface';
+import { CustomRadioOption } from '@shared/interfaces/custom-radio-option.interface';
 import { CategoryType } from '@features/category/enums/category-type.enum';
 import { CATEGORY_ICONS } from '@features/category/contants/category-icons.constant';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
@@ -94,7 +94,7 @@ export class CategoryListPage implements OnInit {
       hoverClass: 'hover:bg-error/10 hover:text-error',
     },
   ];
-  readonly categoryTypeOptions: iCustomRadioOption<CategoryType | undefined>[] = [
+  readonly categoryTypeOptions: CustomRadioOption<CategoryType | undefined>[] = [
     {
       value: undefined,
       label: 'todas',

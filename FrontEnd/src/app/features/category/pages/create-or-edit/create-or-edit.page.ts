@@ -1,7 +1,6 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideIcons, NgIcon } from '@ng-icons/core';
 import { heroArrowLeft, heroArrowPath, heroHashtag } from '@ng-icons/heroicons/outline';
@@ -10,14 +9,14 @@ import { CategoryType } from '@features/category/enums/category-type.enum';
 import { iCreateOrEditCategoryForm } from '@features/category/interfaces/create-or-edit-category-form.interface';
 import { CustomInputComponent } from '@shared/components/custom-input/custom-input.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
-import { tFormValidationMessages } from '@shared/types/form-validation-messages.type';
+import { FormValidationMessages } from '@shared/types/form-validation-messages.type';
 import { CATEGORY_RULES } from '@features/category/rules/category.rules';
 import { CategoryApi } from '@features/category/apis/category.api';
 import { ToastService } from '@shared/services/toast.service';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 import { mapApiErrorsToForm } from '@shared/validation/utils/map-api-errors-to-form.utils';
 import { CustomRadioGroupComponent } from '@shared/components/custom-radio-group/custom-radio-group.component';
-import { iCustomRadioOption } from '@shared/interfaces/custom-radio-option.interface';
+import { CustomRadioOption } from '@shared/interfaces/custom-radio-option.interface';
 import {
   CATEGORY_ICON_NAMES,
   CATEGORY_ICONS,
@@ -30,6 +29,7 @@ import { FormValidationService } from '@shared/services/form-validation.service'
 import { ApiErrorHandlerService } from '@shared/services/api-error-handler.service';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
 import { IconButtonComponent } from '@shared/components/icon-button/icon-button.component';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-create-or-edit-category',
@@ -47,20 +47,7 @@ import { IconButtonComponent } from '@shared/components/icon-button/icon-button.
   providers: [provideIcons({ ...CATEGORY_ICONS, heroHashtag, heroArrowPath, heroArrowLeft })],
 })
 export class CreateOrEditPage {
-  readonly eCategoryType = CategoryType;
   readonly CATEGORY_ICON_NAMES = CATEGORY_ICON_NAMES;
-
-  readonly isMobile = inject(BreakpointObserverService).isMobile;
-  private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
-  private readonly formBuilder = inject(NonNullableFormBuilder);
-  private readonly toastService = inject(ToastService);
-  private readonly categoryApi = inject(CategoryApi);
-  private readonly refreshService = inject(RefreshService);
-  private readonly formValidationService = inject(FormValidationService);
-  private readonly apiErrorHandlerService = inject(ApiErrorHandlerService);
-
-  readonly category: Category | undefined = this.route.snapshot.data['category'];
 
   readonly formErrorMessages = {
     name: {
@@ -70,9 +57,9 @@ export class CreateOrEditPage {
     icon: {
       required: 'Ícone é obrigatório',
     },
-  } satisfies tFormValidationMessages;
+  } satisfies FormValidationMessages;
 
-  readonly categoryTypeOptions: iCustomRadioOption<CategoryType>[] = [
+  readonly categoryTypeOptions: CustomRadioOption<CategoryType>[] = [
     {
       value: CategoryType.Income,
       label: 'receita',
@@ -87,6 +74,18 @@ export class CreateOrEditPage {
     },
   ];
 
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly toastService = inject(ToastService);
+  private readonly categoryApi = inject(CategoryApi);
+  private readonly refreshService = inject(RefreshService);
+  private readonly formValidationService = inject(FormValidationService);
+  private readonly apiErrorHandlerService = inject(ApiErrorHandlerService);
+  readonly isMobile = inject(BreakpointObserverService).isMobile;
+
+  readonly category: Category | undefined = this.route.snapshot.data['category'];
+
   readonly form: FormGroup<iCreateOrEditCategoryForm> = this.formBuilder.group({
     name: [
       this.category?.name ?? '',
@@ -96,21 +95,29 @@ export class CreateOrEditPage {
     type: [this.category?.type ?? CategoryType.Income, [Validators.required]],
   });
 
-  readonly selectedIcon = toSignal(this.form.controls.icon.valueChanges, {
-    initialValue: this.form.controls.icon.value,
-  });
+  onSelectCategoryType(type: CategoryType): void {
+    this.form.controls.type.setValue(type);
+  }
+  onSelectIcon(icon: string): void {
+    this.form.controls.icon.setValue(icon);
+  }
 
   onSubmit() {
+    if (this.form.disabled) return;
+
     if (!this.formValidationService.validate(this.form)) return;
 
     this.save(this.form.getRawValue());
   }
+  teste = 1;
   private save(category: iCreateOrEditCategoryRequest) {
+    this.form.disable();
+
     const request$ = this.category
       ? this.categoryApi.update(this.category.id, category)
       : this.categoryApi.create(category);
 
-    request$.subscribe({
+    request$.pipe(finalize(() => this.form.enable())).subscribe({
       next: () => {
         const title = this.category ? 'Categoria atualizada' : 'Categoria criada';
         const message = this.category
@@ -132,13 +139,6 @@ export class CreateOrEditPage {
         );
       },
     });
-  }
-
-  onSelectCategoryType(type: CategoryType): void {
-    this.form.controls.type.setValue(type);
-  }
-  onSelectIcon(icon: string): void {
-    this.form.controls.icon.setValue(icon);
   }
 
   onClose(): void {

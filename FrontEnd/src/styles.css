@@ -168,6 +168,11 @@
     text-decoration: none;
   }
 
+  button:disabled {
+    pointer-events: none;
+    opacity: 50%;
+  }
+
   /* Tabelas */
   table {
     table-layout: fixed;

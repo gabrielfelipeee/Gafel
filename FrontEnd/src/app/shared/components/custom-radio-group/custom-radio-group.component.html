@@ -11,6 +11,7 @@
       ? option.activeClass ? option.activeClass : 'border-transparent bg-success text-success-content' 
       : option.hoverClass ? option.hoverClass : 'hover:border-success hover:text-success'
     ]"
+    [disabled]="disabled()"
   >
     @if (option.icon) {
     <ng-icon

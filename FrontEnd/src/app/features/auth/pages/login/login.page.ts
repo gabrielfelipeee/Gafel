@@ -14,7 +14,7 @@ import { AuthLayout } from '@core/layouts/layouts/auth/auth.layout';
 import { EMAIL_VALIDATION_MESSAGES } from '@shared/validation/messages/email-validation.messages';
 import { PASSWORD_VALIDATION_MESSAGES } from '@shared/validation/messages/password-validation.messages';
 import { PasswordValidators } from '@shared/validation/validators/password.validators';
-import { tFormValidationMessages } from '@shared/types/form-validation-messages.type';
+import { FormValidationMessages } from '@shared/types/form-validation-messages.type';
 import { EMAIL_RULES, PASSWORD_RULES } from '@shared/validation/rules/auth-validation.rules';
 import { CustomInputComponent } from '@shared/components/custom-input/custom-input.component';
 import { iFeatureCard } from '../../interfaces/feature-card.interface';
@@ -61,7 +61,7 @@ export class LoginPage {
   protected readonly formErrorMessages = {
     email: EMAIL_VALIDATION_MESSAGES,
     password: PASSWORD_VALIDATION_MESSAGES,
-  } satisfies tFormValidationMessages;
+  } satisfies FormValidationMessages;
 
   protected readonly features: iFeatureCard[] = [
     {

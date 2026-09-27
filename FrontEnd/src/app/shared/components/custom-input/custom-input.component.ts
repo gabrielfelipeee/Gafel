@@ -3,7 +3,7 @@ import { NgClass } from '@angular/common';
 import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroEye, heroEyeSlash } from '@ng-icons/heroicons/outline';
-import { tFieldValidationMessages } from '@shared/types/field-validation-messages.type';
+import { FieldValidationMessages } from '@shared/types/field-validation-messages.type';
 import type { MaskitoOptions } from '@maskito/core';
 import { MaskitoDirective } from '@maskito/angular';
 import { maskitoNumber } from '@maskito/kit';
@@ -23,7 +23,7 @@ export class CustomInputComponent implements ControlValueAccessor {
   icon = input.required<string>();
   label = input.required<string>();
   placeholder = input.required<string>();
-  errorMessages = input<tFieldValidationMessages>({});
+  errorMessages = input<FieldValidationMessages>({});
 
   readonly currencyMaskOptions: MaskitoOptions = maskitoNumber({
     minimumFractionDigits: 2,
