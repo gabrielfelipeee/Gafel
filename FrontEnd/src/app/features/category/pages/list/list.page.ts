@@ -26,7 +26,6 @@ import {
 } from '@features/category/parsers/category-list-query.parser';
 import { createListResource } from '@shared/query/create-list-resource';
 import { CustomRadioGroupComponent } from '@shared/components/custom-radio-group/custom-radio-group.component';
-import { CustomRadioOption } from '@shared/interfaces/custom-radio-option.interface';
 import { CategoryType } from '@features/category/enums/category-type.enum';
 import { CATEGORY_ICONS } from '@features/category/contants/category-icons.constant';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
@@ -45,6 +44,7 @@ import { CategoryListComponent } from './components/category-list/category-list.
 import { CategoryAction } from '@features/category/types/category-action.type';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
 import { ContentSkeletonComponent } from '@shared/components/content-skeleton/content-skeleton.component';
+import { CustomRadioGroupOption } from '@shared/interfaces/custom-radio-group-option.interface';
 
 @Component({
   selector: 'app-category-list-page',
@@ -94,24 +94,22 @@ export class CategoryListPage implements OnInit {
       hoverClass: 'hover:bg-error/10 hover:text-error',
     },
   ];
-  readonly categoryTypeOptions: CustomRadioOption<CategoryType | undefined>[] = [
+  readonly categoryTypeOptions: CustomRadioGroupOption<CategoryType | undefined>[] = [
     {
       value: undefined,
       label: 'todas',
-      activeClass: 'border-transparent bg-base-300',
-      hoverClass: 'hover:border-secondary',
     },
     {
       value: CategoryType.Income,
       label: 'receita',
       icon: 'heroArrowUp',
+      variant: 'success',
     },
     {
       value: CategoryType.Expense,
       label: 'despesa',
       icon: 'heroArrowDown',
-      activeClass: 'border-transparent bg-error text-error-content',
-      hoverClass: 'hover:border-error hover:text-error',
+      variant: 'error',
     },
   ];
 

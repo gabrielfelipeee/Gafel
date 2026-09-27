@@ -6,11 +6,22 @@
   <button
     type="button"
     (click)="onClick(option.value)"
-    class="group flex items-center justify-center gap-2 uppercase outline-none border border-base rounded-xl py-2.5 px-2 cursor-pointer transition-all duration-500"
-    [ngClass]="[option.value === value() 
-      ? option.activeClass ? option.activeClass : 'border-transparent bg-success text-success-content' 
-      : option.hoverClass ? option.hoverClass : 'hover:border-success hover:text-success'
-    ]"
+    class="group flex items-center justify-center gap-2 uppercase outline-none border border-base rounded-xl py-2.5 px-2 cursor-pointer transition-all duration-300"
+    [ngClass]="{
+      'pointer-events-none border-transparent': option.value === value(),
+
+      'hover:border-neutral': !option?.variant,
+      'bg-base-300': option.value === value() && !option?.variant,
+
+      'hover:border-success hover:text-success': option?.variant === 'success',
+      'bg-success text-success-content': option.value === value() && option?.variant === 'success',
+
+      'hover:border-warning hover:text-warning': option?.variant === 'warning',
+      'bg-warning text-warning-content': option.value === value() && option?.variant === 'warning',
+
+      'hover:border-error hover:text-error': option?.variant === 'error',
+      'bg-error text-error-content': option.value === value() && option?.variant === 'error',
+    }"
     [disabled]="disabled()"
   >
     @if (option.icon) {

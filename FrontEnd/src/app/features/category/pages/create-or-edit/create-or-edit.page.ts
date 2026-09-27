@@ -16,7 +16,6 @@ import { ToastService } from '@shared/services/toast.service';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 import { mapApiErrorsToForm } from '@shared/validation/utils/map-api-errors-to-form.utils';
 import { CustomRadioGroupComponent } from '@shared/components/custom-radio-group/custom-radio-group.component';
-import { CustomRadioOption } from '@shared/interfaces/custom-radio-option.interface';
 import {
   CATEGORY_ICON_NAMES,
   CATEGORY_ICONS,
@@ -30,6 +29,7 @@ import { ApiErrorHandlerService } from '@shared/services/api-error-handler.servi
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
 import { IconButtonComponent } from '@shared/components/icon-button/icon-button.component';
 import { finalize } from 'rxjs';
+import { CustomRadioGroupOption } from '@shared/interfaces/custom-radio-group-option.interface';
 
 @Component({
   selector: 'app-create-or-edit-category',
@@ -59,18 +59,18 @@ export class CreateOrEditPage {
     },
   } satisfies FormValidationMessages;
 
-  readonly categoryTypeOptions: CustomRadioOption<CategoryType>[] = [
+  readonly categoryTypeOptions: CustomRadioGroupOption<CategoryType>[] = [
     {
       value: CategoryType.Income,
       label: 'receita',
       icon: 'heroArrowUp',
+      variant: 'success',
     },
     {
       value: CategoryType.Expense,
       label: 'despesa',
       icon: 'heroArrowDown',
-      activeClass: 'border-transparent bg-error text-error-content',
-      hoverClass: 'hover:border-error hover:text-error',
+      variant: 'error',
     },
   ];
 

@@ -1,7 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
-import { CustomRadioOption } from '@shared/interfaces/custom-radio-option.interface';
+import { CustomRadioGroupOption } from '@shared/interfaces/custom-radio-group-option.interface';
 
 @Component({
   host: { class: 'block' },
@@ -10,10 +10,11 @@ import { CustomRadioOption } from '@shared/interfaces/custom-radio-option.interf
   imports: [NgClass, NgIcon],
 })
 export class CustomRadioGroupComponent<T> {
-  options = input.required<CustomRadioOption<T>[]>();
+  options = input.required<CustomRadioGroupOption<T>[]>();
   value = input.required<T>();
-  valueChange = output<T>();
   disabled = input<boolean>(false);
+
+  valueChange = output<T>();
 
   onClick(value: T) {
     this.valueChange.emit(value);
