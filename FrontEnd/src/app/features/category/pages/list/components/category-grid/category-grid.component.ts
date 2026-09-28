@@ -2,15 +2,15 @@ import { CurrencyPipe, DecimalPipe, NgClass } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 import { CategoryType } from '@features/category/enums/category-type.enum';
 import { Category } from '@features/category/interfaces/category.interface';
-import { NgIcon } from '@ng-icons/core';
 import { ItemActionsComponent } from '@shared/components/item-actions/item-actions.component';
 import { iItemActionEvent } from '@shared/interfaces/item-action-event.interface';
 import { iItemActionData } from '@shared/interfaces/item-action-data.interface';
 import { CategoryAction } from '@features/category/types/category-action.type';
+import { EmojiComponent } from '@shared/components/emoji/emoji.component';
 
 @Component({
   selector: 'app-category-grid',
-  imports: [CurrencyPipe, DecimalPipe, NgIcon, ItemActionsComponent, NgClass],
+  imports: [CurrencyPipe, DecimalPipe, ItemActionsComponent, NgClass, EmojiComponent, NgClass],
   templateUrl: './category-grid.component.html',
 })
 export class CategoryGridComponent {

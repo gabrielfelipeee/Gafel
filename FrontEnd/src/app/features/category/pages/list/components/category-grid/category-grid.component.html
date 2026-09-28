@@ -18,10 +18,13 @@
         [class.group-hover:text-primary]="category.type === CategoryType.Income"
         [class.group-hover:text-error]="category.type === CategoryType.Expense"
       >
-        <ng-icon
+        <app-emoji
           [name]="category.icon"
-          size="32"
-          class="transition-transform! duration-500 group-hover:scale-[1.2]"
+          class="icon-container bg-base-300/40"
+          [ngClass]="{
+              'group-hover:bg-primary/15': category.type === CategoryType.Income,
+              'group-hover:bg-error/15': category.type === CategoryType.Expense
+            }"
         />
       </span>
 

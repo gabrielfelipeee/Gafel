@@ -2,7 +2,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { provideIcons, NgIcon } from '@ng-icons/core';
+import { provideIcons } from '@ng-icons/core';
 import { heroArrowLeft, heroArrowPath, heroHashtag } from '@ng-icons/heroicons/outline';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CategoryType } from '@features/category/enums/category-type.enum';
@@ -16,10 +16,6 @@ import { ToastService } from '@shared/services/toast.service';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
 import { mapApiErrorsToForm } from '@shared/validation/utils/map-api-errors-to-form.utils';
 import { CustomRadioGroupComponent } from '@shared/components/custom-radio-group/custom-radio-group.component';
-import {
-  CATEGORY_ICON_NAMES,
-  CATEGORY_ICONS,
-} from '@features/category/contants/category-icons.constant';
 import { RefreshService } from '@shared/services/refresh.service';
 import { REFRESH_KEYS } from '@shared/constants/refresh-keys.constant';
 import { Category } from '@features/category/interfaces/category.interface';
@@ -30,6 +26,8 @@ import { BreakpointObserverService } from '@shared/services/breakpoint-observer.
 import { IconButtonComponent } from '@shared/components/icon-button/icon-button.component';
 import { finalize } from 'rxjs';
 import { CustomRadioGroupOption } from '@shared/interfaces/custom-radio-group-option.interface';
+import { EmojiComponent } from '@shared/components/emoji/emoji.component';
+import { CATEGORY_ICON_NAMES } from '@features/category/contants/category-icon-names.constant';
 
 @Component({
   selector: 'app-create-or-edit-category',
@@ -37,14 +35,14 @@ import { CustomRadioGroupOption } from '@shared/interfaces/custom-radio-group-op
   imports: [
     ReactiveFormsModule,
     ModalComponent,
-    NgIcon,
     CustomInputComponent,
     ButtonComponent,
     CustomRadioGroupComponent,
     NgTemplateOutlet,
     IconButtonComponent,
+    EmojiComponent,
   ],
-  providers: [provideIcons({ ...CATEGORY_ICONS, heroHashtag, heroArrowPath, heroArrowLeft })],
+  providers: [provideIcons({ heroHashtag, heroArrowPath, heroArrowLeft })],
 })
 export class CreateOrEditPage {
   readonly CATEGORY_ICON_NAMES = CATEGORY_ICON_NAMES;

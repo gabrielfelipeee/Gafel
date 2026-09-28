@@ -42,15 +42,12 @@
       <ul class="list-none flex justify-center items-center flex-wrap gap-4">
         @for (icon of CATEGORY_ICON_NAMES; track $index) {
         <li>
-          <button
-            type="button"
+          <app-emoji
+            [name]="icon"
+            class="icon-container icon-container-hover border border-base-300"
+            [class.icon-container-active]="form.controls.icon.value === icon"
             (click)="onSelectIcon(icon)"
-            class="icon-container icon-container-hover cursor-pointer"
-            [class.icon-container--active]="form.controls.icon.value === icon"
-            [disabled]="form.disabled"
-          >
-            <ng-icon [name]="icon" size="32" />
-          </button>
+          />
         </li>
         }
       </ul>

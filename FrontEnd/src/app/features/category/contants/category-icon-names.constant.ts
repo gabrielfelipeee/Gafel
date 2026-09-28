@@ -28,7 +28,6 @@ export const CATEGORY_ICON_NAMES: FluentEmojiName[] = [
   'bus',
   'train',
   'airplane',
-  'worldMap',
   'tv',
   'movie',
   'music',

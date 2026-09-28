@@ -27,7 +27,6 @@ import {
 import { createListResource } from '@shared/query/create-list-resource';
 import { CustomRadioGroupComponent } from '@shared/components/custom-radio-group/custom-radio-group.component';
 import { CategoryType } from '@features/category/enums/category-type.enum';
-import { CATEGORY_ICONS } from '@features/category/contants/category-icons.constant';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { EmptyListComponent } from '@shared/components/empty-list/empty-list.component';
 import { ConfirmationModalService } from '@shared/services/confirmation-modal.service';
@@ -64,7 +63,6 @@ import { CustomRadioGroupOption } from '@shared/interfaces/custom-radio-group-op
   ],
   providers: [
     provideIcons({
-      ...CATEGORY_ICONS,
       heroFunnel,
       heroTrash,
       heroPlus,

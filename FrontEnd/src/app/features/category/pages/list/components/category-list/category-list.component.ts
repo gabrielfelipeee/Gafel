@@ -1,16 +1,16 @@
 import { Component, input, output } from '@angular/core';
 import { CategoryType } from '@features/category/enums/category-type.enum';
 import { CurrencyPipe, DecimalPipe, NgClass } from '@angular/common';
-import { NgIcon } from '@ng-icons/core';
 import { Category } from '@features/category/interfaces/category.interface';
 import { IconButtonComponent } from '@shared/components/icon-button/icon-button.component';
 import { iItemActionEvent } from '@shared/interfaces/item-action-event.interface';
 import { iItemActionData } from '@shared/interfaces/item-action-data.interface';
 import { CategoryAction } from '@features/category/types/category-action.type';
+import { EmojiComponent } from '@shared/components/emoji/emoji.component';
 
 @Component({
   selector: 'app-category-list',
-  imports: [NgClass, NgIcon, CurrencyPipe, DecimalPipe, IconButtonComponent],
+  imports: [NgClass, CurrencyPipe, DecimalPipe, IconButtonComponent, EmojiComponent],
   templateUrl: './category-list.component.html',
 })
 export class CategoryListComponent {

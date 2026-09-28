@@ -250,15 +250,12 @@
     align-items: center;
     justify-content: center;
 
-    border: 1px solid var(--color-base-300);
     border-radius: 12px;
-
-    background-color: transparent;
-
+    
     transition:
-      background-color 0.5s ease-in-out,
-      border-color 0.5s ease-in-out,
-      color 0.5s ease-in-out;
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      color 0.3s ease;
   }
 
   /* Hover */
@@ -266,19 +263,17 @@
     border-color: var(--color-primary);
     color: var(--color-primary);
     background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+    cursor: pointer;
   }
 
-  /* Ícone */
-  .icon-container ng-icon {
-    transition: color 0.5s ease-in-out;
+  /* Active / Selected */
+  .icon-container.icon-container-active {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
+    pointer-events: none;
   }
 
-  /* Estado ativo/selecionado */
-  .icon-container--active {
-    border: none;
-    background-color: var(--color-primary);
-    color: var(--color-success-content);
-  }
 
   /* TOAST */
   .toast-custom {
