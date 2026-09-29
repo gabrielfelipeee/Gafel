@@ -40,6 +40,8 @@ import {
   Toolbox,
   Bus,
   Train,
+  MobilePhone,
+  PigFace,
 } from '@fluentui-emoji/angular/flat';
 
 export const FLUENT_EMOJIS = {
@@ -83,4 +85,6 @@ export const FLUENT_EMOJIS = {
   documents: CardFileBox,
   label: Label,
   other: WhiteQuestionMark,
+  pig: PigFace,
+  phone: MobilePhone,
 } as const satisfies Record<string, FluentEmojiIcon>;

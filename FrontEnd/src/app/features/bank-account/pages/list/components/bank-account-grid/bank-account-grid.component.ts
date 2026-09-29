@@ -1,6 +1,5 @@
 import { CurrencyPipe, NgClass } from '@angular/common';
 import { Component, input, output } from '@angular/core';
-import { NgIcon } from '@ng-icons/core';
 import { ItemActionsComponent } from '@shared/components/item-actions/item-actions.component';
 import { iItemActionEvent } from '@shared/interfaces/item-action-event.interface';
 import { iItemActionData } from '@shared/interfaces/item-action-data.interface';
@@ -10,10 +9,11 @@ import {
   BankAccountTypeInfo,
 } from '@features/bank-account/enums/bank-account-type.enum';
 import { BankAccountAction } from '@features/bank-account/types/bank-account-action.type';
+import { EmojiComponent } from '@shared/components/emoji/emoji.component';
 
 @Component({
   selector: 'app-bank-account-grid',
-  imports: [CurrencyPipe, NgIcon, ItemActionsComponent, NgClass],
+  imports: [CurrencyPipe, ItemActionsComponent, NgClass, EmojiComponent],
   templateUrl: './bank-account-grid.component.html',
 })
 export class BankAccountGridComponent {

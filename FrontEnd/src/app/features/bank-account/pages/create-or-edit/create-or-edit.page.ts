@@ -71,7 +71,7 @@ export class CreateOrEditPage {
     .map(value => ({
       value,
       label: BankAccountTypeInfo[value].label,
-      icon: BankAccountTypeInfo[value].icon,
+      icon: BankAccountTypeInfo[value].icon!,
     }));
   readonly formErrorMessages = {
     name: {

@@ -1,3 +1,5 @@
+import { EnumInfo } from '@shared/types/enum-info.type';
+
 export enum BankAccountType {
   Wallet,
   CheckingAccount,
@@ -5,21 +7,25 @@ export enum BankAccountType {
   DigitalAccount,
 }
 
-export const BankAccountTypeInfo: Record<BankAccountType, { label: string; icon: string }> = {
+export const BankAccountTypeInfo: EnumInfo<BankAccountType> = {
   [BankAccountType.Wallet]: {
-    icon: 'heroWallet',
     label: 'carteira',
+    icon: 'heroBanknotes',
+    emoji: 'money',
   },
   [BankAccountType.CheckingAccount]: {
-    icon: 'heroBuildingLibrary',
     label: 'conta corrente',
+    icon: 'heroBuildingLibrary',
+    emoji: 'bank',
   },
   [BankAccountType.SavingsAccount]: {
-    icon: 'heroBanknotes',
     label: 'conta poupança',
+    icon: 'heroBanknotes',
+    emoji: 'pig',
   },
   [BankAccountType.DigitalAccount]: {
-    icon: 'heroDevicePhoneMobile',
     label: 'conta digital',
+    icon: 'heroDevicePhoneMobile',
+    emoji: 'phone',
   },
 };

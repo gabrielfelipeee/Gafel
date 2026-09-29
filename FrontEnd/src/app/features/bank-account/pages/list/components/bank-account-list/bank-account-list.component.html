@@ -29,8 +29,8 @@
   </thead>
 
   <tbody [ngClass]="{ 'opacity-50 pointer-events-none': isLoading() }">
-    @for (bankAccount of bankAccounts(); track bankAccount.id) {
-      @let accountType = BankAccountTypeInfo[bankAccount.type]; 
+    @for (bankAccount of bankAccounts(); track bankAccount.id) { 
+      @let accountType = BankAccountTypeInfo[bankAccount.type];
       @let isBankAccountSelected = selectedBankAccountIds().has(bankAccount.id);
 
     <tr class="group" [class.selected]="isBankAccountSelected">
@@ -49,14 +49,12 @@
       </td>
 
       <td>
-        <div class="flex items-center gap-2">
-          <span class="icon-container shrink-0 group-hover:text-primary">
-            <ng-icon
-              [name]="accountType.icon"
-              size="32"
-              class="transition-transform! duration-500 group-hover:scale-[1.2]"
-            />
-          </span>
+        <div class="flex items-center gap-4">
+          <app-emoji
+            [name]="accountType.emoji!"
+            class="icon-container bg-base-200 group-hover:bg-primary/15"
+            [class.bg-primary/15]="isBankAccountSelected"
+          />
 
           <span class="truncate"> {{ bankAccount.name }} </span>
         </div>

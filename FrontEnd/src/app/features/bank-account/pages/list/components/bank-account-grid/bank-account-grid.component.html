@@ -15,13 +15,10 @@
 
     <!-- Conta + ícone + tipo -->
     <div class="flex items-center gap-4 pr-8">
-      <span class="icon-container shrink-0 group-hover:text-primary">
-        <ng-icon
-          [name]="accountType.icon"
-          size="32"
-          class="transition-transform! duration-500 group-hover:scale-[1.2]"
-        />
-      </span>
+      <app-emoji
+        [name]="accountType.emoji!"
+        class="icon-container bg-base-300/40 group-hover:bg-primary/15"
+      />
 
       <div class="min-w-0">
         <span class="block font-bold text-xl truncate"> {{ bankAccount.name }} </span>
