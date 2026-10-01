@@ -4,5 +4,6 @@ export const BANK_ACCOUNT_RULES = {
   },
   INITIAL_BALANCE: {
     MIN: 0,
+    MAX: 10_000_000,
   },
 } as const;

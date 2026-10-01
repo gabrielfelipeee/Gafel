@@ -20,12 +20,13 @@
 
   <input
     [type]="type() === 'currency' ? 'text' : currentType()"
-    [maskito]="type() === 'currency' ? currencyMaskOptions : null"
-    [value]="value"
-    [placeholder]="placeholder()"
+    [value]="value()"
+    [disabled]="isDisabled()"
     (input)="handleInput($event)"
     (blur)="handleTouched()"
-    [disabled]="isDisabled()"
+    appCurrencyMask
+    [maskEnabled]="type() === 'currency'"
+    [placeholder]="placeholder()"
     class="input input-lg"
   />
 </label>

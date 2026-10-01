@@ -4,10 +4,9 @@ import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroEye, heroEyeSlash } from '@ng-icons/heroicons/outline';
 import { FieldValidationMessages } from '@shared/types/field-validation-messages.type';
-import type { MaskitoOptions } from '@maskito/core';
-import { MaskitoDirective } from '@maskito/angular';
-import { maskitoNumber } from '@maskito/kit';
 import { getControlErrorMessage } from '@shared/validation/utils/get-control-error-message.utils';
+import { currencyMaskToNumber, numberToCurrencyMask } from '@shared/utils/currency-mask.utils';
+import { CurrencyMaskDirective } from '@shared/directives/currency-mask.directive';
 
 type InputType = 'text' | 'password' | 'email' | 'currency';
 
@@ -15,7 +14,7 @@ type InputType = 'text' | 'password' | 'email' | 'currency';
   selector: 'app-custom-input',
   templateUrl: './custom-input.component.html',
   styleUrl: './custom-input.component.scss',
-  imports: [NgIcon, FormsModule, NgClass, MaskitoDirective],
+  imports: [NgIcon, FormsModule, NgClass, CurrencyMaskDirective],
   viewProviders: [provideIcons({ heroEye, heroEyeSlash })],
 })
 export class CustomInputComponent implements ControlValueAccessor {
@@ -25,41 +24,29 @@ export class CustomInputComponent implements ControlValueAccessor {
   placeholder = input.required<string>();
   errorMessages = input<FieldValidationMessages>({});
 
-  readonly currencyMaskOptions: MaskitoOptions = maskitoNumber({
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-    decimalSeparator: ',',
-    thousandSeparator: '.',
-    min: 0,
-  });
-
-  value = '';
-  readonly currentType = signal<InputType>(this.type());
-  readonly isDisabled = signal(false);
-
   private ngControl = inject(NgControl, { optional: true, self: true });
+  private onChange?: (value: string | number | null) => void;
+  private onTouched?: () => void;
+
+  readonly value = signal('');
+  readonly isDisabled = signal(false);
+  readonly currentType = signal<InputType>(this.type());
 
   constructor() {
     if (this.ngControl) this.ngControl.valueAccessor = this;
   }
 
-  private onChange?: (value: string | number | null) => void;
-  private onTouched?: () => void;
-
+  // #region ControlValueAccessor
   writeValue(value: string | number | null): void {
-    if (value == null) {
-      this.value = '';
+    if (value == null || value === '') {
+      this.value.set('');
       return;
     }
 
-    if (this.type() === 'currency') {
-      this.value = this.formatCurrency(Number(value));
-      return;
-    }
-
-    this.value = String(value);
+    this.value.set(
+      this.type() === 'currency' ? numberToCurrencyMask(Number(value)) : String(value),
+    );
   }
-
   registerOnChange(fn: (value: string | number | null) => void): void {
     this.onChange = fn;
   }
@@ -69,13 +56,13 @@ export class CustomInputComponent implements ControlValueAccessor {
   setDisabledState(isDisabled: boolean): void {
     this.isDisabled.set(isDisabled);
   }
+  // #endregion ControlValueAccessor
 
   handleInput(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
 
-    this.value = value;
-
-    this.onChange?.(this.type() === 'currency' ? this.parseCurrency(value) : value);
+    this.value.set(value);
+    this.onChange?.(this.type() === 'currency' ? currencyMaskToNumber(value) : value);
   }
   handleTouched(): void {
     if (this.onTouched) this.onTouched();
@@ -91,23 +78,5 @@ export class CustomInputComponent implements ControlValueAccessor {
 
   get errorMessage(): string | null {
     return getControlErrorMessage(this.ngControl?.control ?? null, this.errorMessages());
-  }
-
-  private parseCurrency(value: string): number | null {
-    if (!value.trim()) return null;
-
-    const parsedValue = Number(
-      value
-        .replace(/\./g, '') // remove separador de milhar
-        .replace(',', '.'), // troca separador decimal
-    );
-
-    return Number.isNaN(parsedValue) ? null : parsedValue;
-  }
-  private formatCurrency(value: number): string {
-    return value.toLocaleString('pt-BR', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
   }
 }

@@ -30,6 +30,7 @@ import { SelectOption } from '@shared/interfaces/select-option.interface';
 import { heroArrowLeft, heroArrowPath } from '@ng-icons/heroicons/outline';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
 import { IconButtonComponent } from '@shared/components/icon-button/icon-button.component';
+import { formatCurrency } from '@shared/utils/currency-format.utils';
 
 @Component({
   selector: 'app-create-or-edit-bank-account',
@@ -79,8 +80,9 @@ export class CreateOrEditPage {
       maxlength: `Nome deve ter no máximo ${BANK_ACCOUNT_RULES.NAME.MAX_LENGTH} caracteres`,
     },
     initialBalance: {
-      required: 'Saldo inicial é obrigatório',
-      min: 'O valor deve ser maior que R$ 0,00',
+      required: 'Saldo da conta é obrigatório',
+      min: `O valor deve ser maior ou igual a ${formatCurrency(BANK_ACCOUNT_RULES.INITIAL_BALANCE.MIN)}`,
+      max: `O valor deve ter no máximo ${formatCurrency(BANK_ACCOUNT_RULES.INITIAL_BALANCE.MAX)}`,
     },
     type: {
       required: 'Tipo é obrigatório',
@@ -94,7 +96,11 @@ export class CreateOrEditPage {
     ],
     initialBalance: [
       this.bankAccount?.initialBalance ?? 0,
-      [Validators.required, Validators.min(BANK_ACCOUNT_RULES.INITIAL_BALANCE.MIN)],
+      [
+        Validators.required,
+        Validators.min(BANK_ACCOUNT_RULES.INITIAL_BALANCE.MIN),
+        Validators.max(BANK_ACCOUNT_RULES.INITIAL_BALANCE.MAX),
+      ],
     ],
     type: [this.bankAccount?.type ?? BankAccountType.CheckingAccount, [Validators.required]],
   });
