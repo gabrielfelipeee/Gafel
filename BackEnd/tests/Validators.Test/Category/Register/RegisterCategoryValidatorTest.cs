@@ -34,7 +34,7 @@ public class RegisterCategoryValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.Name)
-            .WithErrorMessage(ResourceMessagesException.CATEGORY_NAME_EMPTY);
+            .WithErrorMessage(ResourceMessagesException.NAME_REQUIRED);
     }
 
     [Fact]
@@ -48,7 +48,7 @@ public class RegisterCategoryValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.Icon)
-            .WithErrorMessage(ResourceMessagesException.CATEGORY_ICON_EMPTY);
+            .WithErrorMessage(ResourceMessagesException.CATEGORY_ICON_REQUIRED);
     }
 
     [Fact]
@@ -62,6 +62,6 @@ public class RegisterCategoryValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.Type)
-            .WithErrorMessage(ResourceMessagesException.CATEGORY_TYPE_INVALID);
+            .WithErrorMessage(ResourceMessagesException.TYPE_INVALID);
     }
 }

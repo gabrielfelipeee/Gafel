@@ -53,7 +53,7 @@ public class CreateBankAccountUseCaseTest
         error.Key.ShouldBe(nameof(request.Name));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.BANK_ACCOUNT_NAME_EMPTY);
+        value.ShouldBe(ResourceMessagesException.NAME_REQUIRED);
     }
 
     [Fact]
@@ -74,7 +74,7 @@ public class CreateBankAccountUseCaseTest
         error.Key.ShouldBe(nameof(request.InitialBalance));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.INVALID_INITIAL_BALANCE);
+        value.ShouldBe(ResourceMessagesException.BANK_ACCOUNT_INITIAL_BALANCE_OUT_OF_RANGE);
     }
 
     [Fact]
@@ -95,7 +95,7 @@ public class CreateBankAccountUseCaseTest
         error.Key.ShouldBe(nameof(request.Type));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.BANK_ACCOUNT_TYPE_INVALID);
+        value.ShouldBe(ResourceMessagesException.TYPE_INVALID);
     }
 
     [Fact]

@@ -34,7 +34,7 @@ public class CreateBankAccountValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.Name)
-            .WithErrorMessage(ResourceMessagesException.BANK_ACCOUNT_NAME_EMPTY);
+            .WithErrorMessage(ResourceMessagesException.NAME_REQUIRED);
     }
 
     [Fact]
@@ -48,7 +48,7 @@ public class CreateBankAccountValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.InitialBalance)
-            .WithErrorMessage(ResourceMessagesException.INVALID_INITIAL_BALANCE);
+            .WithErrorMessage(ResourceMessagesException.BANK_ACCOUNT_INITIAL_BALANCE_OUT_OF_RANGE);
     }
 
     [Fact]
@@ -62,6 +62,6 @@ public class CreateBankAccountValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.Type)
-            .WithErrorMessage(ResourceMessagesException.BANK_ACCOUNT_TYPE_INVALID);
+            .WithErrorMessage(ResourceMessagesException.TYPE_INVALID);
     }
 }

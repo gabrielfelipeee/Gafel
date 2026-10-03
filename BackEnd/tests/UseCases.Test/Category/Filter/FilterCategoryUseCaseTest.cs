@@ -54,7 +54,7 @@ public class FilterCategoryUseCaseTest
         error.Key.ShouldBe(nameof(request.Type));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.CATEGORY_TYPE_INVALID);
+        value.ShouldBe(ResourceMessagesException.TYPE_INVALID);
     }
 
     [Fact]

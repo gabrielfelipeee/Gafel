@@ -21,7 +21,7 @@ public class AuthServiceBuilder
     }
     public void LoginWithInvalidCredentials()
     {
-        var response = new LoginResponseDto(Success: false, ErrorMessage: ResourceMessagesException.AUTH_INVALID_CREDENTIALS);
+        var response = new LoginResponseDto(Success: false, ErrorMessage: ResourceMessagesException.AUTH_CREDENTIALS_INVALID);
 
         _repository.Setup(r => r.Login(It.IsAny<UserCredentialsDto>())).ReturnsAsync(response);
     }
@@ -36,7 +36,7 @@ public class AuthServiceBuilder
     {
         var errors = new Dictionary<string, string[]>
         {
-            { "Password", new[] { ResourceMessagesException.USER_PASSWORD_INCORRECT } }
+            { "Password", new[] { ResourceMessagesException.USER_CURRENT_PASSWORD_INCORRECT } }
         };
         var response = new ChangePasswordResponseDto(Success: false, Errors: errors);
 

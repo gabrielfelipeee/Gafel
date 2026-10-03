@@ -54,7 +54,7 @@ public class FilterBankAccountUseCaseTest
         error.Key.ShouldBe(nameof(request.Type));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.BANK_ACCOUNT_TYPE_INVALID);
+        value.ShouldBe(ResourceMessagesException.TYPE_INVALID);
     }
 
     [Fact]

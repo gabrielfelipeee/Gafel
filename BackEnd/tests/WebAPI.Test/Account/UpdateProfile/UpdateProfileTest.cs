@@ -47,7 +47,7 @@ public class UpdateProfileTest : GafelClassFixture
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
-        await response.ShouldHaveSingleValidationError(field: "cpf", expectedMessage: ResourceMessagesException.CPF_INVALID);
+        await response.ShouldHaveSingleValidationError(field: "cpf", expectedMessage: ResourceMessagesException.PERSON_CPF_INVALID);
     }
 
     [Fact]
@@ -69,7 +69,7 @@ public class UpdateProfileTest : GafelClassFixture
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
-        await response.ShouldHaveSingleValidationError(field: "cpf", expectedMessage: ResourceMessagesException.CPF_ALREADY_REGISTERED);
+        await response.ShouldHaveSingleValidationError(field: "cpf", expectedMessage: ResourceMessagesException.PERSON_CPF_ALREADY_REGISTERED);
     }
 
     [Fact]
@@ -80,7 +80,7 @@ public class UpdateProfileTest : GafelClassFixture
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
-        await response.ShouldHaveSingleValidationError(field: "cpf", expectedMessage: ResourceMessagesException.CPF_UPDATE_NOT_ALLOWED);
+        await response.ShouldHaveSingleValidationError(field: "cpf", expectedMessage: ResourceMessagesException.PERSON_CPF_CHANGE_NOT_ALLOWED);
     }
 
     [Fact]
@@ -92,7 +92,7 @@ public class UpdateProfileTest : GafelClassFixture
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
-        await response.ShouldHaveSingleValidationError(field: "dateOfBirth", expectedMessage: ResourceMessagesException.PERSON_DATE_OF_BIRTH_INVALID);
+        await response.ShouldHaveSingleValidationError(field: "dateOfBirth", expectedMessage: ResourceMessagesException.PERSON_DATE_OF_BIRTH_MINIMUM_AGE);
     }
 
     [Fact]
@@ -104,7 +104,7 @@ public class UpdateProfileTest : GafelClassFixture
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
-        await response.ShouldHaveSingleValidationError(field: "dateOfBirth", expectedMessage: ResourceMessagesException.PERSON_DATE_OF_BIRTH_FUTURE);
+        await response.ShouldHaveSingleValidationError(field: "dateOfBirth", expectedMessage: ResourceMessagesException.PERSON_DATE_OF_BIRTH_IN_FUTURE);
     }
 
     [Fact]
@@ -128,7 +128,7 @@ public class UpdateProfileTest : GafelClassFixture
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
-        await response.ShouldHaveSingleValidationError(field: "fullName", expectedMessage: ResourceMessagesException.PERSON_FULL_NAME_EMPTY);
+        await response.ShouldHaveSingleValidationError(field: "fullName", expectedMessage: ResourceMessagesException.PERSON_FULL_NAME_REQUIRED);
     }
 
     [Fact]
@@ -140,6 +140,6 @@ public class UpdateProfileTest : GafelClassFixture
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
-        await response.ShouldHaveSingleValidationError(field: "city", expectedMessage: ResourceMessagesException.PERSON_CITY_INVALID);
+        await response.ShouldHaveSingleValidationError(field: "city", expectedMessage: ResourceMessagesException.PERSON_CITY_INVALID_LENGTH);
     }
 }

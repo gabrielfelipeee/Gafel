@@ -10,18 +10,20 @@ public class RegisterAccountValidator : AbstractValidator<RegisterAccountCommand
     {
         RuleFor(person => person.FullName)
             .NotEmpty()
-            .WithMessage(ResourceMessagesException.PERSON_FULL_NAME_EMPTY);
+            .WithMessage(ResourceMessagesException.PERSON_FULL_NAME_REQUIRED)
+            .MaximumLength(60)
+            .WithMessage(ResourceMessagesException.PERSON_FULL_NAME_TOO_LONG);
 
         RuleFor(user => user.Email)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
-            .WithMessage(ResourceMessagesException.USER_EMAIL_EMPTY)
+            .WithMessage(ResourceMessagesException.USER_EMAIL_REQUIRED)
             .EmailAddress()
             .WithMessage(ResourceMessagesException.USER_EMAIL_INVALID);
 
         RuleFor(x => x.Password)
             .NotEmpty()
-            .WithMessage(ResourceMessagesException.USER_PASSWORD_EMPTY)
+            .WithMessage(ResourceMessagesException.USER_PASSWORD_REQUIRED)
             .DependentRules(() => RuleFor(x => x.Password).PasswordPolicy());
     }
 }

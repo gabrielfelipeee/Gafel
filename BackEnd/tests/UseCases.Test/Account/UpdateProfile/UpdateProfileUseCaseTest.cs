@@ -48,7 +48,7 @@ public class UpdateProfileUseCaseTest
         error.Key.ShouldBe(nameof(request.Cpf));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.CPF_INVALID);
+        value.ShouldBe(ResourceMessagesException.PERSON_CPF_INVALID);
     }
 
     [Fact]
@@ -68,7 +68,7 @@ public class UpdateProfileUseCaseTest
         error.Key.ShouldBe(nameof(request.Cpf));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.CPF_ALREADY_REGISTERED);
+        value.ShouldBe(ResourceMessagesException.PERSON_CPF_ALREADY_REGISTERED);
     }
 
 
@@ -89,7 +89,7 @@ public class UpdateProfileUseCaseTest
         error.Key.ShouldBe(nameof(request.Cpf));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.CPF_UPDATE_NOT_ALLOWED);
+        value.ShouldBe(ResourceMessagesException.PERSON_CPF_CHANGE_NOT_ALLOWED);
     }
 
 
@@ -111,7 +111,7 @@ public class UpdateProfileUseCaseTest
         error.Key.ShouldBe(nameof(request.DateOfBirth));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.PERSON_DATE_OF_BIRTH_INVALID);
+        value.ShouldBe(ResourceMessagesException.PERSON_DATE_OF_BIRTH_MINIMUM_AGE);
     }
 
     [Fact]
@@ -132,7 +132,7 @@ public class UpdateProfileUseCaseTest
         error.Key.ShouldBe(nameof(request.DateOfBirth));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.PERSON_DATE_OF_BIRTH_FUTURE);
+        value.ShouldBe(ResourceMessagesException.PERSON_DATE_OF_BIRTH_IN_FUTURE);
     }
 
     [Fact]
@@ -153,7 +153,7 @@ public class UpdateProfileUseCaseTest
         error.Key.ShouldBe(nameof(request.DateOfBirth));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.PERSON_DATE_OF_BIRTH_UPDATE_NOT_ALLOWED);
+        value.ShouldBe(ResourceMessagesException.PERSON_DATE_OF_BIRTH_CHANGE_NOT_ALLOWED);
     }
 
     private static UpdateProfileUseCase CreateUseCase(

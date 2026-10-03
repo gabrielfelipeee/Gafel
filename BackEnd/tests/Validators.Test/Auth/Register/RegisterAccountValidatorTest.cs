@@ -33,7 +33,7 @@ public class RegisterAccountValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.FullName)
-            .WithErrorMessage(ResourceMessagesException.PERSON_FULL_NAME_EMPTY);
+            .WithErrorMessage(ResourceMessagesException.PERSON_FULL_NAME_REQUIRED);
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class RegisterAccountValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.Email)
-            .WithErrorMessage(ResourceMessagesException.USER_EMAIL_EMPTY);
+            .WithErrorMessage(ResourceMessagesException.USER_EMAIL_REQUIRED);
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class RegisterAccountValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.Password)
-            .WithErrorMessage(ResourceMessagesException.USER_PASSWORD_EMPTY);
+            .WithErrorMessage(ResourceMessagesException.USER_PASSWORD_REQUIRED);
     }
 
     [Theory]
@@ -94,7 +94,7 @@ public class RegisterAccountValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.Password)
-            .WithErrorMessage(ResourceMessagesException.USER_PASSWORD_TOO_SHORT);
+            .WithErrorMessage(ResourceMessagesException.USER_PASSWORD_INVALID_LENGTH);
     }
 
     [Fact]

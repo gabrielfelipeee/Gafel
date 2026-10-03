@@ -43,7 +43,7 @@ public class CustomAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewa
     {
         // Header ausente
         if (!context.Request.Headers.ContainsKey("Authorization"))
-            return ResourceMessagesException.AUTH_NO_TOKEN;
+            return ResourceMessagesException.AUTH_TOKEN_REQUIRED;
 
         // Tenta obter a exceção armazenada no pipeline de autenticação 
         if (!context.Items.TryGetValue(HttpContextKeys.AuthException, out var exception))

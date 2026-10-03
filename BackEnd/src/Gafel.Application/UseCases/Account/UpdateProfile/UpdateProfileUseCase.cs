@@ -86,7 +86,7 @@ public class UpdateProfileUseCase : IUpdateProfileUseCase
         // Verificação de Unicidade
         if (person.Cpf is null && await _personReadOnlyRepository.ExistPersonWithCpf(cpf: newCpf, excludeId: person.Id))
         {
-            AddError(errors, nameof(UpdateProfileCommand.Cpf), ResourceMessagesException.CPF_ALREADY_REGISTERED);
+            AddError(errors, nameof(UpdateProfileCommand.Cpf), ResourceMessagesException.PERSON_CPF_ALREADY_REGISTERED);
             return;
         }
 

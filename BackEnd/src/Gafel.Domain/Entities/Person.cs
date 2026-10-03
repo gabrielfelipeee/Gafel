@@ -21,7 +21,7 @@ public class Person : EntityBase
         if (Cpf is not null)
         {
             if (!Cpf.Equals(cpf))
-                return Result<bool>.Failure(ResourceMessagesException.CPF_UPDATE_NOT_ALLOWED);
+                return Result<bool>.Failure(ResourceMessagesException.PERSON_CPF_CHANGE_NOT_ALLOWED);
 
             return Result<bool>.Success(true); // mesmo CPF
         }
@@ -36,7 +36,7 @@ public class Person : EntityBase
         if (DateOfBirth is not null)
         {
             if (!DateOfBirth.Equals(dateOfBirth))
-                return Result<bool>.Failure(ResourceMessagesException.PERSON_DATE_OF_BIRTH_UPDATE_NOT_ALLOWED);
+                return Result<bool>.Failure(ResourceMessagesException.PERSON_DATE_OF_BIRTH_CHANGE_NOT_ALLOWED);
 
             return Result<bool>.Success(true); // mesma data de nascimento
         }

@@ -5,7 +5,7 @@ namespace Gafel.Domain.ValueObjects;
 
 public sealed partial record DateOfBirth
 {
-    private const int MINIMUM_AGE = 18;
+    private const int MinimumAge = 18;
 
     public DateOnly Value { get; }
     private DateOfBirth(DateOnly value) => Value = value;
@@ -15,10 +15,10 @@ public sealed partial record DateOfBirth
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
 
         if (date > today)
-            return Result<DateOfBirth>.Failure(errorMessage: ResourceMessagesException.PERSON_DATE_OF_BIRTH_FUTURE);
+            return Result<DateOfBirth>.Failure(errorMessage: ResourceMessagesException.PERSON_DATE_OF_BIRTH_IN_FUTURE);
 
-        if (date > today.AddYears(-MINIMUM_AGE))
-            return Result<DateOfBirth>.Failure(errorMessage: ResourceMessagesException.PERSON_DATE_OF_BIRTH_INVALID);
+        if (date > today.AddYears(-MinimumAge))
+            return Result<DateOfBirth>.Failure(errorMessage: ResourceMessagesException.PERSON_DATE_OF_BIRTH_MINIMUM_AGE);
 
         return Result<DateOfBirth>.Success(value: new DateOfBirth(date));
     }

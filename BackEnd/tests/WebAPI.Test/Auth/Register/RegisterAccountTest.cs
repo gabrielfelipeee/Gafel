@@ -44,6 +44,6 @@ public class RegisterAccountTest(CustomWebApplicationFactory factory) : GafelCla
 
         var response = await DoPost(method: METHOD, request: request);
 
-        await response.ShouldHaveSingleValidationError(field: "fullName", expectedMessage: ResourceMessagesException.PERSON_FULL_NAME_EMPTY);
+        await response.ShouldHaveSingleValidationError(field: "fullName", expectedMessage: ResourceMessagesException.PERSON_FULL_NAME_REQUIRED);
     }
 }

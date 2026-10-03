@@ -11,7 +11,7 @@ public class FilterBankAccountQueryParamsValidator : OptionalPaginationQueryPara
     {
         RuleFor(x => x.Type)
             .IsInEnum()
-            .WithMessage(ResourceMessagesException.BANK_ACCOUNT_TYPE_INVALID)
+            .WithMessage(ResourceMessagesException.TYPE_INVALID)
             .When(x => x.Type.HasValue);
     }
 }

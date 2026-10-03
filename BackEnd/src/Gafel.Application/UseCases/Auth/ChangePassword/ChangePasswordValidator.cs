@@ -10,12 +10,12 @@ public class ChangePasswordValidator : AbstractValidator<ChangePasswordCommand>
     {
         RuleFor(x => x.Password)
                 .NotEmpty()
-                .WithMessage(ResourceMessagesException.USER_PASSWORD_EMPTY)
+                .WithMessage(ResourceMessagesException.USER_PASSWORD_REQUIRED)
                 .DependentRules(() => RuleFor(x => x.Password).PasswordPolicy());
 
         RuleFor(x => x.NewPassword)
             .NotEmpty()
-            .WithMessage(ResourceMessagesException.USER_PASSWORD_EMPTY)
+            .WithMessage(ResourceMessagesException.USER_PASSWORD_REQUIRED)
             .DependentRules(() => RuleFor(x => x.NewPassword).PasswordPolicy());
     }
 }

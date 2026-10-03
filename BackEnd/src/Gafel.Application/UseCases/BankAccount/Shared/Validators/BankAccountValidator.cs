@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Gafel.Application.UseCases.BankAccount.Shared.Commands;
+using Gafel.Domain.Constants;
 using Gafel.Domain.Resources;
 
 namespace Gafel.Application.UseCases.BankAccount.Shared.Validators;
@@ -10,16 +11,16 @@ public class BankAccountValidator : AbstractValidator<BankAccountCommand>
     {
         RuleFor(bankAccount => bankAccount.Name)
             .NotEmpty()
-            .WithMessage(ResourceMessagesException.BANK_ACCOUNT_NAME_EMPTY)
+            .WithMessage(ResourceMessagesException.NAME_REQUIRED)
             .MaximumLength(100)
             .WithMessage(ResourceMessagesException.BANK_ACCOUNT_NAME_TOO_LONG);
 
         RuleFor(bankAccount => bankAccount.InitialBalance)
-            .GreaterThanOrEqualTo(0)
-            .WithMessage(ResourceMessagesException.INVALID_INITIAL_BALANCE);
+            .InclusiveBetween(0, DomainRules.MaximumMoneyAmount)
+            .WithMessage(ResourceMessagesException.BANK_ACCOUNT_INITIAL_BALANCE_OUT_OF_RANGE);
 
         RuleFor(bankAccount => bankAccount.Type)
             .IsInEnum()
-            .WithMessage(ResourceMessagesException.BANK_ACCOUNT_TYPE_INVALID);
+            .WithMessage(ResourceMessagesException.TYPE_INVALID);
     }
 }

@@ -57,7 +57,7 @@ public class DoLoginUseCaseTest
         var exception = await Should.ThrowAsync<InvalidLoginException>(() => useCase.Execute(request));
 
         exception.GetErrorTitle().ShouldBe(ResourceMessagesException.EXCEPTION_INVALID_LOGIN_TITLE);
-        exception.GetErrorDetail().ShouldBe(ResourceMessagesException.AUTH_INVALID_CREDENTIALS);
+        exception.GetErrorDetail().ShouldBe(ResourceMessagesException.AUTH_CREDENTIALS_INVALID);
         exception.GetStatusCode().ShouldBe(HttpStatusCode.Unauthorized);
     }
 

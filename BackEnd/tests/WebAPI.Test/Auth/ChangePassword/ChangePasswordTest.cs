@@ -63,6 +63,6 @@ public class ChangePasswordTest : GafelClassFixture
 
         var response = await DoPut(method: METHOD, request: request, token: token);
 
-        await response.ShouldHaveSingleValidationError(field: "newPassword", expectedMessage: ResourceMessagesException.USER_PASSWORD_EMPTY);
+        await response.ShouldHaveSingleValidationError(field: "newPassword", expectedMessage: ResourceMessagesException.USER_PASSWORD_REQUIRED);
     }
 }

@@ -9,8 +9,8 @@ public static partial class PasswordValidationExtensions
     public static IRuleBuilderOptions<T, string> PasswordPolicy<T>(this IRuleBuilder<T, string> ruleBuilder)
     {
         return ruleBuilder
-            .MinimumLength(8)
-            .WithMessage(ResourceMessagesException.USER_PASSWORD_TOO_SHORT)
+            .Length(8, 60)
+            .WithMessage(ResourceMessagesException.USER_PASSWORD_INVALID_LENGTH)
 
             .Matches(ContainsDigit())
             .WithMessage(ResourceMessagesException.USER_PASSWORD_REQUIRES_NUMBER)

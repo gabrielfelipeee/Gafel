@@ -41,7 +41,7 @@ public class ChangePasswordUseCaseTest
         error.Key.ShouldBe(nameof(request.NewPassword));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldContain(ResourceMessagesException.USER_PASSWORD_EMPTY);
+        value.ShouldContain(ResourceMessagesException.USER_PASSWORD_REQUIRED);
     }
 
     [Fact]
@@ -62,7 +62,7 @@ public class ChangePasswordUseCaseTest
 
         var value = error.Value;
         value.Length.ShouldBe(2);
-        value.ShouldContain(ResourceMessagesException.USER_PASSWORD_TOO_SHORT);
+        value.ShouldContain(ResourceMessagesException.USER_PASSWORD_INVALID_LENGTH);
         value.ShouldContain(ResourceMessagesException.USER_PASSWORD_REQUIRES_SPECIAL_CHAR);
     }
 
@@ -83,7 +83,7 @@ public class ChangePasswordUseCaseTest
         error.Key.ShouldBe(nameof(request.Password));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldContain(ResourceMessagesException.USER_PASSWORD_INCORRECT);
+        value.ShouldContain(ResourceMessagesException.USER_CURRENT_PASSWORD_INCORRECT);
     }
 
     private static ChangePasswordUseCase CreateUseCase(UserDto user, bool currentPasswordDifferent = false)

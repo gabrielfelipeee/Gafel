@@ -11,7 +11,7 @@ public class FilterCategoryQueryParamsValidator : OptionalPaginationQueryParamsV
     {
         RuleFor(x => x.Type)
             .IsInEnum()
-            .WithMessage(ResourceMessagesException.CATEGORY_TYPE_INVALID)
+            .WithMessage(ResourceMessagesException.TYPE_INVALID)
             .When(x => x.Type.HasValue);
     }
 }

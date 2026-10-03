@@ -17,17 +17,17 @@ public class AuthService(SignInManager<ApplicationUser> signInManager, UserManag
     {
         var user = await _userManager.FindByEmailAsync(credentials.Email);
         if (user is null)
-            return new LoginResponseDto(Success: false, ErrorMessage: ResourceMessagesException.AUTH_INVALID_CREDENTIALS);
+            return new LoginResponseDto(Success: false, ErrorMessage: ResourceMessagesException.AUTH_CREDENTIALS_INVALID);
 
         var result = await _signInManager.CheckPasswordSignInAsync(user: user, password: credentials.Password, lockoutOnFailure: true);
         if (!result.Succeeded)
         {
             var message = result switch
             {
-                { IsLockedOut: true } => ResourceMessagesException.AUTH_LOCKED_OUT,
+                { IsLockedOut: true } => ResourceMessagesException.AUTH_USER_LOCKED,
                 { IsNotAllowed: true } => ResourceMessagesException.AUTH_LOGIN_NOT_ALLOWED,
                 { RequiresTwoFactor: true } => ResourceMessagesException.AUTH_TWO_FACTOR_REQUIRED,
-                _ => ResourceMessagesException.AUTH_INVALID_CREDENTIALS
+                _ => ResourceMessagesException.AUTH_CREDENTIALS_INVALID
             };
 
             return new LoginResponseDto(Success: false, ErrorMessage: message);

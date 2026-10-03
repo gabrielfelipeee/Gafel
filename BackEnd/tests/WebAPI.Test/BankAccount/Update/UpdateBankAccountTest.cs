@@ -70,7 +70,7 @@ public class UpdateBankAccountTest : GafelClassFixture
 
         var response = await DoPut(method: $"{METHOD}/{_bankAccount.Id}", request: request, token: token);
 
-        await response.ShouldHaveSingleValidationError(field: "name", expectedMessage: ResourceMessagesException.BANK_ACCOUNT_NAME_EMPTY);
+        await response.ShouldHaveSingleValidationError(field: "name", expectedMessage: ResourceMessagesException.NAME_REQUIRED);
     }
 
     [Fact]
@@ -82,7 +82,7 @@ public class UpdateBankAccountTest : GafelClassFixture
 
         var response = await DoPut(method: $"{METHOD}/{_bankAccount.Id}", request: request, token: token);
 
-        await response.ShouldHaveSingleValidationError(field: "initialBalance", expectedMessage: ResourceMessagesException.INVALID_INITIAL_BALANCE);
+        await response.ShouldHaveSingleValidationError(field: "initialBalance", expectedMessage: ResourceMessagesException.BANK_ACCOUNT_INITIAL_BALANCE_OUT_OF_RANGE);
     }
 
     [Fact]
@@ -94,6 +94,6 @@ public class UpdateBankAccountTest : GafelClassFixture
 
         var response = await DoPut(method: $"{METHOD}/{_bankAccount.Id}", request: request, token: token);
 
-        await response.ShouldHaveSingleValidationError(field: "type", expectedMessage: ResourceMessagesException.BANK_ACCOUNT_TYPE_INVALID);
+        await response.ShouldHaveSingleValidationError(field: "type", expectedMessage: ResourceMessagesException.TYPE_INVALID);
     }
 }

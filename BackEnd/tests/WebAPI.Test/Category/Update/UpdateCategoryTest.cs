@@ -70,7 +70,7 @@ public class UpdateCategoryTest : GafelClassFixture
 
         var response = await DoPut(method: $"{METHOD}/{_category.Id}", request: request, token: token);
 
-        await response.ShouldHaveSingleValidationError(field: "name", expectedMessage: ResourceMessagesException.CATEGORY_NAME_EMPTY);
+        await response.ShouldHaveSingleValidationError(field: "name", expectedMessage: ResourceMessagesException.NAME_REQUIRED);
     }
 
     [Fact]
@@ -82,7 +82,7 @@ public class UpdateCategoryTest : GafelClassFixture
 
         var response = await DoPut(method: $"{METHOD}/{_category.Id}", request: request, token: token);
 
-        await response.ShouldHaveSingleValidationError(field: "icon", expectedMessage: ResourceMessagesException.CATEGORY_ICON_EMPTY);
+        await response.ShouldHaveSingleValidationError(field: "icon", expectedMessage: ResourceMessagesException.CATEGORY_ICON_REQUIRED);
     }
 
     [Fact]
@@ -94,6 +94,6 @@ public class UpdateCategoryTest : GafelClassFixture
 
         var response = await DoPut(method: $"{METHOD}/{_category.Id}", request: request, token: token);
 
-        await response.ShouldHaveSingleValidationError(field: "type", expectedMessage: ResourceMessagesException.CATEGORY_TYPE_INVALID);
+        await response.ShouldHaveSingleValidationError(field: "type", expectedMessage: ResourceMessagesException.TYPE_INVALID);
     }
 }

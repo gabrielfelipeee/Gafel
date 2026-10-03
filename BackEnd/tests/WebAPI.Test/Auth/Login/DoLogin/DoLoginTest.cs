@@ -70,7 +70,7 @@ public class DoLoginTest : GafelClassFixture
         title.ShouldBe(ResourceMessagesException.EXCEPTION_INVALID_LOGIN_TITLE);
 
         var detail = responseData.RootElement.GetProperty("detail").GetString();
-        detail.ShouldBe(ResourceMessagesException.AUTH_INVALID_CREDENTIALS);
+        detail.ShouldBe(ResourceMessagesException.AUTH_CREDENTIALS_INVALID);
 
         var status = responseData.RootElement.GetProperty("status").GetInt32();
         status.ShouldBe((int)HttpStatusCode.Unauthorized);

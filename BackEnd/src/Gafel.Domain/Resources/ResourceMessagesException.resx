@@ -117,125 +117,110 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="USER_EMAIL_EMPTY" xml:space="preserve">
-    <value>O email não pode estar vazio</value>
+  <data name="USER_EMAIL_REQUIRED" xml:space="preserve">
+    <value>Email é obrigatório.</value>
   </data>
   <data name="USER_EMAIL_INVALID" xml:space="preserve">
-    <value>O email é inválido</value>
+    <value>Email inválido.</value>
   </data>
   <data name="USER_EMAIL_ALREADY_REGISTERED" xml:space="preserve">
-    <value>Email já registrado</value>
+    <value>Email já cadastrado.</value>
   </data>
-  <data name="USER_PASSWORD_EMPTY" xml:space="preserve">
-    <value>A senha não pode estar vazia</value>
+  <data name="USER_PASSWORD_REQUIRED" xml:space="preserve">
+    <value>Senha é obrigatória.</value>
   </data>
-  <data name="PERSON_FULL_NAME_EMPTY" xml:space="preserve">
-    <value>O nome não pode estar vazio</value>
+  <data name="PERSON_FULL_NAME_REQUIRED" xml:space="preserve">
+    <value>Nome completo é obrigatório.</value>
   </data>
-  <data name="USER_PASSWORD_TOO_SHORT" xml:space="preserve">
-    <value>A senha deve ter no mínimo 8 caracteres</value>
+  <data name="USER_PASSWORD_INVALID_LENGTH" xml:space="preserve">
+    <value>Senha deve ter entre 8 e 60 caracteres.</value>
   </data>
   <data name="USER_PASSWORD_REQUIRES_NUMBER" xml:space="preserve">
-    <value>A senha deve conter pelo menos um número</value>
+    <value>Senha deve conter pelo menos um número.</value>
   </data>
   <data name="USER_PASSWORD_REQUIRES_SPECIAL_CHAR" xml:space="preserve">
-    <value>A senha deve conter pelo menos um caractere especial</value>
+    <value>Senha deve conter pelo menos um caractere especial.</value>
   </data>
   <data name="UNKNOWN_ERROR" xml:space="preserve">
-    <value>Erro desconhecido</value>
+    <value>Erro desconhecido.</value>
   </data>
-  <data name="AUTH_LOCKED_OUT" xml:space="preserve">
-    <value>Usuário bloqueado. Tente novamente mais tarde</value>
+  <data name="AUTH_USER_LOCKED" xml:space="preserve">
+    <value>Usuário bloqueado. Tente novamente mais tarde.</value>
   </data>
   <data name="AUTH_LOGIN_NOT_ALLOWED" xml:space="preserve">
-    <value>Login não permitido. Verifique se sua conta está confirmada</value>
+    <value>Login não permitido. Verifique se sua conta está confirmada.</value>
   </data>
   <data name="AUTH_TWO_FACTOR_REQUIRED" xml:space="preserve">
-    <value>Autenticação em dois fatores necessária</value>
+    <value>Autenticação em dois fatores é necessária.</value>
   </data>
-  <data name="AUTH_INVALID_CREDENTIALS" xml:space="preserve">
-    <value>Email ou senha inválidos</value>
+  <data name="AUTH_CREDENTIALS_INVALID" xml:space="preserve">
+    <value>Email ou senha inválidos.</value>
   </data>
   <data name="EXCEPTION_PERSON_NOT_FOUND_DETAIL" xml:space="preserve">
-    <value>Perfil do usuário não foi encontrado</value>
+    <value>Perfil do usuário não foi encontrado.</value>
   </data>
-  <data name="AUTH_NO_TOKEN" xml:space="preserve">
+  <data name="AUTH_TOKEN_REQUIRED" xml:space="preserve">
     <value>A requisição não possui token de autenticação.</value>
   </data>
   <data name="AUTH_TOKEN_INVALID" xml:space="preserve">
     <value>Token de autenticação inválido.</value>
   </data>
   <data name="AUTH_TOKEN_EXPIRED" xml:space="preserve">
-    <value>O token de autenticação está expirado</value>
+    <value>Token de autenticação está expirado.</value>
   </data>
   <data name="EXCEPTION_ERROR_ON_VALIDATION_TITLE" xml:space="preserve">
-    <value>Erro de validação</value>
+    <value>Erro de validação.</value>
   </data>
   <data name="EXCEPTION_ERROR_ON_VALIDATION_DETAIL" xml:space="preserve">
     <value>Um ou mais erros de validação ocorreram.</value>
   </data>
   <data name="EXCEPTION_INVALID_LOGIN_TITLE" xml:space="preserve">
-    <value>Falha na autenticação</value>
+    <value>Falha na autenticação.</value>
   </data>
   <data name="EXCEPTION_PERSON_NOT_FOUND_TITLE" xml:space="preserve">
-    <value>Perfil não encontrado</value>
-  </data>
-  <data name="USER_PASSWORD_INCORRECT" xml:space="preserve">
-    <value>Senha atual incorreta</value>
+    <value>Perfil não encontrado.</value>
   </data>
   <data name="UNAUTHORIZED" xml:space="preserve">
-    <value>Não autorizado</value>
+    <value>Não autorizado.</value>
   </data>
   <data name="EXCEPTION_INVALID_USER_TOKEN_DETAIL" xml:space="preserve">
-    <value>O usuário associado ao token não é mais válido</value>
+    <value>O usuário associado ao token não é mais válido.</value>
   </data>
-  <data name="CPF_INVALID" xml:space="preserve">
-    <value>CPF inválido</value>
+  <data name="PERSON_CPF_INVALID" xml:space="preserve">
+    <value>CPF inválido.</value>
   </data>
   <data name="PERSON_UF_INVALID" xml:space="preserve">
-    <value>UF inválida</value>
+    <value>UF inválida.</value>
   </data>
-  <data name="PERSON_CITY_INVALID" xml:space="preserve">
-    <value>Cidade inválida</value>
+  <data name="PERSON_CITY_INVALID_LENGTH" xml:space="preserve">
+    <value>Cidade deve ter entre 3 e 60 caracteres.</value>
   </data>
-  <data name="PERSON_DATE_OF_BIRTH_INVALID" xml:space="preserve">
-    <value>Data de nascimento inválida</value>
+  <data name="PERSON_DATE_OF_BIRTH_MINIMUM_AGE" xml:space="preserve">
+    <value>Deve ter no mínimo 18 anos.</value>
   </data>
-  <data name="PERSON_DATE_OF_BIRTH_FUTURE" xml:space="preserve">
-    <value>Data de nascimento não pode ser no futuro</value>
+  <data name="PERSON_DATE_OF_BIRTH_IN_FUTURE" xml:space="preserve">
+    <value>Data de nascimento não pode ser no futuro.</value>
   </data>
-  <data name="CPF_ALREADY_REGISTERED" xml:space="preserve">
-    <value>CPF já cadastrado</value>
+  <data name="PERSON_CPF_ALREADY_REGISTERED" xml:space="preserve">
+    <value>CPF já cadastrado.</value>
   </data>
-  <data name="CPF_UPDATE_NOT_ALLOWED" xml:space="preserve">
-    <value>O CPF não pode ser atualizado</value>
-  </data>
-  <data name="PERSON_DATE_OF_BIRTH_UPDATE_NOT_ALLOWED" xml:space="preserve">
-    <value>A data de nascimento não pode ser atualizada</value>
-  </data>
-  <data name="CPF_EMPTY" xml:space="preserve">
-    <value>CPF não pode ser vazio</value>
-  </data>
-  <data name="CATEGORY_NAME_EMPTY" xml:space="preserve">
-    <value>O nome é obrigatório</value>
+  <data name="PERSON_CPF_CHANGE_NOT_ALLOWED" xml:space="preserve">
+    <value>CPF não pode ser alterado.</value>
   </data>
   <data name="CATEGORY_NAME_TOO_LONG" xml:space="preserve">
-    <value>O nome da categoria deve ter no máximo 100 caracteres</value>
+    <value>Nome deve ter no máximo 100 caracteres.</value>
   </data>
   <data name="CATEGORY_ICON_TOO_LONG" xml:space="preserve">
-    <value>O nome do ícone deve ter no máximo 50 caracteres.</value>
+    <value>Ícone deve ter no máximo 50 caracteres.</value>
   </data>
-  <data name="CATEGORY_ICON_EMPTY" xml:space="preserve">
+  <data name="CATEGORY_ICON_REQUIRED" xml:space="preserve">
     <value>Ícone é obrigatório.</value>
   </data>
-  <data name="CATEGORY_TYPE_INVALID" xml:space="preserve">
-    <value>Tipo inválido</value>
-  </data>
   <data name="EXCEPTION_NOT_FOUND_TITLE" xml:space="preserve">
-    <value>Recurso não encontrado</value>
+    <value>Recurso não encontrado.</value>
   </data>
   <data name="CATEGORY_NOT_FOUND" xml:space="preserve">
-    <value>Não foi possível encontrar a categoria com o ID informado</value>
+    <value>Não foi possível encontrar a categoria.</value>
   </data>
   <data name="PAGINATION_OFFSET_MIN_VALUE" xml:space="preserve">
     <value>Offset deve ser maior ou igual a 0</value>
@@ -252,19 +237,31 @@
   <data name="INVALID_IDENTIFIER" xml:space="preserve">
     <value>O identificador informado é inválido.</value>
   </data>
-  <data name="BANK_ACCOUNT_NAME_EMPTY" xml:space="preserve">
-    <value>O nome da conta é obrigatório</value>
+  <data name="NAME_REQUIRED" xml:space="preserve">
+    <value>Nome é obrigatório.</value>
   </data>
   <data name="BANK_ACCOUNT_NAME_TOO_LONG" xml:space="preserve">
-    <value>O nome da conta deve ter no máximo 100 caracteres</value>
+    <value>Nome deve ter no máximo 100 caracteres.</value>
   </data>
-  <data name="INVALID_INITIAL_BALANCE" xml:space="preserve">
-    <value>O saldo inicial deve ser maior ou igual a zero</value>
-  </data>
-  <data name="BANK_ACCOUNT_TYPE_INVALID" xml:space="preserve">
-    <value>Tipo de conta inválido</value>
+  <data name="TYPE_INVALID" xml:space="preserve">
+    <value>Tipo inválido.</value>
   </data>
   <data name="BANK_ACCOUNT_NOT_FOUND" xml:space="preserve">
-    <value>Não foi possível encontrar a conta bancária com o ID informado</value>
+    <value>Não foi possível encontrar a conta bancária.</value>
+  </data>
+  <data name="BANK_ACCOUNT_INITIAL_BALANCE_OUT_OF_RANGE" xml:space="preserve">
+    <value>Saldo inicial deve estar entre 0 e 10.000.000.</value>
+  </data>
+  <data name="PERSON_CPF_REQUIRED" xml:space="preserve">
+    <value>CPF é obrigatório.</value>
+  </data>
+  <data name="PERSON_DATE_OF_BIRTH_CHANGE_NOT_ALLOWED" xml:space="preserve">
+    <value>Data de nascimento não pode ser alterada.</value>
+  </data>
+  <data name="PERSON_FULL_NAME_TOO_LONG" xml:space="preserve">
+    <value>Nome completo deve ter no máximo 60 caracteres.</value>
+  </data>
+  <data name="USER_CURRENT_PASSWORD_INCORRECT" xml:space="preserve">
+    <value>Senha atual incorreta.</value>
   </data>
 </root>

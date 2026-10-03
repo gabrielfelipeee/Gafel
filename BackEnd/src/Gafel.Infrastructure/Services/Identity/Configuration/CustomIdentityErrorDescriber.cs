@@ -43,7 +43,7 @@ public class CustomIdentityErrorDescriber : IdentityErrorDescriber
         return new IdentityError
         {
             Code = PasswordField,
-            Description = ResourceMessagesException.USER_PASSWORD_TOO_SHORT
+            Description = ResourceMessagesException.USER_PASSWORD_INVALID_LENGTH
         };
     }
 
@@ -70,7 +70,7 @@ public class CustomIdentityErrorDescriber : IdentityErrorDescriber
         return new IdentityError
         {
             Code = PasswordField,
-            Description = ResourceMessagesException.USER_PASSWORD_INCORRECT
+            Description = ResourceMessagesException.USER_CURRENT_PASSWORD_INCORRECT
         };
     }
     #endregion

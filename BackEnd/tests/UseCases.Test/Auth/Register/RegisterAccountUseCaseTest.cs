@@ -64,7 +64,7 @@ public class RegisterAccountUseCaseTest
         error.Key.ShouldBe(nameof(request.FullName));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldContain(ResourceMessagesException.PERSON_FULL_NAME_EMPTY);
+        value.ShouldContain(ResourceMessagesException.PERSON_FULL_NAME_REQUIRED);
     }
 
 

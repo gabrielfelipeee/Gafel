@@ -53,7 +53,7 @@ public class CreateCategoryUseCaseTest
         error.Key.ShouldBe(nameof(request.Name));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.CATEGORY_NAME_EMPTY);
+        value.ShouldBe(ResourceMessagesException.NAME_REQUIRED);
     }
 
     [Fact]
@@ -74,7 +74,7 @@ public class CreateCategoryUseCaseTest
         error.Key.ShouldBe(nameof(request.Icon));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.CATEGORY_ICON_EMPTY);
+        value.ShouldBe(ResourceMessagesException.CATEGORY_ICON_REQUIRED);
     }
 
     [Fact]
@@ -95,7 +95,7 @@ public class CreateCategoryUseCaseTest
         error.Key.ShouldBe(nameof(request.Type));
 
         var value = error.Value.ShouldHaveSingleItem();
-        value.ShouldBe(ResourceMessagesException.CATEGORY_TYPE_INVALID);
+        value.ShouldBe(ResourceMessagesException.TYPE_INVALID);
     }
 
     [Fact]

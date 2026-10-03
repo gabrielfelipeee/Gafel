@@ -33,7 +33,7 @@ public class UpdateProfileValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.FullName)
-            .WithErrorMessage(ResourceMessagesException.PERSON_FULL_NAME_EMPTY);
+            .WithErrorMessage(ResourceMessagesException.PERSON_FULL_NAME_REQUIRED);
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class UpdateProfileValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.Cpf)
-            .WithErrorMessage(ResourceMessagesException.CPF_INVALID);
+            .WithErrorMessage(ResourceMessagesException.PERSON_CPF_INVALID);
     }
 
     [Fact]
@@ -75,6 +75,6 @@ public class UpdateProfileValidatorTest
 
         result.Errors.ShouldHaveSingleItem();
         result.ShouldHaveValidationErrorFor(x => x.City)
-            .WithErrorMessage(ResourceMessagesException.PERSON_CITY_INVALID);
+            .WithErrorMessage(ResourceMessagesException.PERSON_CITY_INVALID_LENGTH);
     }
 }

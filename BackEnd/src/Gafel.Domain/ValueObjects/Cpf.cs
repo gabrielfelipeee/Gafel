@@ -13,12 +13,12 @@ public sealed partial record Cpf
     public static Result<Cpf> Create(string input)
     {
         if (string.IsNullOrWhiteSpace(input))
-            return Result<Cpf>.Failure(errorMessage: ResourceMessagesException.CPF_EMPTY);
+            return Result<Cpf>.Failure(errorMessage: ResourceMessagesException.PERSON_CPF_REQUIRED);
 
         var normalized = RemoveNonDigits(input);
 
         if (!IsValid(normalized))
-            return Result<Cpf>.Failure(errorMessage: ResourceMessagesException.CPF_INVALID);
+            return Result<Cpf>.Failure(errorMessage: ResourceMessagesException.PERSON_CPF_INVALID);
 
         return Result<Cpf>.Success(value: new Cpf(normalized));
     }

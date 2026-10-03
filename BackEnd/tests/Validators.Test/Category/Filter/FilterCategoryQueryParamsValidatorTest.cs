@@ -89,6 +89,6 @@ public class FilterCategoryQueryParamsValidatorTest
         var result = validator.TestValidate(request);
 
         result.Errors.ShouldHaveSingleItem();
-        result.ShouldHaveValidationErrorFor(x => x.Type).WithErrorMessage(ResourceMessagesException.CATEGORY_TYPE_INVALID);
+        result.ShouldHaveValidationErrorFor(x => x.Type).WithErrorMessage(ResourceMessagesException.TYPE_INVALID);
     }
 }

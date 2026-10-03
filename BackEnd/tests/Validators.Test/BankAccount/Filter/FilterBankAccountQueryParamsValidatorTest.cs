@@ -32,6 +32,6 @@ public class FilterBankAccountQueryParamsValidatorTest
         var result = validator.TestValidate(request);
 
         result.Errors.ShouldHaveSingleItem();
-        result.ShouldHaveValidationErrorFor(x => x.Type).WithErrorMessage(ResourceMessagesException.BANK_ACCOUNT_TYPE_INVALID);
+        result.ShouldHaveValidationErrorFor(x => x.Type).WithErrorMessage(ResourceMessagesException.TYPE_INVALID);
     }
 }
