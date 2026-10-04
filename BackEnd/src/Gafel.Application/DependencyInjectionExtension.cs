@@ -15,6 +15,7 @@ using Gafel.Application.UseCases.Category.Filter;
 using Gafel.Application.UseCases.Category.GetById;
 using Gafel.Application.UseCases.Category.Update;
 using Gafel.Application.UseCases.Transaction.Create;
+using Gafel.Application.UseCases.Transaction.Update;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Gafel.Application;
@@ -50,6 +51,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IDeleteBankAccountUseCase, DeleteBankAccountUseCase>();
 
         services.AddScoped<ICreateTransactionUseCase, CreateTransactionUseCase>();
+        services.AddScoped<IUpdateTransactionUseCase, UpdateTransactionUseCase>();
     }
 
     private static void AddMapsterConfigurations() => MapsterConfigurations.Configure();

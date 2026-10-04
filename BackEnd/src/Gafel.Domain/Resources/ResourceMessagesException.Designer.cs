@@ -448,6 +448,15 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Não foi possível encontrar o lançamento..
+        /// </summary>
+        public static string TRANSACTION_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("TRANSACTION_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tipo inválido..
         /// </summary>
         public static string TYPE_INVALID {
