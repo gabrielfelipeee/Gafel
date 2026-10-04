@@ -5,6 +5,7 @@ using Gafel.Application.UseCases.Category.Shared.Validators;
 using Gafel.Domain.Repositories;
 using Gafel.Domain.Repositories.Category;
 using Gafel.Domain.Repositories.Person;
+using Gafel.Domain.Repositories.Transaction;
 using Gafel.Domain.Services.CurrentUser;
 using Mapster;
 

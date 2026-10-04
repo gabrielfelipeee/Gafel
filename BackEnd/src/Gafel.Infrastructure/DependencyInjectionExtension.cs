@@ -3,6 +3,7 @@ using Gafel.Domain.Repositories;
 using Gafel.Domain.Repositories.BankAccount;
 using Gafel.Domain.Repositories.Category;
 using Gafel.Domain.Repositories.Person;
+using Gafel.Domain.Repositories.Transaction;
 using Gafel.Domain.Security.Tokens;
 using Gafel.Domain.Services.CurrentUser;
 using Gafel.Domain.Services.Identity;
@@ -93,6 +94,8 @@ public static class DependencyInjectionExtension
         services.AddScoped<IBankAccountReadOnlyRepository, BankAccountRepository>();
         services.AddScoped<IBankAccountWriteOnlyRepository, BankAccountRepository>();
         services.AddScoped<IBankAccountUpdateOnlyRepository, BankAccountRepository>();
+
+        services.AddScoped<ITransactionWriteOnlyRepository, TransactionRepository>();
     }
 
 

@@ -14,6 +14,6 @@
         public const string DEFAULT_CATEGORIES = "default_categories";
         public const string CATEGORIES = "categories";
         public const string BANK_ACCOUNTS = "bank_accounts";
-        public const string TRANSACTIONS = " transactions";
+        public const string TRANSACTIONS = "transactions";
     }
 }
