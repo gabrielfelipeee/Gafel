@@ -7,5 +7,6 @@
         public const int CREATE_TABLE_DEFAULT_CATEGORIES = 3;
         public const int CREATE_TABLE_CATEGORIES = 4;
         public const int CREATE_TABLE_BANK_ACCOUNTS = 5;
+        public const int CREATE_TABLE_TRANSACTIONS = 6;
     }
 }
