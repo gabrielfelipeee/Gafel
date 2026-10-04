@@ -403,6 +403,51 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Valor deve estar entre 0.01 e 10.000.000..
+        /// </summary>
+        public static string TRANSACTION_AMOUNT_OUT_OF_RANGE {
+            get {
+                return ResourceManager.GetString("TRANSACTION_AMOUNT_OUT_OF_RANGE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conta bancária é obrigatória..
+        /// </summary>
+        public static string TRANSACTION_BANK_ACCOUNT_REQUIRED {
+            get {
+                return ResourceManager.GetString("TRANSACTION_BANK_ACCOUNT_REQUIRED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categoria é obrigatória..
+        /// </summary>
+        public static string TRANSACTION_CATEGORY_REQUIRED {
+            get {
+                return ResourceManager.GetString("TRANSACTION_CATEGORY_REQUIRED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data é obrigatória..
+        /// </summary>
+        public static string TRANSACTION_DATE_REQUIRED {
+            get {
+                return ResourceManager.GetString("TRANSACTION_DATE_REQUIRED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Descrição deve ter no máximo 100 caracteres..
+        /// </summary>
+        public static string TRANSACTION_DESCRIPTION_TOO_LONG {
+            get {
+                return ResourceManager.GetString("TRANSACTION_DESCRIPTION_TOO_LONG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tipo inválido..
         /// </summary>
         public static string TYPE_INVALID {
