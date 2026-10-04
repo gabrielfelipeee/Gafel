@@ -1,9 +1,12 @@
 import { AbstractControl } from '@angular/forms';
-import { FieldValidationMessages } from '@shared/types/field-validation-messages.type';
+import {
+  FormFieldErrorMessages,
+  FormValidationErrorKey,
+} from '@shared/types/form-validation.types';
 
 export function getControlErrorMessage(
   control: AbstractControl | null,
-  messages: FieldValidationMessages,
+  messages: FormFieldErrorMessages,
 ): string | null {
   if (!control?.touched || !control.errors) return null;
 
@@ -11,8 +14,8 @@ export function getControlErrorMessage(
   if (control.errors['apiError']) return control.errors['apiError'];
 
   // erros locais
-  for (const key in control.errors) {
-    const message = messages[key];
+  for (const key of Object.keys(control.errors)) {
+    const message = messages[key as FormValidationErrorKey];
 
     if (message) return message;
   }

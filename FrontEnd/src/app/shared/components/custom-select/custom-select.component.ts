@@ -3,10 +3,10 @@ import { NgClass } from '@angular/common';
 import { ControlValueAccessor, FormsModule, NgControl, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroCheck, heroListBullet, heroXMark } from '@ng-icons/heroicons/outline';
-import { FieldValidationMessages } from '@shared/types/field-validation-messages.type';
-import { getControlErrorMessage } from '@shared/validation/utils/get-control-error-message.utils';
+import { getControlErrorMessage } from '@shared/utils/get-control-error-message.utils';
 import { SelectOption } from '@shared/interfaces/select-option.interface';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
+import { FormFieldErrorMessages } from '@shared/types/form-validation.types';
 
 @Component({
   selector: 'app-custom-select',
@@ -18,7 +18,7 @@ import { BreakpointObserverService } from '@shared/services/breakpoint-observer.
 export class CustomSelectComponent implements ControlValueAccessor {
   label = input.required<string>();
   options = input.required<SelectOption[]>();
-  errorMessages = input<FieldValidationMessages>({});
+  errorMessages = input<FormFieldErrorMessages>();
   bottomSheetTitle = input.required<string>();
 
   private readonly bottomSheet = viewChild.required<ElementRef<HTMLDialogElement>>('bottomSheet');
@@ -87,6 +87,8 @@ export class CustomSelectComponent implements ControlValueAccessor {
 
   // Erros
   get errorMessage(): string | null {
-    return getControlErrorMessage(this.ngControl?.control ?? null, this.errorMessages());
+    if (!this.errorMessages()) return null;
+
+    return getControlErrorMessage(this.ngControl?.control ?? null, this.errorMessages()!);
   }
 }

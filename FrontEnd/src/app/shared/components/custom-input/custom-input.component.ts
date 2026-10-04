@@ -3,10 +3,10 @@ import { NgClass } from '@angular/common';
 import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroEye, heroEyeSlash } from '@ng-icons/heroicons/outline';
-import { FieldValidationMessages } from '@shared/types/field-validation-messages.type';
-import { getControlErrorMessage } from '@shared/validation/utils/get-control-error-message.utils';
+import { getControlErrorMessage } from '@shared/utils/get-control-error-message.utils';
 import { currencyMaskToNumber, numberToCurrencyMask } from '@shared/utils/currency-mask.utils';
 import { CurrencyMaskDirective } from '@shared/directives/currency-mask.directive';
+import { FormFieldErrorMessages } from '@shared/types/form-validation.types';
 
 type InputType = 'text' | 'password' | 'email' | 'currency';
 
@@ -22,7 +22,7 @@ export class CustomInputComponent implements ControlValueAccessor {
   icon = input.required<string>();
   label = input.required<string>();
   placeholder = input.required<string>();
-  errorMessages = input<FieldValidationMessages>({});
+  errorMessages = input<FormFieldErrorMessages>();
 
   private ngControl = inject(NgControl, { optional: true, self: true });
   private onChange?: (value: string | number | null) => void;
@@ -77,6 +77,8 @@ export class CustomInputComponent implements ControlValueAccessor {
   }
 
   get errorMessage(): string | null {
-    return getControlErrorMessage(this.ngControl?.control ?? null, this.errorMessages());
+    if (!this.errorMessages()) return null;
+
+    return getControlErrorMessage(this.ngControl?.control ?? null, this.errorMessages()!);
   }
 }

@@ -8,10 +8,9 @@ import { faSolidBrazilianRealSign } from '@ng-icons/font-awesome/solid';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CustomInputComponent } from '@shared/components/custom-input/custom-input.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
-import { FormValidationMessages } from '@shared/types/form-validation-messages.type';
 import { ToastService } from '@shared/services/toast.service';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
-import { mapApiErrorsToForm } from '@shared/validation/utils/map-api-errors-to-form.utils';
+import { mapApiErrorsToForm } from '@shared/utils/map-api-errors-to-form.utils';
 import { RefreshService } from '@shared/services/refresh.service';
 import { REFRESH_KEYS } from '@shared/constants/refresh-keys.constant';
 import { FormValidationService } from '@shared/services/form-validation.service';
@@ -31,6 +30,7 @@ import { heroArrowLeft, heroArrowPath } from '@ng-icons/heroicons/outline';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
 import { IconButtonComponent } from '@shared/components/icon-button/icon-button.component';
 import { formatCurrency } from '@shared/utils/currency-format.utils';
+import { FormErrorMessages } from '@shared/types/form-validation.types';
 
 @Component({
   selector: 'app-create-or-edit-bank-account',
@@ -74,7 +74,7 @@ export class CreateOrEditPage {
       label: BankAccountTypeInfo[value].label,
       icon: BankAccountTypeInfo[value].icon!,
     }));
-  readonly formErrorMessages = {
+  readonly formErrorMessages: FormErrorMessages<iCreateOrEditBankAccountForm> = {
     name: {
       required: 'Nome é obrigatório',
       maxlength: `Nome deve ter no máximo ${BANK_ACCOUNT_RULES.NAME.MAX_LENGTH} caracteres`,
@@ -87,7 +87,7 @@ export class CreateOrEditPage {
     type: {
       required: 'Tipo é obrigatório',
     },
-  } satisfies FormValidationMessages;
+  };
 
   readonly form: FormGroup<iCreateOrEditBankAccountForm> = this.formBuilder.group({
     name: [

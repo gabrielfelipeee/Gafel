@@ -54,7 +54,7 @@
       <div class="h-5">
         @if (form.controls.icon.hasError('required') && form.controls.icon.touched) {
         <span class="text-error text-sm animate-fade-in-up">
-          {{formErrorMessages.icon.required}}
+          {{formErrorMessages.icon?.required}}
         </span>
         }
       </div>

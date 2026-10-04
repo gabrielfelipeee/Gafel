@@ -12,8 +12,8 @@ export function mapApiErrorsToForm(form: FormGroup, error: iErrorResponse) {
     if (!control) return;
 
     control.setErrors({
-      apiError: apiErrors[field][0],
       ...control.errors,
+      apiError: apiErrors[field][0],
     });
   });
 

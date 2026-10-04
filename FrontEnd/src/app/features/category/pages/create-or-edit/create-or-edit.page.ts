@@ -6,20 +6,19 @@ import { provideIcons } from '@ng-icons/core';
 import { heroArrowLeft, heroArrowPath, heroHashtag } from '@ng-icons/heroicons/outline';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { CategoryType } from '@features/category/enums/category-type.enum';
-import { iCreateOrEditCategoryForm } from '@features/category/interfaces/create-or-edit-category-form.interface';
+import { CreateOrEditCategoryForm } from '@features/category/interfaces/create-or-edit-category-form.interface';
 import { CustomInputComponent } from '@shared/components/custom-input/custom-input.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
-import { FormValidationMessages } from '@shared/types/form-validation-messages.type';
 import { CATEGORY_RULES } from '@features/category/rules/category.rules';
 import { CategoryApi } from '@features/category/apis/category.api';
 import { ToastService } from '@shared/services/toast.service';
 import { iErrorResponse } from '@shared/interfaces/error-response.interface';
-import { mapApiErrorsToForm } from '@shared/validation/utils/map-api-errors-to-form.utils';
+import { mapApiErrorsToForm } from '@shared/utils/map-api-errors-to-form.utils';
 import { CustomRadioGroupComponent } from '@shared/components/custom-radio-group/custom-radio-group.component';
 import { RefreshService } from '@shared/services/refresh.service';
 import { REFRESH_KEYS } from '@shared/constants/refresh-keys.constant';
 import { Category } from '@features/category/interfaces/category.interface';
-import { iCreateOrEditCategoryRequest } from '@features/category/interfaces/create-or-edit-category-request.interface';
+import { CreateOrEditCategoryRequest } from '@features/category/interfaces/create-or-edit-category-request.interface';
 import { FormValidationService } from '@shared/services/form-validation.service';
 import { ApiErrorHandlerService } from '@shared/services/api-error-handler.service';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer.service';
@@ -27,7 +26,8 @@ import { IconButtonComponent } from '@shared/components/icon-button/icon-button.
 import { finalize } from 'rxjs';
 import { CustomRadioGroupOption } from '@shared/interfaces/custom-radio-group-option.interface';
 import { EmojiComponent } from '@shared/components/emoji/emoji.component';
-import { CATEGORY_ICON_NAMES } from '@features/category/contants/category-icon-names.constant';
+import { CATEGORY_ICON_NAMES } from '@features/category/constants/category-icon-names.constant';
+import { FormErrorMessages } from '@shared/types/form-validation.types';
 
 @Component({
   selector: 'app-create-or-edit-category',
@@ -47,7 +47,7 @@ import { CATEGORY_ICON_NAMES } from '@features/category/contants/category-icon-n
 export class CreateOrEditPage {
   readonly CATEGORY_ICON_NAMES = CATEGORY_ICON_NAMES;
 
-  readonly formErrorMessages = {
+  readonly formErrorMessages: FormErrorMessages<CreateOrEditCategoryForm> = {
     name: {
       required: 'Nome é obrigatório',
       maxlength: `Nome deve ter no máximo ${CATEGORY_RULES.NAME.MAX_LENGTH} caracteres`,
@@ -55,7 +55,7 @@ export class CreateOrEditPage {
     icon: {
       required: 'Ícone é obrigatório',
     },
-  } satisfies FormValidationMessages;
+  };
 
   readonly categoryTypeOptions: CustomRadioGroupOption<CategoryType>[] = [
     {
@@ -84,7 +84,7 @@ export class CreateOrEditPage {
 
   readonly category: Category | undefined = this.route.snapshot.data['category'];
 
-  readonly form: FormGroup<iCreateOrEditCategoryForm> = this.formBuilder.group({
+  readonly form: FormGroup<CreateOrEditCategoryForm> = this.formBuilder.group({
     name: [
       this.category?.name ?? '',
       [Validators.required, Validators.maxLength(CATEGORY_RULES.NAME.MAX_LENGTH)],
@@ -108,7 +108,7 @@ export class CreateOrEditPage {
     this.save(this.form.getRawValue());
   }
   teste = 1;
-  private save(category: iCreateOrEditCategoryRequest) {
+  private save(category: CreateOrEditCategoryRequest) {
     this.form.disable();
 
     const request$ = this.category

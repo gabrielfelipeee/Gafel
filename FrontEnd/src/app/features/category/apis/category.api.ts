@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
-import { iCreateOrEditCategoryRequest } from '../interfaces/create-or-edit-category-request.interface';
+import { CreateOrEditCategoryRequest } from '../interfaces/create-or-edit-category-request.interface';
 import { Category } from '../interfaces/category.interface';
 import { iPagedResponse } from '@shared/interfaces/paged-response.interface';
 import { CategoryType } from '../enums/category-type.enum';
@@ -15,11 +15,11 @@ export class CategoryApi {
 
   private readonly http = inject(HttpClient);
 
-  create(category: iCreateOrEditCategoryRequest): Observable<void> {
+  create(category: CreateOrEditCategoryRequest): Observable<void> {
     return this.http.post<void>(this.baseUrl, category);
   }
 
-  update(id: string, category: iCreateOrEditCategoryRequest) {
+  update(id: string, category: CreateOrEditCategoryRequest) {
     return this.http.put<void>(`${this.baseUrl}/${id}`, category);
   }
 
