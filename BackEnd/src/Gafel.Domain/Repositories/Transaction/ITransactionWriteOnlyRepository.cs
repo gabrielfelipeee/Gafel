@@ -3,4 +3,5 @@
 public interface ITransactionWriteOnlyRepository
 {
     Task Add(Entities.Transaction transaction);
+    Task Delete(Guid transactionId);
 }

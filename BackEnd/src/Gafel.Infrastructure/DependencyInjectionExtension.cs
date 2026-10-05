@@ -95,6 +95,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IBankAccountWriteOnlyRepository, BankAccountRepository>();
         services.AddScoped<IBankAccountUpdateOnlyRepository, BankAccountRepository>();
 
+        services.AddScoped<ITransactionReadOnlyRepository, TransactionRepository>();
         services.AddScoped<ITransactionWriteOnlyRepository, TransactionRepository>();
         services.AddScoped<ITransactionUpdateOnlyRepository, TransactionRepository>();
     }

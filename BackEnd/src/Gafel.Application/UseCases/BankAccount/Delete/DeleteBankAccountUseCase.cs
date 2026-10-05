@@ -2,6 +2,7 @@
 using Gafel.Domain.Repositories;
 using Gafel.Domain.Repositories.BankAccount;
 using Gafel.Domain.Repositories.Person;
+using Gafel.Domain.Repositories.Transaction;
 using Gafel.Domain.Resources;
 using Gafel.Domain.Services.CurrentUser;
 
