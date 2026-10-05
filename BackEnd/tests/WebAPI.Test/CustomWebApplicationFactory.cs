@@ -23,6 +23,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     private Gafel.Domain.Entities.Person _person = default!;
     private Gafel.Domain.Entities.Category _category = default!;
     private Gafel.Domain.Entities.BankAccount _bankAccount = default!;
+    private Gafel.Domain.Entities.Transaction _transaction = default!;
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -59,6 +60,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     public Gafel.Domain.Entities.Person GetPerson() => _person;
     public Gafel.Domain.Entities.Category GetCategory() => _category;
     public Gafel.Domain.Entities.BankAccount GetBankAccount() => _bankAccount;
+    public Gafel.Domain.Entities.Transaction GetTransaction() => _transaction;
 
 
     private async Task StartDatabase(GafelDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager)
@@ -88,6 +90,9 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         var bankAccount = BankAccountBuilder.Build(person);
         context.BankAccounts.Add(bankAccount);
 
+        // Transaction
+        var transaction = TransactionBuilder.Build(person, bankAccountId: bankAccount.Id, categoryId: category.Id);
+        context.Transactions.Add(transaction);
 
         context.SaveChanges();
 
@@ -100,5 +105,6 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         _person = person;
         _category = category;
         _bankAccount = bankAccount;
+        _transaction = transaction;
     }
 }
