@@ -14,7 +14,7 @@ public class DeleteBankAccountInvalidToken : GafelClassFixture
     [Fact]
     public async Task Error_Token_Invalid()
     {
-        var response = await DoGet(method: $"{METHOD}/{_bankAccount.Id}", token: "invalidToken");
+        var response = await DoDelete(method: $"{METHOD}/{_bankAccount.Id}", token: "invalidToken");
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
@@ -22,7 +22,7 @@ public class DeleteBankAccountInvalidToken : GafelClassFixture
     [Fact]
     public async Task Error_Without_Token()
     {
-        var response = await DoGet(method: $"{METHOD}/{_bankAccount.Id}", token: string.Empty);
+        var response = await DoDelete(method: $"{METHOD}/{_bankAccount.Id}", token: string.Empty);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
@@ -32,7 +32,7 @@ public class DeleteBankAccountInvalidToken : GafelClassFixture
     {
         var token = JwtTokenGeneratorBuilder.Build().Generate(userId: Guid.CreateVersion7());
 
-        var response = await DoGet(method: $"{METHOD}/{_bankAccount.Id}", token: token);
+        var response = await DoDelete(method: $"{METHOD}/{_bankAccount.Id}", token: token);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
