@@ -1,4 +1,4 @@
-﻿using Gafel.Application.UseCases.Category.Shared.Responses;
+﻿using Gafel.Application.UseCases.Shared.Responses;
 
 namespace Gafel.Application.UseCases.Category.GetById;
 

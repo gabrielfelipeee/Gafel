@@ -1,5 +1,5 @@
 ﻿using Gafel.Application.Exceptions;
-using Gafel.Application.UseCases.Category.Shared.Responses;
+using Gafel.Application.UseCases.Shared.Responses;
 using Gafel.Domain.Repositories.Category;
 using Gafel.Domain.Repositories.Person;
 using Gafel.Domain.Resources;

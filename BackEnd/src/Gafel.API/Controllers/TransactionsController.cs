@@ -1,6 +1,8 @@
 ﻿using Gafel.Application.UseCases.Transaction.Create;
 using Gafel.Application.UseCases.Transaction.Delete;
+using Gafel.Application.UseCases.Transaction.GetById;
 using Gafel.Application.UseCases.Transaction.Shared.Commands;
+using Gafel.Application.UseCases.Transaction.Shared.Responses;
 using Gafel.Application.UseCases.Transaction.Update;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +32,16 @@ public class TransactionsController : GafelController
         await useCase.Execute(transactionId: id, request: request);
 
         return NoContent();
+    }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(TransactionResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById([FromRoute] Guid id, [FromServices] IGetTransactionByIdUseCase useCase)
+    {
+        var result = await useCase.Execute(id);
+
+        return Ok(result);
     }
 
     [HttpDelete("{id}")]

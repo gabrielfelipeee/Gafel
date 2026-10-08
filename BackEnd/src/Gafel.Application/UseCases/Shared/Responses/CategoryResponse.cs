@@ -1,6 +1,6 @@
 ﻿using Gafel.Domain.Enums;
 
-namespace Gafel.Application.UseCases.Category.Shared.Responses;
+namespace Gafel.Application.UseCases.Shared.Responses;
 
 public class CategoryResponse
 {

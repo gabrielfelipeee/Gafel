@@ -1,6 +1,5 @@
 ﻿using Gafel.Application.Exceptions;
 using Gafel.Application.Extensions;
-using Gafel.Application.UseCases.Category.Shared.Responses;
 using Gafel.Application.UseCases.Shared.Responses;
 using Gafel.Domain.Dtos.QueryParams;
 using Gafel.Domain.Repositories.Category;

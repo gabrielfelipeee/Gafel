@@ -12,6 +12,8 @@ public class TransactionRepository(GafelDbContext context) : ITransactionReadOnl
     async Task<Transaction?> ITransactionReadOnlyRepository.GetById(Person person, Guid transactionId)
         => await _context.Transactions
             .AsNoTracking()
+            .Include(x => x.BankAccount)
+            .Include(x => x.Category)
             .FirstOrDefaultAsync(transaction => transaction.IsActive && transaction.PersonId == person.Id && transaction.Id == transactionId);
 
     public async Task<bool> ExistActiveTransactionWithId(Person person, Guid transactionId)

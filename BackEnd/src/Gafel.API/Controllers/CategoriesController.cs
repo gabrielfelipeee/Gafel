@@ -3,7 +3,6 @@ using Gafel.Application.UseCases.Category.Delete;
 using Gafel.Application.UseCases.Category.Filter;
 using Gafel.Application.UseCases.Category.GetById;
 using Gafel.Application.UseCases.Category.Shared.Commands;
-using Gafel.Application.UseCases.Category.Shared.Responses;
 using Gafel.Application.UseCases.Category.Update;
 using Gafel.Application.UseCases.Shared.Responses;
 using Gafel.Domain.Dtos.QueryParams;
