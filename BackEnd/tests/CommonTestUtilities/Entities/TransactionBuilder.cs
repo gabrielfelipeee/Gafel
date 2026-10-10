@@ -23,14 +23,30 @@ public class TransactionBuilder
         return list;
     }
 
-    public static Transaction Build(Person person, Guid? bankAccountId = null, Guid? categoryId = null)
+    public static Transaction Build(Person person, Guid? bankAccountId = null, Guid? categoryId = null, bool include = false)
     {
         return FakerFactory.Create<Transaction>()
         .RuleFor(transaction => transaction.Date, () => DateOnly.FromDateTime(DateTime.UtcNow))
         .RuleFor(transaction => transaction.Amount, faker => faker.Finance.Amount(min: 0.01m, max: DomainRules.MaximumMoneyAmount))
         .RuleFor(transaction => transaction.IsSettled, faker => faker.Random.Bool())
         .RuleFor(transaction => transaction.PersonId, () => person.Id)
-        .RuleFor(transaction => transaction.BankAccountId, () => bankAccountId ?? Guid.CreateVersion7())
-        .RuleFor(transaction => transaction.CategoryId, () => categoryId ?? Guid.CreateVersion7());
+        .FinishWith((faker, transaction) =>
+        {
+            if (include)
+            {
+                var bankAccount = BankAccountBuilder.Build(person);
+                var category = CategoryBuilder.Build(person);
+
+                transaction.BankAccount = bankAccount;
+                transaction.BankAccountId = bankAccount.Id;
+
+                transaction.Category = category;
+                transaction.CategoryId = category.Id;
+                return;
+            }
+
+            transaction.BankAccountId = bankAccountId ?? Guid.CreateVersion7();
+            transaction.CategoryId = categoryId ?? Guid.CreateVersion7();
+        });
     }
 }
