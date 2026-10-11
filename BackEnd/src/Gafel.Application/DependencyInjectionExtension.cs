@@ -16,6 +16,7 @@ using Gafel.Application.UseCases.Category.GetById;
 using Gafel.Application.UseCases.Category.Update;
 using Gafel.Application.UseCases.Transaction.Create;
 using Gafel.Application.UseCases.Transaction.Delete;
+using Gafel.Application.UseCases.Transaction.Filter;
 using Gafel.Application.UseCases.Transaction.GetById;
 using Gafel.Application.UseCases.Transaction.Update;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,7 @@ public static class DependencyInjectionExtension
         AddUseCases(services);
 
         AddMapsterConfigurations();
+        AddTimeProvider(services);
     }
 
     private static void AddUseCases(IServiceCollection services)
@@ -53,10 +55,12 @@ public static class DependencyInjectionExtension
         services.AddScoped<IDeleteBankAccountUseCase, DeleteBankAccountUseCase>();
 
         services.AddScoped<IGetTransactionByIdUseCase, GetTransactionByIdUseCase>();
+        services.AddScoped<IFilterTransactionUseCase, FilterTransactionUseCase>();
         services.AddScoped<ICreateTransactionUseCase, CreateTransactionUseCase>();
         services.AddScoped<IUpdateTransactionUseCase, UpdateTransactionUseCase>();
         services.AddScoped<IDeleteTransactionUseCase, DeleteTransactionUseCase>();
     }
 
     private static void AddMapsterConfigurations() => MapsterConfigurations.Configure();
+    private static void AddTimeProvider(IServiceCollection services) => services.AddSingleton(TimeProvider.System);
 }

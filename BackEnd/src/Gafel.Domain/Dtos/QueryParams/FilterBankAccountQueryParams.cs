@@ -5,5 +5,5 @@ namespace Gafel.Domain.Dtos.QueryParams;
 public record FilterBankAccountQueryParams : OptionalPaginationQueryParams
 {
     public BankAccountType? Type { get; init; }
-    public string? BankAccountName { get; set; }
+    public string? BankAccountName { get; init; }
 }

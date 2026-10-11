@@ -14,7 +14,7 @@ public class TransactionValidator : AbstractValidator<TransactionCommand>
             .WithMessage(ResourceMessagesException.TRANSACTION_DESCRIPTION_TOO_LONG);
 
         RuleFor(transaction => transaction.Amount)
-            .InclusiveBetween(0.01m, DomainRules.MaximumMoneyAmount)
+            .InclusiveBetween(DomainRules.MinimumTransactionAmount, DomainRules.MaximumMoneyAmount)
             .WithMessage(ResourceMessagesException.TRANSACTION_AMOUNT_OUT_OF_RANGE);
 
         RuleFor(transaction => transaction.Date)

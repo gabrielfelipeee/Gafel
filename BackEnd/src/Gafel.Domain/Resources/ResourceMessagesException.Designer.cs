@@ -250,6 +250,15 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Id Inválido..
+        /// </summary>
+        public static string ID_INVALID {
+            get {
+                return ResourceManager.GetString("ID_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to O identificador informado é inválido..
         /// </summary>
         public static string INVALID_IDENTIFIER {
@@ -430,6 +439,15 @@ namespace Gafel.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to O período selecionado não pode ultrapassar um ano..
+        /// </summary>
+        public static string TRANSACTION_DATE_RANGE_EXCEEDS_ONE_YEAR {
+            get {
+                return ResourceManager.GetString("TRANSACTION_DATE_RANGE_EXCEEDS_ONE_YEAR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data é obrigatória..
         /// </summary>
         public static string TRANSACTION_DATE_REQUIRED {
@@ -444,6 +462,42 @@ namespace Gafel.Domain.Resources {
         public static string TRANSACTION_DESCRIPTION_TOO_LONG {
             get {
                 return ResourceManager.GetString("TRANSACTION_DESCRIPTION_TOO_LONG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data final não pode ser anterior à data inicial..
+        /// </summary>
+        public static string TRANSACTION_END_DATE_BEFORE_START_DATE {
+            get {
+                return ResourceManager.GetString("TRANSACTION_END_DATE_BEFORE_START_DATE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valor máximo deve estar entre 0.01 e 10.000.000..
+        /// </summary>
+        public static string TRANSACTION_MAXIMUM_AMOUNT_OUT_OF_RANGE {
+            get {
+                return ResourceManager.GetString("TRANSACTION_MAXIMUM_AMOUNT_OUT_OF_RANGE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valor mínimo deve ser menor ou igual ao valor máximo..
+        /// </summary>
+        public static string TRANSACTION_MINIMUM_AMOUNT_GREATER_THAN_MAXIMUM {
+            get {
+                return ResourceManager.GetString("TRANSACTION_MINIMUM_AMOUNT_GREATER_THAN_MAXIMUM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valor mínimo deve estar entre 0.01 e 10.000.000..
+        /// </summary>
+        public static string TRANSACTION_MINIMUM_AMOUNT_OUT_OF_RANGE {
+            get {
+                return ResourceManager.GetString("TRANSACTION_MINIMUM_AMOUNT_OUT_OF_RANGE", resourceCulture);
             }
         }
         

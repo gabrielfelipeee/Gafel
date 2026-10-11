@@ -2,6 +2,6 @@
 
 public abstract record PaginationQueryParams
 {
-    public int Offset { get; init; }
-    public int Limit { get; init; }
+    public int Offset { get; init; } = 0;
+    public int Limit { get; init; } = 20;
 }

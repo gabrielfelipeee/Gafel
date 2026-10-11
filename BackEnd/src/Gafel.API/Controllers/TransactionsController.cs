@@ -1,9 +1,12 @@
-﻿using Gafel.Application.UseCases.Transaction.Create;
+﻿using Gafel.Application.UseCases.Shared.Responses;
+using Gafel.Application.UseCases.Transaction.Create;
 using Gafel.Application.UseCases.Transaction.Delete;
+using Gafel.Application.UseCases.Transaction.Filter;
 using Gafel.Application.UseCases.Transaction.GetById;
 using Gafel.Application.UseCases.Transaction.Shared.Commands;
 using Gafel.Application.UseCases.Transaction.Shared.Responses;
 using Gafel.Application.UseCases.Transaction.Update;
+using Gafel.Domain.Dtos.QueryParams;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,6 +43,16 @@ public class TransactionsController : GafelController
     public async Task<IActionResult> GetById([FromRoute] Guid id, [FromServices] IGetTransactionByIdUseCase useCase)
     {
         var result = await useCase.Execute(id);
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(PaginationResponse<TransactionResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Filter([FromQuery] FilterTransactionQueryParams queryParams, [FromServices] IFilterTransactionUseCase useCase)
+    {
+        var result = await useCase.Execute(queryParams);
 
         return Ok(result);
     }

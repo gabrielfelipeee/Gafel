@@ -27,7 +27,7 @@ public class TransactionBuilder
     {
         return FakerFactory.Create<Transaction>()
         .RuleFor(transaction => transaction.Date, () => DateOnly.FromDateTime(DateTime.UtcNow))
-        .RuleFor(transaction => transaction.Amount, faker => faker.Finance.Amount(min: 0.01m, max: DomainRules.MaximumMoneyAmount))
+        .RuleFor(transaction => transaction.Amount, faker => faker.Finance.Amount(min: DomainRules.MinimumTransactionAmount, max: DomainRules.MaximumMoneyAmount))
         .RuleFor(transaction => transaction.IsSettled, faker => faker.Random.Bool())
         .RuleFor(transaction => transaction.PersonId, () => person.Id)
         .FinishWith((faker, transaction) =>
