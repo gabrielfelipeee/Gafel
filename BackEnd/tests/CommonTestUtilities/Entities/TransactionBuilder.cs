@@ -5,7 +5,6 @@ namespace CommonTestUtilities.Entities;
 
 public class TransactionBuilder
 {
-
     public static IList<Transaction> Collection(Person person, uint count = 2)
     {
         var list = new List<Transaction>();
@@ -15,7 +14,7 @@ public class TransactionBuilder
 
         for (int i = 0; i < count; i++)
         {
-            var fakeBankAccount = Build(person);
+            var fakeBankAccount = Build(person, include: true);
 
             list.Add(fakeBankAccount);
         }
